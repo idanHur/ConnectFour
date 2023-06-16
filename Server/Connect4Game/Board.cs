@@ -13,13 +13,23 @@ namespace Connect4Game
             board = new bool[rows, columns]; // Creating a private 6x7 boolean board
         }
 
+        public bool[,] GetBoard()
+        {
+            return board;
+        }
+
         public bool IsValidMove(int column)
         {
+            // Check if the column is within the valid range
+            if (column < 0 || column >= board.GetLength(1))
+            {
+                return false;
+            }
             // Check if the topmost slot in the column is free
             return !board[0, column];
         }
 
-        public void MakeMove(int column, bool isAI)
+        public void MakeMove(int column)
         {
             // Find the lowest free row in the column and fill it
             int numberOfRows = board.GetLength(0); 
