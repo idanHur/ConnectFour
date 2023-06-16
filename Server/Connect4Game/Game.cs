@@ -5,12 +5,14 @@ namespace Connect4Game
     public class Game
     {
         private Board board;
-        public bool gameEnded;
+        public bool gameEnded { get; private set; }
+        public DateTime currentTime { get; private set; }
 
         public Game(int rows, int columns)
         {
             board = new Board(rows, columns);
             gameEnded = false;
+            currentTime = DateTime.Now;
         }
 
 
@@ -21,6 +23,8 @@ namespace Connect4Game
 
         public bool PlayerMove(int column)
         {
+            if (gameEnded)
+                return false;
             if (board.IsValidMove(column))
             {
                 board.MakeMove(column);
@@ -37,6 +41,9 @@ namespace Connect4Game
         }
         public void AiMove()
         {
+            if (gameEnded)
+                return;
+
             int columns = board.matrix.GetLength(1);
             int winningMove = -1;
             int blockMove = -1;
