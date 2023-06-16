@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.33801.198
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{F16FC23D-1DA6-4A02-A54B-874F7F6D4D63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{F16FC23D-1DA6-4A02-A54B-874F7F6D4D63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Game", "Connect4Game\Connect4Game.csproj", "{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F16FC23D-1DA6-4A02-A54B-874F7F6D4D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F16FC23D-1DA6-4A02-A54B-874F7F6D4D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F16FC23D-1DA6-4A02-A54B-874F7F6D4D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
