@@ -2,7 +2,7 @@
 
 namespace GameManager
 {
-    public class Class1
+    public class Manager
     {
     }
 }
