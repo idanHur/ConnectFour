@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Game", "Connect4Game\Connect4Game.csproj", "{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameManager", "GameManager\GameManager.csproj", "{54067D6C-0F44-4108-8FB8-B8232FED89AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C47C01F-6F51-4E15-A4FE-15F28A85A1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
