@@ -14,6 +14,10 @@ namespace Connect4Game
         }
 
 
+        public bool[,] GetGameBoard()
+        {
+            return board.matrix;
+        }
 
         public bool PlayerMove(int column)
         {
@@ -22,7 +26,6 @@ namespace Connect4Game
                 board.MakeMove(column);
                 if (board.IsWinningMove(column))
                 {
-                    Console.WriteLine("Player has won!");
                     gameEnded = true;
                 }
                 return true;
@@ -34,7 +37,7 @@ namespace Connect4Game
         }
         public void AiMove()
         {
-            int columns = board.GetBoard().GetLength(1);
+            int columns = board.matrix.GetLength(1);
             int winningMove = -1;
             int blockMove = -1;
 
@@ -88,12 +91,6 @@ namespace Connect4Game
             while (!board.IsValidMove(column));
 
             board.MakeMove(column);
-        }
-
-
-        public bool GetBoard()
-        {
-            return board;
         }
 
 

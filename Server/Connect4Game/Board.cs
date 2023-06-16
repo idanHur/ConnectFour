@@ -4,40 +4,43 @@ using System.Text;
 
 namespace Connect4Game
 {
-    class Board
+    public class Board
     {
-        private bool[,] board;
+        public bool[,] matrix
+        {
+            get
+            {
+                return (bool[,])_matrix.Clone();
+            }
+        }
+
+        private bool[,] _matrix;
 
         public Board(int rows, int columns)
         {
-            board = new bool[rows, columns]; // Creating a private 6x7 boolean board
-        }
-
-        public bool[,] GetBoard()
-        {
-            return board;
+            _matrix = new bool[rows, columns]; // Creating a private 6x7 boolean board
         }
 
         public bool IsValidMove(int column)
         {
             // Check if the column is within the valid range
-            if (column < 0 || column >= board.GetLength(1))
+            if (column < 0 || column >= _matrix.GetLength(1))
             {
                 return false;
             }
             // Check if the topmost slot in the column is free
-            return !board[0, column];
+            return !_matrix[0, column];
         }
 
         public void MakeMove(int column)
         {
             // Find the lowest free row in the column and fill it
-            int numberOfRows = board.GetLength(0); 
+            int numberOfRows = _matrix.GetLength(0); 
             for (int row = numberOfRows - 1; row >= 0; row--)
             {
-                if (!board[row, column])
+                if (!_matrix[row, column])
                 {
-                    board[row, column] = true;
+                    _matrix[row, column] = true;
                     break;
                 }
             }
@@ -46,12 +49,12 @@ namespace Connect4Game
         public void UndoMove(int column)
         {
             // Find the highest filled row in the column and empty it
-            int numberOfRows = board.GetLength(0);
+            int numberOfRows = _matrix.GetLength(0);
             for (int row = 0; row < numberOfRows; row++)
             {
-                if (board[row, column])
+                if (_matrix[row, column])
                 {
-                    board[row, column] = false;
+                    _matrix[row, column] = false;
                     break;
                 }
             }
@@ -60,12 +63,12 @@ namespace Connect4Game
         public bool IsWinningMove(int column)
         {
             // Get the board size
-            int numRows = board.GetLength(0);
-            int numColumns = board.GetLength(1);
+            int numRows = _matrix.GetLength(0);
+            int numColumns = _matrix.GetLength(1);
 
             // Find the row for the last move in the column
             int row = numRows - 1;
-            while (row >= 0 && board[row, column])
+            while (row >= 0 && _matrix[row, column])
             {
                 row--;
             }
@@ -83,7 +86,7 @@ namespace Connect4Game
                 {
                     int r = row + i * direction.Item1;
                     int c = column + i * direction.Item2;
-                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && board[r, c])
+                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && _matrix[r, c])
                     {
                         count++;
                     }
@@ -98,7 +101,7 @@ namespace Connect4Game
                 {
                     int r = row - i * direction.Item1;
                     int c = column - i * direction.Item2;
-                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && board[r, c])
+                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && _matrix[r, c])
                     {
                         count++;
                     }
