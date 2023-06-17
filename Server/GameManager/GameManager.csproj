@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Connect4Game\Connect4Game.csproj" />
+  </ItemGroup>
+
 </Project>

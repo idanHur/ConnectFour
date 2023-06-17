@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Connect4Game
 {
@@ -7,6 +9,9 @@ namespace Connect4Game
         private Board board;
         public bool gameEnded { get; private set; }
         public DateTime currentTime { get; private set; }
+        private List<Move> _movesRecord = new List<Move>();
+
+        public ReadOnlyCollection<Move> movesRecord => _movesRecord.AsReadOnly();
 
         public Game(int rows, int columns)
         {
@@ -32,6 +37,7 @@ namespace Connect4Game
                 {
                     gameEnded = true;
                 }
+                _movesRecord.Add(new Move(column, true));
                 return true;
             }
             else
@@ -77,6 +83,7 @@ namespace Connect4Game
             if (winningMove != -1)
             {
                 board.MakeMove(winningMove);
+                _movesRecord.Add(new Move(winningMove, false));
                 gameEnded = true;
                 return;
             }
@@ -85,6 +92,7 @@ namespace Connect4Game
             if (blockMove != -1)
             {
                 board.MakeMove(blockMove);
+                _movesRecord.Add(new Move(blockMove, false));
                 return;
             }
 
@@ -96,11 +104,10 @@ namespace Connect4Game
                 column = rnd.Next(columns);
             }
             while (!board.IsValidMove(column));
-
+            _movesRecord.Add(new Move(column, false));
             board.MakeMove(column);
         }
-
-
-
     }
+
+
 }

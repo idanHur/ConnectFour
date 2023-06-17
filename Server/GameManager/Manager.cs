@@ -11,10 +11,7 @@ namespace GameManager
         public Game currentGame { get; private set; }
         private List<Game> _gamesRecord = new List<Game>();
 
-        public ReadOnlyCollection<Game> GamesRecord
-        {
-            get { return _gamesRecord.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<Game> gamesRecord => _gamesRecord.AsReadOnly();
 
         public Manager()
         {
