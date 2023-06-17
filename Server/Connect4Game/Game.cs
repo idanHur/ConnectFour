@@ -8,7 +8,8 @@ namespace Connect4Game
     {
         private Board board;
         public bool gameEnded { get; private set; }
-        public DateTime currentTime { get; private set; }
+        public DateTime startTime { get; private set; }
+        public TimeSpan gameDuration { get; private set; }
         private List<Move> _movesRecord = new List<Move>();
 
         public ReadOnlyCollection<Move> movesRecord => _movesRecord.AsReadOnly();
@@ -17,10 +18,14 @@ namespace Connect4Game
         {
             board = new Board(rows, columns);
             gameEnded = false;
-            currentTime = DateTime.Now;
+            startTime = DateTime.Now;
         }
 
-
+        private void EndGame()
+        {
+            gameEnded = true;
+            gameDuration = DateTime.Now - startTime;
+        }
         public bool[,] GetGameBoard()
         {
             return board.matrix;
@@ -35,7 +40,7 @@ namespace Connect4Game
                 board.MakeMove(column);
                 if (board.IsWinningMove(column))
                 {
-                    gameEnded = true;
+                    EndGame();
                 }
                 _movesRecord.Add(new Move(column, true));
                 return true;
@@ -84,7 +89,7 @@ namespace Connect4Game
             {
                 board.MakeMove(winningMove);
                 _movesRecord.Add(new Move(winningMove, false));
-                gameEnded = true;
+                EndGame();
                 return;
             }
 
