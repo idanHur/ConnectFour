@@ -4,10 +4,25 @@ using System.Collections.ObjectModel;
 
 namespace Connect4Game
 {
+    public enum Player
+    {
+        Human,
+        Ai
+    }
+    public enum GameStatus
+    {
+        Won,
+        Lost,
+        Draw,
+        OnGoing
+    }
     public class Game
     {
+
         private Board board;
-        public bool gameEnded { get; private set; }
+        public GameStatus gameStatus { get; private set; }
+        public Player currentPlayer { get; private set; }
+
         public DateTime startTime { get; private set; }
         public TimeSpan gameDuration { get; private set; }
         private List<Move> _movesRecord = new List<Move>();
@@ -17,13 +32,18 @@ namespace Connect4Game
         public Game(int rows, int columns)
         {
             board = new Board(rows, columns);
-            gameEnded = false;
+            gameStatus = GameStatus.OnGoing;
             startTime = DateTime.Now;
         }
 
-        private void EndGame()
+        private void EndGame(bool draw = false)
         {
-            gameEnded = true;
+            if(draw)
+                gameStatus = GameStatus.Draw;
+            else if(currentPlayer == Player.Human)
+                gameStatus = GameStatus.Won;
+            else
+                gameStatus = GameStatus.Lost;
             gameDuration = DateTime.Now - startTime;
         }
         public bool[,] GetGameBoard()
@@ -33,28 +53,38 @@ namespace Connect4Game
 
         public bool PlayerMove(int column)
         {
-            if (gameEnded)
+            if ((gameStatus != GameStatus.OnGoing) || currentPlayer != Player.Human)
                 return false;
-            if (board.IsValidMove(column))
+            if(board.IsMatrixFull())
+            {
+                EndGame(true);
+                return false;
+            }
+            if (board.IsValidMove(column)) // Check if the move is possible
             {
                 board.MakeMove(column);
-                if (board.IsWinningMove(column))
+                if (board.IsWinningMove(column)) // Check if the game ended
                 {
                     EndGame();
                 }
-                _movesRecord.Add(new Move(column, true));
+                _movesRecord.Add(new Move(column, currentPlayer));
+                currentPlayer = Player.Ai;
                 return true;
             }
             else
             {
-                return false;
+                return false; // The move wasnt made
             }
         }
         public void AiMove()
         {
-            if (gameEnded)
+            if ((gameStatus != GameStatus.OnGoing) || currentPlayer != Player.Ai)
                 return;
-
+            if (board.IsMatrixFull())
+            {
+                EndGame(true);
+                return;
+            }
             int columns = board.matrix.GetLength(1);
             int winningMove = -1;
             int blockMove = -1;
@@ -88,7 +118,7 @@ namespace Connect4Game
             if (winningMove != -1)
             {
                 board.MakeMove(winningMove);
-                _movesRecord.Add(new Move(winningMove, false));
+                _movesRecord.Add(new Move(winningMove, currentPlayer));
                 EndGame();
                 return;
             }
@@ -97,7 +127,8 @@ namespace Connect4Game
             if (blockMove != -1)
             {
                 board.MakeMove(blockMove);
-                _movesRecord.Add(new Move(blockMove, false));
+                _movesRecord.Add(new Move(blockMove, currentPlayer));
+                currentPlayer = Player.Human;
                 return;
             }
 
@@ -109,8 +140,9 @@ namespace Connect4Game
                 column = rnd.Next(columns);
             }
             while (!board.IsValidMove(column));
-            _movesRecord.Add(new Move(column, false));
+            _movesRecord.Add(new Move(column, currentPlayer));
             board.MakeMove(column);
+            currentPlayer = Player.Human;
         }
     }
 

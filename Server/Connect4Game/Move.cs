@@ -7,12 +7,12 @@ namespace Connect4Game
     public class Move
     {
         public int columnNumber { get; private set; }
-        public bool humenMove { get; private set; }
+        public Player Player { get; private set; }
 
-        public Move(int columnNumber, bool humenMove)
+        public Move(int columnNumber, Player player)
         {
             this.columnNumber = columnNumber;
-            this.humenMove = humenMove;
+            this.Player = player;
         }
 
     }

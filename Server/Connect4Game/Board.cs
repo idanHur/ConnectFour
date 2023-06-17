@@ -18,7 +18,7 @@ namespace Connect4Game
 
         public Board(int rows, int columns)
         {
-            _matrix = new bool[rows, columns]; // Creating a private 6x7 boolean board
+            _matrix = new bool[rows, columns]; // Creating a private boolean board
         }
 
         public bool IsValidMove(int column)
@@ -30,6 +30,16 @@ namespace Connect4Game
             }
             // Check if the topmost slot in the column is free
             return !_matrix[0, column];
+        }
+        public bool IsMatrixFull()
+        {
+            // Check if the topmost slot in each column is already taken
+            for(int i = 0; i < _matrix.GetLength(1); i++)
+            {
+                if(!_matrix[0, i])
+                    return false;
+            }
+            return true;
         }
 
         public void MakeMove(int column)
