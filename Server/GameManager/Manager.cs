@@ -7,16 +7,13 @@ namespace GameManager
 {
     public class Manager
     {
-        public string playerName;
-        public Game currentGame { get; private set; }
-        private List<Game> _gamesRecord = new List<Game>();
+        private List<Player> _playersRecord = new List<Player>();
 
-        public ReadOnlyCollection<Game> gamesRecord => _gamesRecord.AsReadOnly();
+        public ReadOnlyCollection<Player> playersRecord => _playersRecord.AsReadOnly();
 
         public Manager()
         {
-            _gamesRecord = new List<Game>();
-            currentGame = null;
+            _playersRecord = new List<Player>();
         }
 
     }
