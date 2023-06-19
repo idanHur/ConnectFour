@@ -35,11 +35,6 @@ body {
         display: none;
     }
 }
-
-/* make the dropdown appear on hover instead of click */
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
 html, body {
     height: 100%;
     margin: 0;
@@ -48,38 +43,46 @@ html, body {
     justify-content: center;
 }
 
+
+/*  About Dropdown  */
+
+/* Make the dropdown appear on hover instead of click */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
 .about-container {
     position: relative; /* This enables z-index for this element */
     z-index: 1; /* This will put the about-container in front of the background */
 }
 
-#background {
-    position: absolute; /* changed from relative */
-    overflow: hidden;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
-    z-index: -1; /* This will put the background behind other content */
-}
 
+/*   Background balls animation     */
+
+#background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* Put the background behind other content */
+}
 
 .chip {
-    position: absolute; /* This allows you to position the chip using top, right, bottom, left */
-    border-radius: 50%;
+    position: absolute;
     width: 50px;
     height: 50px;
-    animation: fall 5s linear infinite; /* This applies the animation. Modify as needed */
+    border-radius: 50%; /* Make the chips circular */
+    animation: fall 5s linear;
 }
 
-.chip.red {
-    background-color: red;
-    left: 50%; /* This positions the chip horizontally. Adjust as needed */
-}
 
-.chip.yellow {
-    background-color: yellow;
-    left: 70%; /* This positions the chip horizontally. Adjust as needed */
-}
+    .chip.red {
+        background-color: red;
+    }
 
+    .chip.yellow {
+        background-color: yellow;
+    }
 
 
 @keyframes fall {
