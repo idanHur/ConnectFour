@@ -40,3 +40,55 @@ body {
 .dropdown:hover .dropdown-menu {
     display: block;
 }
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-container {
+    position: relative; /* This enables z-index for this element */
+    z-index: 1; /* This will put the about-container in front of the background */
+}
+
+#background {
+    position: absolute; /* changed from relative */
+    overflow: hidden;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    z-index: -1; /* This will put the background behind other content */
+}
+
+
+.chip {
+    position: absolute; /* This allows you to position the chip using top, right, bottom, left */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: fall 5s linear infinite; /* This applies the animation. Modify as needed */
+}
+
+.chip.red {
+    background-color: red;
+    left: 50%; /* This positions the chip horizontally. Adjust as needed */
+}
+
+.chip.yellow {
+    background-color: yellow;
+    left: 70%; /* This positions the chip horizontally. Adjust as needed */
+}
+
+
+
+@keyframes fall {
+    0% {
+        top: -50px;
+    }
+    /* Start above the screen (adjust as needed) */
+    100% {
+        top: 100vh;
+    }
+    /* End at the bottom of the screen */
+}
