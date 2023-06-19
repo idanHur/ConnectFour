@@ -291,3 +291,8 @@ project.assets.json
 *.csproj.CoreCompileInputs.cache
 *.dtbcache
 *.suo
+*.ide-shm
+*.ide-wal
+*.props
+*.targets
+*.cache
