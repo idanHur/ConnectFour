@@ -281,3 +281,13 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+.vs/
+**/obj/
+*.nuget.g.props
+*.nuget.g.targets
+project.assets.json
+*.csprojAssemblyReference.cache
+*.assets.cache
+*.csproj.CoreCompileInputs.cache
+*.dtbcache
+*.suo
