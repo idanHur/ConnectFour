@@ -1,5 +1,5 @@
 ﻿@page
-@model ContactModel
+@model GameManager.Player
 @{
     ViewData["Title"] = "Registration";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -13,14 +13,14 @@
 
 
 <h2>@ViewData["Title"]</h2>
-<h3>@Model.Message</h3>
 
 
 <div class="container-fluid mt-5">
-    <form class="form-background mx-auto w-75">
-        <div class="form-group mb-3">
-            <label for="privateName">Private Name</label>
-            <input type="text" class="form-control" id="privateName" placeholder="Enter private name">
+    <form asp-action="YourAction" method="post" class="form-background mx-auto w-75">
+        <div class="form-group">
+            <label asp-for="playerName">Player Name</label>
+            <input asp-for="playerName" class="form-control" placeholder="Enter player name">
+            <span asp-validation-for="playerName" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
             <label for="id">ID</label>

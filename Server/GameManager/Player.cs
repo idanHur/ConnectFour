@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace GameManager
@@ -9,7 +10,10 @@ namespace GameManager
     public class Player
     {
         public int playerId { get; private set; }
-        public string playerName;
+
+        [Required(ErrorMessage = "Private Name is required.")]
+        [MinLength(2, ErrorMessage = "Private Name should be at least 2 characters long.")]
+        public string playerName { get; set; }
         public Game currentGame { get; private set; }
         private List<Game> _gamesRecord = new List<Game>();
 
