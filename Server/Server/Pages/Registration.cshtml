@@ -2,7 +2,18 @@
 @model ContactModel
 @{
     ViewData["Title"] = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
+<!-- Add styles that are spacific to this page -->
+@section Styles {
+}
+
+
 <h2>@ViewData["Title"]</h2>
 <h3>@Model.Message</h3>
 
+
+<!-- Add scripts that are spacific to this page -->
+@section Scripts {
+}
