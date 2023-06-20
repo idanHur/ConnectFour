@@ -10,7 +10,7 @@ namespace Server.Controllers
 
         public PlayerController(Manager gameManager)
         {
-            _gameManager = gameManager;
+            _gameManager = new Manager();
         }
         [HttpGet]
         public IActionResult Create()
