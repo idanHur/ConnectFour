@@ -16,5 +16,9 @@ namespace GameManager
             _playersRecord = new List<Player>();
         }
 
+        public void AddPlayer(Player player)
+        {
+            _playersRecord.Add(player);
+        }
     }
 }

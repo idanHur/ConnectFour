@@ -16,28 +16,30 @@
 
 
 <div class="container-fluid mt-5">
-    <form asp-action="YourAction" method="post" class="form-background mx-auto w-75">
+    <form asp-action="Create" method="post" class="form-background mx-auto w-75">
         <div class="form-group">
             <label asp-for="playerName">Player Name</label>
             <input asp-for="playerName" class="form-control" placeholder="Enter player name">
             <span asp-validation-for="playerName" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" placeholder="Enter ID">
+            <label asp-for="playerId">ID</label>
+            <input asp-for="playerId" class="form-control" placeholder="Enter ID">
+            <span asp-validation-for="playerId" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number">
+            <label asp-for="phoneNumber">Phone Number</label>
+            <input asp-for="phoneNumber" class="form-control" placeholder="Enter phone number">
+            <span asp-validation-for="phoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label for="country"><strong>Country</strong></label>
-            <select class="form-control" id="country"></select>
+            <label asp-for="country"><strong>Country</strong></label>
+            <select asp-for="country" class="form-control" id="country"></select>
+            <span asp-validation-for="country" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
     </form>
 </div>
-
 
 
 
