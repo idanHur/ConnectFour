@@ -52,6 +52,7 @@ html, body {
 .about-container {
     position: relative; /* This enables z-index for this element */
     z-index: 1; /* This will put the about-container in front of the background */
+    padding-top: 150px;
 }
 
 

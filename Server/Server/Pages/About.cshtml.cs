@@ -12,7 +12,6 @@ namespace Server.Pages
 
         public void OnGet()
         {
-            Message = "Your application description page.";
         }
     }
 }
