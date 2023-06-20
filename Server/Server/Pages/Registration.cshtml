@@ -2,11 +2,13 @@
 @model ContactModel
 @{
     ViewData["Title"] = "Registration";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 
 }
 <!-- Add styles that are spacific to this page -->
 @section Styles {
+    <link rel="stylesheet" type="text/css" href="~/css/Registration.css" />
+
 }
 
 
@@ -14,6 +16,33 @@
 <h3>@Model.Message</h3>
 
 
+<div class="container-fluid mt-5">
+    <form class="form-background mx-auto w-75">
+        <div class="form-group mb-3">
+            <label for="privateName">Private Name</label>
+            <input type="text" class="form-control" id="privateName" placeholder="Enter private name">
+        </div>
+        <div class="form-group mb-3">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" placeholder="Enter ID">
+        </div>
+        <div class="form-group mb-3">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number">
+        </div>
+        <div class="form-group mb-3">
+            <label for="country"><strong>Country</strong></label>
+            <select class="form-control" id="country"></select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+    </form>
+</div>
+
+
+
+
+
 <!-- Add scripts that are spacific to this page -->
 @section Scripts {
+    <script src="~/js/Registration.js"></script>
 }
