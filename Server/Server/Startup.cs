@@ -52,7 +52,17 @@ namespace Server
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "RemoteValidation",
+                    template: "player/isplayeridavailable",
+                    defaults: new { controller = "Player", action = "IsPlayerIdAvailable" });
+            });
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Server.Controllers
         public IActionResult IsPlayerIdAvailable(int playerId)
         {
             // Perform the necessary logic to check if the player ID is available
-            bool isAvailable = _gameManager.playersRecord.Any(p => p.playerId == playerId);
+            bool isAvailable = !_gameManager.playersRecord.Any(p => p.playerId == playerId);
 
             return Json(isAvailable);
         }
