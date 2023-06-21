@@ -52,15 +52,8 @@ namespace Server
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseMvc();
 
-            app.UseMvc(routes =>
-            {
-          
-                routes.MapRoute(
-                    name: "RemoteValidation",
-                    template: "player/isplayeridavailable",
-                    defaults: new { controller = "Player", action = "IsPlayerIdAvailable" });
-            });
         }
     }
 }
