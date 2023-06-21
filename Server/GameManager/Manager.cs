@@ -17,6 +17,21 @@ namespace GameManager
             _playersRecord = new List<Player>();
         }
 
+        public bool MakeMoveForPlayer(int playerId, int column)
+        {
+            Player player = GetPlayer(playerId);
+            if (player.currentGame.gameStatus == GameStatus.OnGoing) // If a game is curently played
+            {
+                bool moveMade = player.currentGame.PlayerMove(column);
+                return moveMade;
+            }
+            return false;        
+        }
+        private Player GetPlayer(int id)
+        {
+            var player = _playersRecord.FirstOrDefault(p => p.playerId == id);
+            return player;
+        }
         public bool IsIdTaken(int id)
         {
             return _playersRecord.Any(player => player.playerId == id);
