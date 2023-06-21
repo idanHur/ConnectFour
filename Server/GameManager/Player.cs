@@ -11,8 +11,8 @@ namespace GameManager
     public class Player
     {
         [Required(ErrorMessage = "Player ID is required.")]
-        [Remote(action: "IsPlayerIdAvailable", controller: "Player", ErrorMessage = "Player ID is already taken.")]
-        public int playerId { get; private set; }
+        [Range(1, 1000, ErrorMessage = "Player ID must be between 1 and 1000.")]
+        public int playerId { get; set; }
 
         [Required(ErrorMessage = "Private Name is required.")]
         [MinLength(2, ErrorMessage = "Private Name should be at least 2 characters long.")]
@@ -28,6 +28,10 @@ namespace GameManager
 
         public ReadOnlyCollection<Game> gamesRecord => _gamesRecord.AsReadOnly();
 
+        // Parameterless constructor
+        public Player()
+        {
+        }
         public Player(string playerName, int playerId)
         {
             this.playerName = playerName;
