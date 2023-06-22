@@ -17,13 +17,13 @@ namespace GameManager
             _playersRecord = new List<Player>();
         }
 
-        public bool StartNewGameForPlayer(int playerId, int row, int column)
+        public Game StartNewGameForPlayer(int playerId, int row, int column)
         {
             Player player = GetPlayer(playerId);
             if (player == null)
-                return false;
-            player.NewGame(row, column);    
-            return true;
+                return null;
+            Game temp = player.NewGame(row, column);    
+            return temp;
         }
 
         public bool MakeMoveForPlayer(int playerId, int column)

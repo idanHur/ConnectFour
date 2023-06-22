@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Connect4Game;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
@@ -10,11 +11,38 @@ namespace Server.Controllers
     [ApiController]
     public class GameManagerController : ControllerBase
     {
+        const int ROWS = 6;
+        const int COLS = 7;
         private readonly GameManager.Manager _gameManager;
 
         public GameManagerController(GameManager.Manager gameManager)
         {
             _gameManager = gameManager;
+        }
+
+        [HttpPost("{playerId}/start")]
+        public IActionResult StartGame(int playerId)
+        {
+            try
+            {
+                // Start a new game
+                var newGame = _gameManager.StartNewGameForPlayer(playerId, ROWS, COLS);
+
+                if (newGame != null)
+                {
+                    // Return the game ID
+                    return Ok(newGame); // The object will be serialized to JSON format automatically 
+                }
+                else
+                {
+                    return BadRequest(new { error = "Didnt start a new game" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // If there was an error starting the game, return a server error
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpPost("{playerId}/move")]
