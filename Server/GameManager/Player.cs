@@ -36,5 +36,10 @@ namespace GameManager
             _gamesRecord = new List<Game>();
             currentGame = null;
         }
+        public void NewGame(int rows, int columns)
+        {
+            currentGame = new Game(rows, columns);
+            _gamesRecord.Add(currentGame);
+        }
     }
 }
