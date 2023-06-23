@@ -40,6 +40,7 @@ namespace Connect4Game
             startTime = DateTime.Now;
             this.playerId = playerId;
         }
+        private Game() { }
 
         private void EndGame(bool draw = false)
         {
@@ -72,7 +73,7 @@ namespace Connect4Game
                 {
                     EndGame();
                 }
-                _movesRecord.Add(new Move(column, currentPlayer));
+                _movesRecord.Add(new Move(column, currentPlayer, _movesRecord.Count+1));
                 currentPlayer = Player.Ai;
                 return true;
             }
@@ -123,7 +124,7 @@ namespace Connect4Game
             if (winningMove != -1)
             {
                 board.MakeMove(winningMove);
-                _movesRecord.Add(new Move(winningMove, currentPlayer));
+                _movesRecord.Add(new Move(winningMove, currentPlayer, _movesRecord.Count + 1));
                 EndGame();
                 return;
             }
@@ -132,7 +133,7 @@ namespace Connect4Game
             if (blockMove != -1)
             {
                 board.MakeMove(blockMove);
-                _movesRecord.Add(new Move(blockMove, currentPlayer));
+                _movesRecord.Add(new Move(blockMove, currentPlayer, _movesRecord.Count + 1));
                 currentPlayer = Player.Human;
                 return;
             }
@@ -145,7 +146,7 @@ namespace Connect4Game
                 column = rnd.Next(columns);
             }
             while (!board.IsValidMove(column));
-            _movesRecord.Add(new Move(column, currentPlayer));
+            _movesRecord.Add(new Move(column, currentPlayer, _movesRecord.Count + 1));
             board.MakeMove(column);
             currentPlayer = Player.Human;
         }

@@ -8,11 +8,13 @@ namespace Connect4Game
     {
         public int columnNumber { get; private set; }
         public Player Player { get; private set; }
+        public int Id { get; private set; }
 
-        public Move(int columnNumber, Player player)
+        public Move(int columnNumber, Player player, int id)
         {
             this.columnNumber = columnNumber;
             this.Player = player;
+            Id = id;
         }
 
     }

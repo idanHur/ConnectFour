@@ -1,4 +1,4 @@
-using GameManager;
+using GameManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,9 +8,9 @@ namespace Server.Pages
     {
         [BindProperty]
         public Player NewPlayer { get; set; }
-        private readonly GameManager.Manager _gameManager;
+        private readonly Manager _gameManager;
 
-        public RegisterModel(GameManager.Manager gameManager)
+        public RegisterModel(Manager gameManager)
         {
             _gameManager = gameManager;
             NewPlayer = new Player();

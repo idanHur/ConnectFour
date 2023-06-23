@@ -1,4 +1,5 @@
 ﻿using Connect4Game;
+using GameManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Server.Controllers
     {
         const int ROWS = 6;
         const int COLS = 7;
-        private readonly GameManager.Manager _gameManager;
+        private readonly Manager _gameManager;
 
-        public GameManagerController(GameManager.Manager gameManager)
+        public GameManagerController(Manager gameManager)
         {
             _gameManager = gameManager;
         }

@@ -5498,6 +5498,8 @@
         "dependencies": {
           "Connect4Game": "1.0.0",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.1.1",
+          "Microsoft.EntityFrameworkCore": "2.1.1",
+          "Microsoft.EntityFrameworkCore.SqlServer": "2.1.1",
           "System.ComponentModel.Annotations": "4.5.0",
           "xunit.extensibility.core": "2.4.2"
         },

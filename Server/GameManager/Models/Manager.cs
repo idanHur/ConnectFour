@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace GameManager
+namespace GameManager.Models
 {
     public class Manager
     {
@@ -22,19 +22,21 @@ namespace GameManager
             Player player = GetPlayer(playerId);
             if (player == null)
                 return null;
-            Game temp = player.NewGame(row, column);    
+            Game temp = player.NewGame(row, column);
             return temp;
         }
 
         public bool MakeMoveForPlayer(int playerId, int column)
         {
             Player player = GetPlayer(playerId);
+            if (player == null)
+                return false;
             if (player.currentGame.gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
                 bool moveMade = player.currentGame.PlayerMove(column);
                 return moveMade;
             }
-            return false;        
+            return false;
         }
         private Player GetPlayer(int id)
         {
