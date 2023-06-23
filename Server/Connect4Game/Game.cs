@@ -25,15 +25,20 @@ namespace Connect4Game
 
         public DateTime startTime { get; private set; }
         public TimeSpan gameDuration { get; private set; }
+        public int gameId { get; private set; }
+        public int playerId { get; private set; }
+
         private List<Move> _movesRecord = new List<Move>();
 
         public ReadOnlyCollection<Move> movesRecord => _movesRecord.AsReadOnly();
 
-        public Game(int rows, int columns)
+        public Game(int rows, int columns, int gameId, int playerId)
         {
+            this.gameId = gameId;
             board = new Board(rows, columns);
             gameStatus = GameStatus.OnGoing;
             startTime = DateTime.Now;
+            this.playerId = playerId;
         }
 
         private void EndGame(bool draw = false)

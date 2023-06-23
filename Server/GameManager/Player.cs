@@ -38,7 +38,7 @@ namespace GameManager
         }
         public Game NewGame(int rows, int columns)
         {
-            currentGame = new Game(rows, columns);
+            currentGame = new Game(rows, columns, _gamesRecord.Count + 1, playerId);
             _gamesRecord.Add(currentGame);
             return currentGame;
         }
