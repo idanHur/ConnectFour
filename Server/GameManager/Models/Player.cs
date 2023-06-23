@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace GameManager.Models
 {
@@ -21,9 +22,10 @@ namespace GameManager.Models
 
 
         public Game currentGame { get; private set; }
-        private List<Game> _gamesRecord = new List<Game>();
 
-        public ReadOnlyCollection<Game> gamesRecord => _gamesRecord.AsReadOnly();
+        // EF Core will automatically load the related Game entities when accessing this property.
+        public ICollection<Game> Games { get; set; }
+
 
         // Parameterless constructor
         public Player()
@@ -33,13 +35,12 @@ namespace GameManager.Models
         {
             this.playerName = playerName;
             this.playerId = playerId;
-            _gamesRecord = new List<Game>();
             currentGame = null;
         }
         public Game NewGame(int rows, int columns)
         {
-            currentGame = new Game(rows, columns, _gamesRecord.Count + 1, playerId);
-            _gamesRecord.Add(currentGame);
+            currentGame = new Game(rows, columns, Games.Count + 1, playerId);
+            Games.Add(currentGame);
             return currentGame;
         }
     }

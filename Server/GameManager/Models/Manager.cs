@@ -1,4 +1,5 @@
 ﻿using Connect4Game;
+using GameManager.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,13 +9,11 @@ namespace GameManager.Models
 {
     public class Manager
     {
-        private List<Player> _playersRecord = new List<Player>();
+        private readonly MyDbContext _context;
 
-        public ReadOnlyCollection<Player> playersRecord => _playersRecord.AsReadOnly();
-
-        public Manager()
+        public Manager(MyDbContext context)
         {
-            _playersRecord = new List<Player>();
+            _context = context;
         }
 
         public Game StartNewGameForPlayer(int playerId, int row, int column)
@@ -23,6 +22,7 @@ namespace GameManager.Models
             if (player == null)
                 return null;
             Game temp = player.NewGame(row, column);
+            _context.SaveChanges();
             return temp;
         }
 
@@ -40,16 +40,23 @@ namespace GameManager.Models
         }
         private Player GetPlayer(int id)
         {
-            var player = _playersRecord.FirstOrDefault(p => p.playerId == id);
+            var player = _context.Players.FirstOrDefault(p => p.playerId == id);
             return player;
         }
+
         public bool IsIdTaken(int id)
         {
-            return _playersRecord.Any(player => player.playerId == id);
+            return _context.Players.Any(player => player.playerId == id);
         }
+
         public void AddPlayer(Player player)
         {
-            _playersRecord.Add(player);
+            _context.Players.Add(player);
+            _context.SaveChanges();
+        }
+        public List<Player> GetAllPlayers()
+        {
+            return _context.Players.ToList();
         }
     }
 }

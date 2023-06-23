@@ -28,9 +28,8 @@ namespace Connect4Game
         public int gameId { get; private set; }
         public int playerId { get; private set; }
 
-        private List<Move> _movesRecord = new List<Move>();
-
-        public ReadOnlyCollection<Move> movesRecord => _movesRecord.AsReadOnly();
+        // EF Core will automatically load the related Move entities when accessing this property.
+        public ICollection<Move> Moves { get; set; }
 
         public Game(int rows, int columns, int gameId, int playerId)
         {
@@ -73,7 +72,7 @@ namespace Connect4Game
                 {
                     EndGame();
                 }
-                _movesRecord.Add(new Move(column, currentPlayer, _movesRecord.Count+1));
+                Moves.Add(new Move(column, currentPlayer, Moves.Count+1));
                 currentPlayer = Player.Ai;
                 return true;
             }
@@ -124,7 +123,7 @@ namespace Connect4Game
             if (winningMove != -1)
             {
                 board.MakeMove(winningMove);
-                _movesRecord.Add(new Move(winningMove, currentPlayer, _movesRecord.Count + 1));
+                Moves.Add(new Move(winningMove, currentPlayer, Moves.Count + 1));
                 EndGame();
                 return;
             }
@@ -133,7 +132,7 @@ namespace Connect4Game
             if (blockMove != -1)
             {
                 board.MakeMove(blockMove);
-                _movesRecord.Add(new Move(blockMove, currentPlayer, _movesRecord.Count + 1));
+                Moves.Add(new Move(blockMove, currentPlayer, Moves.Count + 1));
                 currentPlayer = Player.Human;
                 return;
             }
@@ -146,11 +145,9 @@ namespace Connect4Game
                 column = rnd.Next(columns);
             }
             while (!board.IsValidMove(column));
-            _movesRecord.Add(new Move(column, currentPlayer, _movesRecord.Count + 1));
+            Moves.Add(new Move(column, currentPlayer, Moves.Count + 1));
             board.MakeMove(column);
             currentPlayer = Player.Human;
         }
     }
-
-
 }
