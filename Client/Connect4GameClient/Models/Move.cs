@@ -10,14 +10,14 @@ namespace GameLogic.Models
     public class Move
     {
         public int columnNumber { get; private set; }
-        public Player Player { get; private set; }
-        public int Id { get; private set; }
+        public PlayerType Player { get; private set; }
+        public int id { get; private set; }
 
-        public Move(int columnNumber, Player player, int id)
+        public Move(int columnNumber, PlayerType player, int id)
         {
             this.columnNumber = columnNumber;
             this.Player = player;
-            Id = id;
+            this.id = id;
         }
 
     }
