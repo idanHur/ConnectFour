@@ -24,5 +24,15 @@ namespace Client
         {
             InitializeComponent();
         }
+
+        private void EndGameButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StartGameButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
