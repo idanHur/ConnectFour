@@ -7,11 +7,25 @@
         xmlns:helpers="clr-namespace:Client.Helpers"
         mc:Ignorable="d"
         Title="ConnectFourWindow" Height="450" Width="694">
+    <Window.Resources>
+        <Storyboard x:Key="FillAnimation">
+            <ColorAnimation
+                Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)"
+                Duration="0:0:1"
+                From="Transparent"
+                To="Transparent" />
+            <DoubleAnimation
+                Storyboard.TargetProperty="(Canvas.Top)"
+                Duration="0:0:1"
+                From="-50"
+                To="0"
+                AccelerationRatio="0.2" />
+        </Storyboard>
+    </Window.Resources>
     <Grid x:Name="LayoutRoot">
         <Image x:Name="BoardImage" HorizontalAlignment="Left" Height="436" VerticalAlignment="Top" Width="694" Source="/board.png" Margin="0,-2,0,0"/>
         <Canvas x:Name="GameCanvas">
             <!-- Game pieces will be dynamically added here -->
         </Canvas>
-
     </Grid>
 </Window>

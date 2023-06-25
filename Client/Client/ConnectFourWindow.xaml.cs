@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -73,6 +74,23 @@ namespace Client
 
             
         }
+        private void StartFallingAnimation(Ellipse ellipse, Color targetColor)
+        {
+            Storyboard fillStoryboard = (Storyboard)FindResource("FillAnimation");
+            ColorAnimation fillAnimation = (ColorAnimation)fillStoryboard.Children[0];
+            fillAnimation.To = targetColor;
+
+            DoubleAnimation fallAnimation = (DoubleAnimation)fillStoryboard.Children[1];
+            Canvas.SetTop(ellipse, -50); // Set initial position above the canvas
+
+            Storyboard.SetTarget(fillAnimation, ellipse);
+            Storyboard.SetTarget(fallAnimation, ellipse);
+            fillStoryboard.Begin();
+        }
+
+
+
+
 
 
     }
