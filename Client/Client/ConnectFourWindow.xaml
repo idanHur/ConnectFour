@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
+        xmlns:helpers="clr-namespace:Client.Helpers"
         mc:Ignorable="d"
         Title="ConnectFourWindow" Height="450" Width="694">
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <Image x:Name="BoardImage" HorizontalAlignment="Left" Height="436" VerticalAlignment="Top" Width="694" Source="/board.png" Margin="0,-2,0,0"/>
+        <Canvas x:Name="GameCanvas">
+            <!-- Game pieces will be dynamically added here -->
+        </Canvas>
 
     </Grid>
 </Window>
