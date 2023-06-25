@@ -24,7 +24,13 @@ namespace Client
         public ConnectFourWindow()
         {
             InitializeComponent();
-            
+            for(int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    AddGamePiece(i, j, Brushes.Black, 0);
+                }
+            }
         }
         private void AddGamePiece(int row, int col, Brush color, double opacity)
         {
