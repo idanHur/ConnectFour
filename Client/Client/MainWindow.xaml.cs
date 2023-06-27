@@ -32,7 +32,8 @@ namespace Client
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ConnectFourWindow gameWindow = new ConnectFourWindow();
+            gameWindow.Show();
         }
     }
 }

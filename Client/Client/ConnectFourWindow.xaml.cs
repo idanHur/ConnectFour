@@ -17,63 +17,68 @@ using System.Windows.Shapes;
 
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for ConnectFourWindow.xaml
-    /// </summary>
+
     public partial class ConnectFourWindow : Window
     {
+        private const int Rows = 6;
+        private const int Columns = 7;
+        private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
+
         public ConnectFourWindow()
         {
             InitializeComponent();
-            for(int i = 0; i < 6; i++)
+
+            // Create the grid cells and ellipses dynamically
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < 7; j++)
+                BoardGrid.RowDefinitions.Add(new RowDefinition());
+
+                for (int j = 0; j < Columns; j++)
                 {
-                    AddGamePiece(i, j, Brushes.Black, 0);
+                    if (i == 0)
+                    {
+                        BoardGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                    }
+
+                    var ellipse = AddGamePiece(i, j, Brushes.Transparent, 1);
+                    gameBoard[i, j] = ellipse;  // Add the ellipse to the game board
                 }
             }
         }
-        private void AddGamePiece(int row, int col, Brush color, double opacity)
+
+        private Ellipse AddGamePiece(int row, int col, Brush color, double opacity)
         {
-            double ellipseHeight = 65;  // Height of the ellipse
-            double ellipseWidth = 66;  // Width of the ellipse
-            double topSpacing = 69;  // Spacing between the ellipses
-            double sideSpacing = 95;  // Spacing between the ellipses
+            double ellipseHeight = 55;  // Height of the ellipse
+            double ellipseWidth = 55;  // Width of the ellipse
 
             var gamePiece = new Ellipse
             {
                 Width = ellipseWidth,
                 Height = ellipseHeight,
-                Fill = color,  
+                Fill = color,
                 Stroke = Brushes.Black,
                 StrokeThickness = 2,
-                Opacity = opacity
+                Opacity = opacity,
+                Margin = new Thickness(5)  // Add a margin of 5 units
             };
-            // Set the row and column as attached properties on the ellipse
-            EllipseProperties.SetRow(gamePiece, row);
-            EllipseProperties.SetColumn(gamePiece, col);
 
+            // Attach a click event handler to the ellipse
             gamePiece.MouseLeftButtonDown += Ellipse_MouseLeftButtonDown;
 
-            double topPosition = row * (ellipseWidth + sideSpacing);
-            double leftPosition = col * (ellipseHeight + topSpacing);
-            Canvas.SetTop(gamePiece, topPosition);
-            Canvas.SetLeft(gamePiece, leftPosition);
+            Grid.SetRow(gamePiece, row);
+            Grid.SetColumn(gamePiece, col);
 
-            GameCanvas.Children.Add(gamePiece);
+            BoardGrid.Children.Add(gamePiece);
+            return gamePiece;
         }
 
         private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var clickedEllipse = (Ellipse)sender;
+            clickedEllipse.Fill = Brushes.Red;  
 
-            // Get row and col
-            int row = EllipseProperties.GetRow(clickedEllipse);
-            int col = EllipseProperties.GetColumn(clickedEllipse);
-
-
-            
         }
+
         private void StartFallingAnimation(Ellipse ellipse, Color targetColor)
         {
             Storyboard fillStoryboard = (Storyboard)FindResource("FillAnimation");
@@ -87,11 +92,5 @@ namespace Client
             Storyboard.SetTarget(fallAnimation, ellipse);
             fillStoryboard.Begin();
         }
-
-
-
-
-
-
     }
 }
