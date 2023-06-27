@@ -32,8 +32,15 @@ namespace Client
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            ConnectFourWindow gameWindow = new ConnectFourWindow();
-            gameWindow.Show();
+            if (ConnectFourWindow.currentInstance == null)
+            {
+                new ConnectFourWindow().Show();
+            }
+            else
+            {
+                ConnectFourWindow.currentInstance.Activate();
+            }
         }
+
     }
 }

@@ -20,6 +20,7 @@ namespace Client
 
     public partial class ConnectFourWindow : Window
     {
+        public static ConnectFourWindow currentInstance;
         private const int Rows = 6;
         private const int Columns = 7;
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
@@ -44,6 +45,10 @@ namespace Client
                     gameBoard[i, j] = ellipse;  // Add the ellipse to the game board
                 }
             }
+            // Set the current instance
+            currentInstance = this;
+            // Handle the Closed event
+            this.Closed += (s, e) => { currentInstance = null; };
         }
 
         private Ellipse AddGamePiece(int row, int col, Brush color, double opacity)
