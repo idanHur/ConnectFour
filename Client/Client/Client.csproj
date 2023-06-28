@@ -70,7 +70,6 @@
     <Compile Include="ConnectFourWindow.xaml.cs">
       <DependentUpon>ConnectFourWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EllipseProperties .cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

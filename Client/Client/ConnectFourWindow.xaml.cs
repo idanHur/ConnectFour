@@ -1,5 +1,4 @@
-﻿using Client.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -23,6 +22,7 @@ namespace Client
         public static ConnectFourWindow currentInstance;
         private const int Rows = 6;
         private const int Columns = 7;
+        private const int FallingDelay = 650;
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
 
         public ConnectFourWindow()
@@ -41,7 +41,7 @@ namespace Client
                         BoardGrid.ColumnDefinitions.Add(new ColumnDefinition());
                     }
 
-                    var ellipse = AddGamePiece(i, j, Brushes.Transparent, 1);
+                    var ellipse = AddGamePiece(i, j, Brushes.White, 1);
                     gameBoard[i, j] = ellipse;  // Add the ellipse to the game board
                 }
             }
@@ -77,25 +77,44 @@ namespace Client
             return gamePiece;
         }
 
-        private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var clickedEllipse = (Ellipse)sender;
-            clickedEllipse.Fill = Brushes.Red;  
-
+            int column = Grid.GetColumn(clickedEllipse); // Get the column of the clicked ellipse
+            await FallingAnimation(column, Brushes.Red); // TODO: change logic to fit current player color
         }
 
-        private void StartFallingAnimation(Ellipse ellipse, Color targetColor)
+
+        private async Task FallingAnimation(int col, Brush colorOfPlayer)
         {
-            Storyboard fillStoryboard = (Storyboard)FindResource("FillAnimation");
-            ColorAnimation fillAnimation = (ColorAnimation)fillStoryboard.Children[0];
-            fillAnimation.To = targetColor;
+            for (int i = 0; i < Rows; i++)
+            {
+                SolidColorBrush brush = gameBoard[i, col].Fill as SolidColorBrush;
+                if (brush != null)
+                {
+                    Color color = brush.Color;
+                    if (color != Brushes.White.Color)
+                    {
+                        // If the current ellipse isnt white (one of the players color), exit the loop
+                        break;
+                    }
+                    else
+                    {
+                        // Temporarily color the current ellipse red
+                        gameBoard[i, col].Fill = colorOfPlayer;
 
-            DoubleAnimation fallAnimation = (DoubleAnimation)fillStoryboard.Children[1];
-            Canvas.SetTop(ellipse, -50); // Set initial position above the canvas
+                        // Wait for 1 second
+                        await Task.Delay(FallingDelay);
 
-            Storyboard.SetTarget(fillAnimation, ellipse);
-            Storyboard.SetTarget(fallAnimation, ellipse);
-            fillStoryboard.Begin();
+                        // If it's not the last white ellipse, revert the color back to white
+                        if (i != Rows - 1 && !((gameBoard[i + 1, col].Fill as SolidColorBrush)?.Color != Brushes.White.Color))
+                        {
+                            gameBoard[i, col].Fill = Brushes.White;
+                        }
+                    }
+                }
+            }
         }
+
     }
 }
