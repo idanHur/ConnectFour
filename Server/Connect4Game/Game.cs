@@ -51,7 +51,7 @@ namespace Connect4Game
                 gameStatus = GameStatus.Lost;
             gameDuration = DateTime.Now - startTime;
         }
-        public bool[,] GetGameBoard()
+        public int[,] GetGameBoard()
         {
             return board.matrix;
         }
@@ -67,8 +67,8 @@ namespace Connect4Game
             }
             if (board.IsValidMove(column)) // Check if the move is possible
             {
-                board.MakeMove(column);
-                if (board.IsWinningMove(column)) // Check if the game ended
+                board.MakeMove(column, Player.Human);
+                if (board.IsWinningMove(column) != null) // Check if the game ended
                 {
                     EndGame();
                 }
@@ -100,17 +100,17 @@ namespace Connect4Game
                 if (board.IsValidMove(col))
                 {
                     // Check if making a move in this column would result in a win
-                    board.MakeMove(col);
-                    if (board.IsWinningMove(col))
+                    board.MakeMove(col, Player.Ai);
+                    if (board.IsWinningMove(col) == Player.Ai)
                     {
                         winningMove = col;
                     }
                     board.UndoMove(col);
 
                     // Check if the opponent could win in the next turn by making a move in this column
-                    board.MakeMove(col);
-                    board.MakeMove(col);  // Pretend the opponent also makes a move in the same column
-                    if (board.IsWinningMove(col))
+                    board.MakeMove(col, Player.Ai);
+                    board.MakeMove(col, Player.Human);  // Pretend the opponent also makes a move in the same column
+                    if (board.IsWinningMove(col) == Player.Human)
                     {
                         blockMove = col;
                     }
@@ -122,7 +122,7 @@ namespace Connect4Game
             // If there's a winning move available, take it
             if (winningMove != -1)
             {
-                board.MakeMove(winningMove);
+                board.MakeMove(winningMove, Player.Ai);
                 Moves.Add(new Move(winningMove, currentPlayer, Moves.Count + 1));
                 EndGame();
                 return;
@@ -131,7 +131,7 @@ namespace Connect4Game
             // If the opponent has a winning move available next turn, block it
             if (blockMove != -1)
             {
-                board.MakeMove(blockMove);
+                board.MakeMove(blockMove, Player.Ai);
                 Moves.Add(new Move(blockMove, currentPlayer, Moves.Count + 1));
                 currentPlayer = Player.Human;
                 return;
@@ -146,7 +146,7 @@ namespace Connect4Game
             }
             while (!board.IsValidMove(column));
             Moves.Add(new Move(column, currentPlayer, Moves.Count + 1));
-            board.MakeMove(column);
+            board.MakeMove(column, Player.Ai);
             currentPlayer = Player.Human;
         }
     }
