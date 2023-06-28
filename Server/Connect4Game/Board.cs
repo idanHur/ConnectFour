@@ -6,19 +6,20 @@ namespace Connect4Game
 {
     public class Board
     {
-        public bool[,] matrix
+        private const int EmptySlot = 0;
+        public int[,] matrix
         {
             get
             {
-                return (bool[,])_matrix.Clone();
+                return (int[,])_matrix.Clone();
             }
         }
 
-        private bool[,] _matrix;
+        private int[,] _matrix;
 
         public Board(int rows, int columns)
         {
-            _matrix = new bool[rows, columns]; // Creating a private boolean board
+            _matrix = new int[rows, columns]; // Creating a private boolean board
         }
 
         public bool IsValidMove(int column)
@@ -29,28 +30,28 @@ namespace Connect4Game
                 return false;
             }
             // Check if the topmost slot in the column is free
-            return !_matrix[0, column];
+            return _matrix[0, column] == EmptySlot;
         }
         public bool IsMatrixFull()
         {
             // Check if the topmost slot in each column is already taken
             for(int i = 0; i < _matrix.GetLength(1); i++)
             {
-                if(!_matrix[0, i])
+                if(_matrix[0, i] == EmptySlot)
                     return false;
             }
             return true;
         }
 
-        public void MakeMove(int column)
+        public void MakeMove(int column, Player player) 
         {
             // Find the lowest free row in the column and fill it
             int numberOfRows = _matrix.GetLength(0); 
             for (int row = numberOfRows - 1; row >= 0; row--)
             {
-                if (!_matrix[row, column])
+                if (_matrix[row, column] == EmptySlot)
                 {
-                    _matrix[row, column] = true;
+                    _matrix[row, column] = ((int)player);
                     break;
                 }
             }
@@ -62,15 +63,15 @@ namespace Connect4Game
             int numberOfRows = _matrix.GetLength(0);
             for (int row = 0; row < numberOfRows; row++)
             {
-                if (_matrix[row, column])
+                if (_matrix[row, column] != EmptySlot)
                 {
-                    _matrix[row, column] = false;
+                    _matrix[row, column] = EmptySlot;
                     break;
                 }
             }
         }
 
-        public bool IsWinningMove(int column)
+        public Player? IsWinningMove(int column)
         {
             // Get the board size
             int numRows = _matrix.GetLength(0);
@@ -78,7 +79,7 @@ namespace Connect4Game
 
             // Find the row for the last move in the column
             int row = numRows - 1;
-            while (row >= 0 && _matrix[row, column])
+            while (row >= 0 && _matrix[row, column] != 0)
             {
                 row--;
             }
@@ -96,7 +97,7 @@ namespace Connect4Game
                 {
                     int r = row + i * direction.Item1;
                     int c = column + i * direction.Item2;
-                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && _matrix[r, c])
+                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && _matrix[r, c] == _matrix[row, column])
                     {
                         count++;
                     }
@@ -111,7 +112,7 @@ namespace Connect4Game
                 {
                     int r = row - i * direction.Item1;
                     int c = column - i * direction.Item2;
-                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && _matrix[r, c])
+                    if (r >= 0 && r < numRows && c >= 0 && c < numColumns && _matrix[r, c] == _matrix[row, column])
                     {
                         count++;
                     }
@@ -121,17 +122,16 @@ namespace Connect4Game
                     }
                 }
 
-                // If we have found 4 in a row, return true
+                // If we have found 4 in a row, return the player who won
                 if (count >= 4)
                 {
-                    return true;
+                    return _matrix[row, column] == 1 ? Player.Human : Player.Ai;
                 }
             }
-            // If we have not found 4 in a row in any direction, return false
-            return false;
+
+            // If no player has won, return null
+            return null;
         }
-
-
 
 
     }

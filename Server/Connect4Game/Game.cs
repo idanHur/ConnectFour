@@ -6,8 +6,8 @@ namespace Connect4Game
 {
     public enum Player
     {
-        Human,
-        Ai
+        Human = 1,
+        Ai = 2
     }
     public enum GameStatus
     {
