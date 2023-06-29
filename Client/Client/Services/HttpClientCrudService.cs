@@ -1,10 +1,13 @@
-﻿using System;
+﻿using GameLogic.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Net.Http.Json;
+using Client.Utilities.Json;
 
 namespace Client.Services
 {
@@ -22,7 +25,22 @@ namespace Client.Services
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-      
+        public async Task<Game> StartGame(int playerId)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"{playerId}/start", new { });
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var game = JsonSerializer.Deserialize<Game>(content, , new GameConverter());
+                return game;
+            }
+            else
+            {
+                // Handle error.
+                throw new Exception("Failed to start the game.");
+            }
+        }
 
     }
 

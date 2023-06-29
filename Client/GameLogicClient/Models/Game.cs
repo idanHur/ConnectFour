@@ -18,8 +18,8 @@ namespace GameLogic.Models
     public class Game
     {
         public int[,] board;
-        public GameStatus gameStatus { get; private set; }
-        public int gameId { get; private set; }
+        public GameStatus gameStatus { get; set; }
+        public int gameId { get;  set; }
 
         public ICollection<Move> moves { get; set; }
 
@@ -28,6 +28,10 @@ namespace GameLogic.Models
             this.gameId = gameId;
             board = new int[rows, columns];
             gameStatus = GameStatus.OnGoing;
+            moves = new List<Move>();
+        }
+        public Game()
+        {
             moves = new List<Move>();
         }
 
