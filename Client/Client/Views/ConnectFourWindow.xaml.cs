@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Client.Services;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -19,7 +21,9 @@ namespace Client
 
     public partial class ConnectFourWindow : Window
     {
+        private readonly IHttpClientServiceImplementation _httpClientService;
         public static ConnectFourWindow currentInstance;
+
         private const int Rows = 6;
         private const int Columns = 7;
         private const int FallingDelay = 650;
@@ -28,6 +32,7 @@ namespace Client
         public ConnectFourWindow()
         {
             InitializeComponent();
+            _httpClientService = App.ServiceProvider.GetService<IHttpClientServiceImplementation>();
 
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)
