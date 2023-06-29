@@ -1,4 +1,7 @@
-﻿namespace GameLogic.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace GameLogic.Models
 {
     public enum PlayerType
     {
