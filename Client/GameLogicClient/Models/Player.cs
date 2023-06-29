@@ -11,7 +11,8 @@ namespace GameLogic.Models
         public int id { get; set; }
         public List<Game> games { get; set; }
 
-        public Player() { 
+        public Player(int id) { 
+            this.id = id;
             games = new List<Game>();
         }
     }
