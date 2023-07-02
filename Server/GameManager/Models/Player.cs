@@ -15,11 +15,14 @@ namespace GameManager.Models
         [Required(ErrorMessage = "Private Name is required.")]
         [MinLength(2, ErrorMessage = "Private Name should be at least 2 characters long.")]
         public string playerName { get; set; }
+        [Required(ErrorMessage = "Phone Number is required.")]
         [RegularExpression(@"^\d{9,10}$", ErrorMessage = "Phone Number should be between 9 and 10 digits.")]
         public string phoneNumber { get; set; }
         [Required(ErrorMessage = "Country is required.")]
         public string country { get; set; }
-
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(4, ErrorMessage = "Password should be at least 4 characters long.")]
+        public string password { get; set; }
 
         public Game currentGame { get; private set; }
 

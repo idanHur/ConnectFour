@@ -25,3 +25,5 @@ The server uses a Web API to communicate with the client. Each client is a playe
 7. Run `dotnet ef database update` to create your database schema.
 8. Run `dotnet run` to start the server.
 
+### DataBase
+you can update the tables using " dotnet ef database update "
