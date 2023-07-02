@@ -93,38 +93,5 @@ namespace Server.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-
-        // GET: api/<GameManagerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<GameManagerController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<GameManagerController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<GameManagerController>/5
-        [HttpPut("{column}")]
-        public void PutMove([FromBody] int column)
-        {
-            
-        }
-
-        // DELETE api/<GameManagerController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
