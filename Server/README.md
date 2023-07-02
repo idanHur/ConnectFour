@@ -26,4 +26,6 @@ The server uses a Web API to communicate with the client. Each client is a playe
 8. Run `dotnet run` to start the server.
 
 ### DataBase
-you can update the tables using " dotnet ef database update "
+To update the database tables when changing one of the entity class you need to do the following in the terminal when in serve directory
+1. " dotnet ef migrations add **New name for the migrations** --project ../GameManager/GameManager.csproj --startup-project Server.csproj "
+2. " dotnet ef database update --project ../GameManager/GameManager.csproj --startup-project Server.csproj " 
