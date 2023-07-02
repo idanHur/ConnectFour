@@ -1,8 +1,10 @@
 ﻿using Connect4Game;
 using GameManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,8 +24,18 @@ namespace Server.Controllers
         }
 
         [HttpPost("{playerId}/start")]
+        [Authorize]
         public IActionResult StartGame(int playerId)
         {
+            // Get the authenticated user's ID
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Compare the authenticated user's ID with the playerId parameter
+            if (userId != playerId.ToString())
+            {
+                return Forbid(); // Return 403 Forbidden if the user is not authorized to start the game
+            }
+
             try
             {
                 // Start a new game
@@ -32,11 +44,11 @@ namespace Server.Controllers
                 if (newGame != null)
                 {
                     // Return the game ID
-                    return Ok(newGame); // The object will be serialized to JSON format automatically 
+                    return Ok(newGame);
                 }
                 else
                 {
-                    return BadRequest(new { error = "Didnt start a new game" });
+                    return BadRequest(new { error = "Did not start a new game" });
                 }
             }
             catch (Exception ex)
@@ -46,9 +58,20 @@ namespace Server.Controllers
             }
         }
 
+
         [HttpPost("{playerId}/move")]
+        [Authorize]
         public IActionResult Move(int playerId, [FromBody] int playerMove)
         {
+            // Get the authenticated user's ID
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Compare the authenticated user's ID with the playerId parameter
+            if (userId != playerId.ToString())
+            {
+                return Forbid(); // Return 403 Forbidden if the user is not authorized to make the move
+            }
+
             try
             {
                 // Try to apply the move
@@ -61,8 +84,8 @@ namespace Server.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { error = "Cant make this move" });
-                }        
+                    return BadRequest(new { error = "Cannot make this move" });
+                }
             }
             catch (Exception ex)
             {
