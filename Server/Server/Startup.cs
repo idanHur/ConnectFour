@@ -36,7 +36,7 @@ namespace Server
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddSingleton<Manager>();
+            services.AddScoped<Manager>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

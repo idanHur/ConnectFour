@@ -1,5 +1,6 @@
 ﻿using Connect4Game;
 using GameManager.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -51,9 +52,17 @@ namespace GameManager.Models
 
         public void AddPlayer(Player player)
         {
-            _context.Players.Add(player);
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Players ON");
+                _context.Players.Add(player);
+                _context.SaveChanges();
+                _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Players OFF");
+                transaction.Commit();
+            }
+
         }
+
         public List<Player> GetAllPlayers()
         {
             return _context.Players.ToList();
