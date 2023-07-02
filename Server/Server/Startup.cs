@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using GameManager.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Server.Controllers;
+using Server.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 
@@ -37,6 +42,8 @@ namespace Server
             });
 
             services.AddScoped<Manager>();
+            services.AddScoped<IAuthService, AuthService>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -44,6 +51,23 @@ namespace Server
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+
+            // Add authentication services
+            var jwtSettings = Configuration.GetSection("Jwt");
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+                    };
+                });
 
             services.AddDbContext<GameManager.Data.MyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -72,6 +96,12 @@ namespace Server
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            
+            // Add authentication middleware
+            app.UseAuthentication();
+            // Add JwtMiddleware
+            app.UseMiddleware<JwtMiddleware>();
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

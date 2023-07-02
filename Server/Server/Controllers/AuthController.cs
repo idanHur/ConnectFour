@@ -17,19 +17,22 @@ namespace Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(int id, string password)
+        public async Task<IActionResult> Login(int playerId, string password)
         {
-            var user = await _authService.Login(id, password);
+            var user = await _authService.Login(playerId, password);
 
             if (user == null)
             {
                 return Unauthorized();
             }
 
-            // TODO: create token for identification
+            var token = _authService.GenerateJwtToken(user);
 
-            return Ok(new {  });
+            // Return the token as part of the response
+            return Ok(new { token });
         }
     }
 
 }
+
+
