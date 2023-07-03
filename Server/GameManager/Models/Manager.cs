@@ -39,7 +39,7 @@ namespace GameManager.Models
             }
             return false;
         }
-        private Player GetPlayer(int id)
+        public Player GetPlayer(int id)
         {
             var player = _context.Players.FirstOrDefault(p => p.playerId == id);
             return player;
