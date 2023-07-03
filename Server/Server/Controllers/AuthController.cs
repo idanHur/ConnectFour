@@ -3,7 +3,9 @@ using GameManager.Utilities.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Server.Models;
 using Server.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace Server.Controllers
@@ -24,32 +26,40 @@ namespace Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(int playerId, string password)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _authService.Login(playerId, password);
-
-            if (user == null)
+            try
             {
-                return Unauthorized();
+                var user = await _authService.Login(model.PlayerId, model.Password);
+
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+
+                var player = _gameManager.GetPlayer(model.PlayerId);
+
+                if (player == null)
+                {
+                    return BadRequest(new { error = "There is no player with this Id" });
+                }
+
+                // Create JSON object from Player using the custom PlayerConverter
+                string playerJson = JsonConvert.SerializeObject(player, new PlayerConverter());
+
+                var token = _authService.GenerateJwtToken(user);
+
+                // Return the token and player object as part of the response
+                return Ok(new { token, player = playerJson });
             }
-
-            var player = _gameManager.GetPlayer(playerId);
-
-            if (player == null)
+            catch (Exception ex)
             {
-                return BadRequest(new { error = "There is no player with this Id" });
+                // Return the exception message as the error response
+                return StatusCode(500, new { error = ex.Message });
             }
-
-            // Create JSON object from Player using the custom PlayerConverter
-            string playerJson = JsonConvert.SerializeObject(player, new PlayerConverter());
-
-            var token = _authService.GenerateJwtToken(user);
-
-            // Return the token and player object as part of the response
-            return Ok(new { token, player = playerJson });
         }
-    }
 
+    }
 }
 
 
