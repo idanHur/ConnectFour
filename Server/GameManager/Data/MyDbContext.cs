@@ -20,13 +20,13 @@ namespace GameManager.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>()
-                .HasMany(p => p.Games) 
+                .HasMany(p => p.games) 
                 .WithOne()
                 .HasForeignKey(g => g.playerId);
 
             modelBuilder.Entity<Game>()
                 .HasOne<Player>()
-                .WithMany(p => p.Games) 
+                .WithMany(p => p.games) 
                 .HasForeignKey(g => g.playerId);
         }
 

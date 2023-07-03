@@ -39,6 +39,7 @@ namespace Server.Controllers
             {
                 return BadRequest(new { error = "There is no player with this Id" });
             }
+
             // Create JSON object from Player using the custom PlayerConverter
             string playerJson = JsonConvert.SerializeObject(player, new PlayerConverter());
 

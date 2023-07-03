@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using GameManager.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Server.Controllers
 {
@@ -15,14 +16,13 @@ namespace Server.Controllers
     {
         private readonly RequestDelegate _next;
         private readonly IConfiguration _configuration;
-        private readonly MyDbContext _context;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-
-        public JwtMiddleware(RequestDelegate next, IConfiguration configuration, MyDbContext context)
+        public JwtMiddleware(RequestDelegate next, IConfiguration configuration, IServiceScopeFactory serviceScopeFactory)
         {
             _next = next;
             _configuration = configuration;
-            _context = context;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -57,11 +57,17 @@ namespace Server.Controllers
             var jwtToken = (JwtSecurityToken)validatedToken;
             var playerId = int.Parse(jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
 
-            // Get the user from the database based on the playerId extracted from the token
-            var user = await _context.Players.FindAsync(playerId);
+            // Create a new scope to retrieve the DbContext
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
 
-            // Attach the user object to the current context for further processing
-            context.Items["User"] = user;
+                // Get the user from the database based on the playerId extracted from the token
+                var user = await dbContext.Players.FindAsync(playerId);
+
+                // Attach the user object to the current context for further processing
+                context.Items["User"] = user;
+            }
         }
     }
 }
