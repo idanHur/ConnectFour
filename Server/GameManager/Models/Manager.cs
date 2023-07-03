@@ -32,9 +32,9 @@ namespace GameManager.Models
             Player player = GetPlayer(playerId);
             if (player == null)
                 return false;
-            if (player.currentGame.gameStatus == GameStatus.OnGoing) // If a game is curently played
+            if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
-                bool moveMade = player.currentGame.PlayerMove(column);
+                bool moveMade = player.GetLastGame().PlayerMove(column);
                 return moveMade;
             }
             return false;
@@ -43,6 +43,13 @@ namespace GameManager.Models
         {
             var player = _context.Players.FirstOrDefault(p => p.playerId == id);
             return player;
+        }
+        public void EndGameForPlayer(int playerId, int gameId)
+        {
+            Player player = GetPlayer(playerId);
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player.IsGameOver()) return; // The last game was already ended 
+            player.EndLastGame(gameId);
         }
 
         public bool IsIdTaken(int id)

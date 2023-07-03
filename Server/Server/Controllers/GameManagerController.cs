@@ -39,7 +39,7 @@ namespace Server.Controllers
             try
             {
                 // Start a new game
-                var newGame = _gameManager.StartNewGameForPlayer(playerId, ROWS, COLS);
+                Game newGame = _gameManager.StartNewGameForPlayer(playerId, ROWS, COLS);
 
                 if (newGame != null)
                 {
@@ -58,8 +58,7 @@ namespace Server.Controllers
             }
         }
 
-
-        [HttpPost("{playerId}/move")]
+        [HttpPut("{playerId}/move")]
         [Authorize]
         public IActionResult Move(int playerId, [FromBody] int playerMove)
         {
@@ -75,7 +74,7 @@ namespace Server.Controllers
             try
             {
                 // Try to apply the move
-                var gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove);
+                bool gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove);
 
                 if (gameState)
                 {
@@ -93,5 +92,33 @@ namespace Server.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+        [HttpPut("{playerId}/endGame")]
+        [Authorize]
+        public IActionResult EndGame(int playerId, [FromBody] int gameId)
+        {
+            // Get the authenticated user's ID
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // Compare the authenticated user's ID with the playerId parameter
+            if (userId != playerId.ToString())
+            {
+                return Forbid(); // Return 403 Forbidden if the user is not authorized to make the move
+            }
+
+            try
+            {
+                // End the last game of this player
+                _gameManager.EndGameForPlayer(playerId, gameId);
+
+                return Ok(new { message = "Game ended successfully" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
     }
 }

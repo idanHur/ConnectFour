@@ -1,4 +1,5 @@
 ﻿using Connect4Game;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -24,10 +25,8 @@ namespace GameManager.Models
         [MinLength(4, ErrorMessage = "Password should be at least 4 characters long.")]
         public string password { get; set; }
 
-        public Game currentGame { get; private set; }
-
         // EF Core will automatically load the related Game entities when accessing this property.
-        public ICollection<Game> Games { get; set; }
+        public ICollection<Game> games { get; set; }
 
 
         // Parameterless constructor
@@ -38,13 +37,34 @@ namespace GameManager.Models
         {
             this.playerName = playerName;
             this.playerId = playerId;
-            currentGame = null;
         }
         public Game NewGame(int rows, int columns)
         {
-            currentGame = new Game(rows, columns, Games.Count + 1, playerId);
-            Games.Add(currentGame);
-            return currentGame;
+            Game newGame = new Game(rows, columns, games.Count + 1, playerId);
+            games.Add(newGame);
+            return newGame;
+        }
+        public Game GetLastGame()
+        {
+            var gamesList = games.ToList();
+            var lastGame = gamesList[gamesList.Count - 1];
+
+            return lastGame;
+        }
+        public void EndLastGame(int gameId)
+        {
+            var gamesList = games.ToList();
+            var lastGame = gamesList[gamesList.Count - 1];
+            if (lastGame != null) throw new InvalidOperationException($"There are no played games");
+            if (lastGame.gameId != gameId) throw new ArgumentException("Game id doesn't match last game id", nameof(gameId));// Make sure this is the game 
+
+            lastGame.EndGame(didntFinish: true);
+        }
+        public bool IsGameOver()
+        {
+            var gamesList = games.ToList();
+            var lastGame = gamesList[gamesList.Count - 1];
+            return lastGame.gameStatus != GameStatus.OnGoing;
         }
     }
 }

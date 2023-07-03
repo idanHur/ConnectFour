@@ -14,7 +14,8 @@ namespace Connect4Game
         Won,
         Lost,
         Draw,
-        OnGoing
+        OnGoing,
+        DNF
     }
     public class Game
     {
@@ -41,10 +42,13 @@ namespace Connect4Game
         }
         private Game() { }
 
-        private void EndGame(bool draw = false)
+        public void EndGame(bool draw = false, bool didntFinish = false)
         {
+            if (gameStatus != GameStatus.OnGoing) return;
             if(draw)
                 gameStatus = GameStatus.Draw;
+            else if(didntFinish)
+                gameStatus = GameStatus.DNF;
             else if(currentPlayer == Player.Human)
                 gameStatus = GameStatus.Won;
             else
@@ -58,7 +62,7 @@ namespace Connect4Game
 
         public bool PlayerMove(int column)
         {
-            if ((gameStatus != GameStatus.OnGoing) || currentPlayer != Player.Human)
+            if ((gameStatus != GameStatus.OnGoing) || (currentPlayer != Player.Human))
                 return false;
             if(board.IsMatrixFull())
             {
