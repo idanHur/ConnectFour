@@ -12,7 +12,6 @@ namespace GameLogic.Models
         public string playerName { get; set; }
         public string phoneNumber { get; set; }
         public string country { get; set; }
-        public string password { get; set; }
 
         public List<Game> games { get; set; }
 

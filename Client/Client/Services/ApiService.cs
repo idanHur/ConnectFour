@@ -1,4 +1,5 @@
-﻿using GameLogic.Models;
+﻿using Client.Utilities.Json;
+using GameLogic.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,19 +14,18 @@ namespace Client.Services
     {
         private readonly HttpClient _httpClient;
         private readonly AuthenticationService _authService;
-        private readonly Player _player;
 
-        public ApiService(AuthenticationService authService, Player player)
+        public ApiService(AuthenticationService authService)
         {
             _httpClient = new HttpClient { BaseAddress = new Uri("http://your-aspnetcore-api-url/") };
             _authService = authService;
-            _player = player;
         }
 
         public HttpClient GetClient()
         {
             return _httpClient;
         }
+       
 
         public async Task<string> LoginAsync(string playerId, string password)
         {
@@ -40,7 +40,14 @@ namespace Client.Services
                 throw new Exception("Error authenticating");
             }
 
-            var jwt = await response.Content.ReadAsStringAsync();
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeAnonymousType(jsonResponse, new { token = "", player = "" });
+
+            var jwt = data.token;
+
+            // Deserialize player JSON into Player object
+            var player = JsonConvert.DeserializeObject<Player>(data.player, new PlayerConverter());
+            _authService.SetCurrentPlayerFromServerData(player);
 
             // Save the JWT token
             _authService.SaveJwtToken(jwt);
