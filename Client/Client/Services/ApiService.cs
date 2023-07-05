@@ -11,10 +11,13 @@ namespace Client.Services
     public class ApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly AuthenticationService _authService;
 
-        public ApiService()
+
+        public ApiService(AuthenticationService authService)
         {
             _httpClient = new HttpClient { BaseAddress = new Uri("http://your-aspnetcore-api-url/") };
+            _authService = authService;
         }
 
         public HttpClient GetClient()
@@ -22,7 +25,7 @@ namespace Client.Services
             return _httpClient;
         }
 
-        public async Task<string> AuthenticateAsync(string playerId, string password)
+        public async Task<string> LoginAsync(string playerId, string password)
         {
             var payload = new { PlayerId = playerId, Password = password };
             var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -36,6 +39,10 @@ namespace Client.Services
             }
 
             var jwt = await response.Content.ReadAsStringAsync();
+
+            // Save the JWT token
+            _authService.SaveJwtToken(jwt);
+
             return jwt;
         }
 

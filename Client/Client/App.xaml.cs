@@ -31,6 +31,8 @@ namespace Client
         {
             // Register your services here
             services.AddSingleton<ApiService>();
+            services.AddSingleton<AuthenticationService>();
+
         }
     }
 }
