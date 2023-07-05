@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\idan1\source\repos\ConnectFour\ConnectFour\Client\Client\App.xaml
-27504081
+3-1208714108
 
-11711192721
+101905924830
 133-484402479
-Views\ConnectFourWindow.xaml;Views\MainWindow.xaml;
+Views\ConnectFourWindow.xaml;Views\LoginWindow.xaml;Views\MainWindow.xaml;
 
 False
 

@@ -30,7 +30,7 @@ namespace Client
         private void ConfigureServices(IServiceCollection services)
         {
             // Register your services here
-            services.AddScoped<IHttpClientServiceImplementation, HttpClientCrudService>();
+            services.AddSingleton<ApiService>();
         }
     }
 }
