@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GameLogic.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,13 @@ namespace Client.Services
     {
         private readonly HttpClient _httpClient;
         private readonly AuthenticationService _authService;
+        private readonly Player _player;
 
-
-        public ApiService(AuthenticationService authService)
+        public ApiService(AuthenticationService authService, Player player)
         {
             _httpClient = new HttpClient { BaseAddress = new Uri("http://your-aspnetcore-api-url/") };
             _authService = authService;
+            _player = player;
         }
 
         public HttpClient GetClient()

@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using GameLogic.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace Client
             // Register your services here
             services.AddSingleton<ApiService>();
             services.AddSingleton<AuthenticationService>();
+            services.AddScoped<Player>();
 
         }
     }

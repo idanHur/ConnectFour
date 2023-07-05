@@ -14,21 +14,36 @@ namespace Client.Utilities.Json
         {
             JObject jObject = JObject.Load(reader);
 
-            var player = new Player((int)jObject["Id"]);
+            var player = new Player();
+
+            if (jObject["Games"] != null)
+            {
+                player.games = jObject["Games"].ToObject<List<Game>>();
+            }
+
+            player.playerName = (string)jObject["PlayerName"];
+            player.playerId = (int)jObject["PlayerId"];
+            player.phoneNumber = (string)jObject["PhoneNumber"];
+            player.country = (string)jObject["Country"];
 
             return player;
         }
 
+
         public override void WriteJson(JsonWriter writer, Player value, JsonSerializer serializer)
         {
-            Player player = (Player)value;
-            JObject jObject = new JObject
+            var player = (Player)value;
+            var jObject = new JObject
             {
-                { "Id", player.id }
+                { "PlayerId", player.playerId },
+                { "PlayerName", player.playerName },
+                { "PhoneNumber", player.phoneNumber },
+                { "Country", player.country },
+                { "Games", JArray.FromObject(player.games) }
             };
 
             jObject.WriteTo(writer);
+
         }
-    
     }
 }
