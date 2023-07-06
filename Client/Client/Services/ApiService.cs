@@ -72,15 +72,18 @@ namespace Client.Services
             return game;
         }
 
-        public async Task<Game> MakeMoveAsync(int playerId)
+        public async Task<Game> MakeMoveAsync(int playerId, Move move)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
-            var response = await _httpClient.PostAsync($"{playerId}/move", null);
+            var jsonPayload = JsonConvert.SerializeObject(move);
+            var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"{playerId}/move", httpContent);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Error starting game");
+                throw new Exception("Error making move");
             }
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
