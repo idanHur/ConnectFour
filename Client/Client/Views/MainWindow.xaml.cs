@@ -22,11 +22,13 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        public MainWindow()
+        private readonly ApiService _apiService;
+        private readonly INavigationService _navigationService;
+        public MainWindow(ApiService apiService, INavigationService navigationService)
         {
             InitializeComponent();
-
+            _apiService = apiService;
+            _navigationService = navigationService;
         }
 
         private void EndGameButton_Click(object sender, RoutedEventArgs e)
