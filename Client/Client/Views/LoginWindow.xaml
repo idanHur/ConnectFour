@@ -6,12 +6,55 @@
         xmlns:local="clr-namespace:Client.Views"
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="FlatButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF1C86EE"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="BorderBrush" Value="#FF1C86EE"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF1870C1"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF104D73"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Margin="0,270,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="UserIdTextBox" HorizontalAlignment="Center" Margin="0,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" Height="26"/>
-        <Label x:Name="UserIdLabel" Content="User ID:" HorizontalAlignment="Left" Margin="237,165,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="PasswordTextBox" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" Height="26" Margin="0,211,0,0"/>
-        <Label x:Name="PasswordLabel" Content="Password" HorizontalAlignment="Left" Margin="237,211,0,0" VerticalAlignment="Top"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
 
+        <Label x:Name="UserIdLabel" Content="User ID:" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBox x:Name="UserIdTextBox" Grid.Row="1" Grid.Column="2" Width="120" Height="25"/>
+
+        <Label x:Name="PasswordLabel" Content="Password" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBox x:Name="PasswordTextBox" Grid.Row="2" Grid.Column="2" Width="120" Height="25"/>
+
+        <Button x:Name="LoginButton" Content="Login" Style="{StaticResource FlatButtonStyle}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="120" Height="30" HorizontalAlignment="Center"/>
     </Grid>
 </Window>
