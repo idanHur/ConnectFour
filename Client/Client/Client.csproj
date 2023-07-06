@@ -96,6 +96,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,11 +108,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\HttpClientCrudService.cs" />
-    <Compile Include="Services\IHttpClientServiceImplementation.cs" />
+    <Compile Include="Services\ApiService.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Utilities\Json\GameConveter.cs" />
+    <Compile Include="Utilities\Json\MoveConveter.cs" />
     <Compile Include="Utilities\Json\PlayerConverter.cs" />
     <Compile Include="Views\ConnectFourWindow.xaml.cs">
       <DependentUpon>ConnectFourWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -22,13 +22,11 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IHttpClientServiceImplementation _httpClientService;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _httpClientService = App.ServiceProvider.GetService<IHttpClientServiceImplementation>();
         }
 
         private void EndGameButton_Click(object sender, RoutedEventArgs e)

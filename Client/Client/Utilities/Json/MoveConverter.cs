@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Client.Utilities.Json
 {
-    public class MoveConveter : JsonConverter<Move>
+    public class MoveConverter : JsonConverter<Move>
     {
         public override Move ReadJson(JsonReader reader, Type objectType, Move existingValue, bool hasExistingValue, JsonSerializer serializer)
         {

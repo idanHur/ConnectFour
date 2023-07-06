@@ -21,7 +21,6 @@ namespace Client
 
     public partial class ConnectFourWindow : Window
     {
-        private readonly IHttpClientServiceImplementation _httpClientService;
         public static ConnectFourWindow currentInstance;
 
         private const int Rows = 6;
@@ -32,7 +31,6 @@ namespace Client
         public ConnectFourWindow()
         {
             InitializeComponent();
-            _httpClientService = App.ServiceProvider.GetService<IHttpClientServiceImplementation>();
 
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)

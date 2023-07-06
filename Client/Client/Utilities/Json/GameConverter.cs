@@ -15,49 +15,59 @@ namespace Client.Utilities.Json
         {
             JObject jObject = JObject.Load(reader);
 
-            var game = new Game
+            // Create a new Game object with the extracted properties
+            Game game = new Game();
+
+            // Extract the necessary properties from the JSON
+            int gameId = (int)jObject["GameId"];
+            game.gameId = gameId;
+
+            // Deserialize the Board array
+            JArray boardArray = (JArray)jObject["Board"];
+            if (boardArray != null)
             {
-                gameId = (int)jObject["Id"],
-                gameStatus = (GameStatus)Enum.Parse(typeof(GameStatus), (string)jObject["Status"]),
-                moves = jObject["Moves"].ToObject<List<Move>>() // Deserializes the moves
+                // Deserialize the board values
+                int[,] board = boardArray.ToObject<int[,]>();
+                game.board = board;
+            }
 
-            };
+            // Deserialize the GameStatus
+            GameStatus gameStatus = jObject["GameStatus"].ToObject<GameStatus>();
+            game.gameStatus = gameStatus;
 
-            // Deserialize into a jagged array
-            var jaggedArray = jObject["Board"].ToObject<int[][]>();
-
-            // Convert the jagged array into a 2D array
-            game.board = new int[jaggedArray.Length, jaggedArray[0].Length];
-            for (int i = 0; i < jaggedArray.Length; i++)
+            // Deserialize the Moves array
+            JArray movesArray = (JArray)jObject["Moves"];
+            if (movesArray != null)
             {
-                for (int j = 0; j < jaggedArray[0].Length; j++)
+                // Deserialize each Move object in the array
+                foreach (JToken moveToken in movesArray)
                 {
-                    game.board[i, j] = jaggedArray[i][j];
+                    Move move = moveToken.ToObject<Move>(serializer);
+                    game.moves.Add(move);
                 }
             }
+
             return game;
         }
 
         public override void WriteJson(JsonWriter writer, Game value, JsonSerializer serializer)
         {
-            // Convert the 2D array to a jagged array
-            int[][] board = new int[value.board.GetLength(0)][];
-            for (int i = 0; i < value.board.GetLength(0); i++)
-            {
-                board[i] = new int[value.board.GetLength(1)];
-                for (int j = 0; j < value.board.GetLength(1); j++)
-                {
-                    board[i][j] = value.board[i, j];
-                }
-            }
-
+            Game game = (Game)value;
             JObject jObject = new JObject
         {
-            { "GameId", value.gameId },
-            { "GameStatus", value.gameStatus.ToString()},
-            { "Moves", JArray.FromObject(value.moves) }, // Serializes the moves
-            { "Board", JArray.FromObject(board) } // Serializes the board
+            { "GameId", game.gameId },
+            { "Board", JArray.FromObject(game.board) },
+            { "GameStatus", JToken.FromObject(game.gameStatus) }
         };
+
+            // Serialize the Moves array
+            JArray movesArray = new JArray();
+            foreach (Move move in game.moves)
+            {
+                JToken moveToken = JToken.FromObject(move, serializer);
+                movesArray.Add(moveToken);
+            }
+            jObject["Moves"] = movesArray;
 
             jObject.WriteTo(writer);
         }
