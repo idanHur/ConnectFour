@@ -55,7 +55,39 @@ namespace Client.Services
             return true;
         }
 
+        public async Task<Game> StartGameAsync(int playerId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
+            var response = await _httpClient.PostAsync($"{playerId}/start", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error starting game");
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
+
+            return game;
+        }
+
+        public async Task<Game> MakeMoveAsync(int playerId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
+
+            var response = await _httpClient.PostAsync($"{playerId}/move", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error starting game");
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
+
+            return game;
+        }
 
     }
 }
