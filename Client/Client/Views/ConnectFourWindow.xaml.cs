@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Client
@@ -21,6 +22,8 @@ namespace Client
 
     public partial class ConnectFourWindow : Window
     {
+        private readonly ApiService _apiService;
+        private readonly INavigationService _navigationService;
         public static ConnectFourWindow currentInstance;
 
         private const int Rows = 6;
@@ -28,9 +31,11 @@ namespace Client
         private const int FallingDelay = 650;
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
 
-        public ConnectFourWindow()
+        public ConnectFourWindow(ApiService apiService, INavigationService navigationService)
         {
             InitializeComponent();
+            _apiService = apiService;
+            _navigationService = navigationService;
 
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)
@@ -119,5 +124,30 @@ namespace Client
             }
         }
 
+        private async Task NewGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            // TODO: enable board if disabled
+            try
+            {
+                await _apiService.StartGameAsync();
+            }
+            catch (Exception ex)
+            {
+                // TODO: add error lable
+            }
+        }
+
+        private async Task QuitGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            // TODO: disable board
+            try
+            {
+                await _apiService.EndGameAsync();
+            }catch (Exception ex)
+            {
+                // TODO: add error lable
+            }
+            
+        }
     }
 }
