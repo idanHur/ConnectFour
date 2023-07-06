@@ -110,8 +110,10 @@
     </Compile>
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
-    <Compile Include="Utilities\Json\GameConveter.cs" />
-    <Compile Include="Utilities\Json\MoveConveter.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Utilities\Json\GameConverter.cs" />
+    <Compile Include="Utilities\Json\MoveConverter.cs" />
     <Compile Include="Utilities\Json\PlayerConverter.cs" />
     <Compile Include="Views\ConnectFourWindow.xaml.cs">
       <DependentUpon>ConnectFourWindow.xaml</DependentUpon>

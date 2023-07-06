@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Views"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="238" Width="379">
+        Title="LoginWindow" Height="238" Width="396">
     <Window.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF1C86EE"/>

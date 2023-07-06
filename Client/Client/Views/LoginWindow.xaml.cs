@@ -21,11 +21,13 @@ namespace Client.Views
     public partial class LoginWindow : Window
     {
         private readonly ApiService _apiService;
+        private readonly INavigationService _navigationService;
 
-        public LoginWindow(ApiService apiService)
+        public LoginWindow(ApiService apiService, INavigationService navigationService)
         {
             InitializeComponent();
             _apiService = apiService;
+            _navigationService = navigationService;
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -39,8 +41,7 @@ namespace Client.Views
                 if (result)
                 {
                     // Open the main application window
-                    MainWindow mainWindow = new MainWindow();
-                    mainWindow.Show();
+                    _navigationService.NavigateToMain();
 
                     // Close the login window after opening the main window
                     this.Close();

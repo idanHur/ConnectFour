@@ -1,5 +1,6 @@
 ﻿using Client.Services;
 using Client.Utilities.Json;
+using Client.Views;
 using GameLogic.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -21,6 +22,7 @@ namespace Client
     {
         public static IServiceProvider ServiceProvider { get; private set; }
 
+
         protected override void OnStartup(StartupEventArgs e)
         {
             var serviceCollection = new ServiceCollection();
@@ -29,14 +31,23 @@ namespace Client
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             base.OnStartup(e);
+
+            var loginWindow = ServiceProvider.GetRequiredService<LoginWindow>();
+            loginWindow.Show();
         }
 
         private void ConfigureServices(IServiceCollection services)
         {
-            // Register your services here
+            // Register services 
             services.AddSingleton<ApiService>();
             services.AddSingleton<AuthenticationService>();
             services.AddScoped<Player>();
+            services.AddSingleton<INavigationService, NavigationService>();
+
+            // Register windows
+            services.AddTransient<MainWindow>();
+            services.AddTransient<LoginWindow>();
+            services.AddTransient<ConnectFourWindow>();
 
             // Configure JSON serialization settings
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
