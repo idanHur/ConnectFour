@@ -92,5 +92,20 @@ namespace Client.Services
             return game;
         }
 
+        public async Task EndGameAsync(int playerId, int gameId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
+
+            var jsonPayload = JsonConvert.SerializeObject(gameId);
+            var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"{playerId}/endGame", httpContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Error ending the game");
+            }     
+        }
+
     }
 }
