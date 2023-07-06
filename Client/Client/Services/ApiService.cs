@@ -55,8 +55,11 @@ namespace Client.Services
             return true;
         }
 
-        public async Task<Game> StartGameAsync(int playerId)
+        public async Task StartGameAsync()
         {
+            Player player = _authService.GetCurrentPlayer();
+            int playerId = player.playerId;
+
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
             var response = await _httpClient.PostAsync($"{playerId}/start", null);
@@ -68,12 +71,14 @@ namespace Client.Services
                 throw new Exception("Error starting game: " + errorResponse.error);
             }
             var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
-
-            return game;
+            player.games.Add(game);
         }
 
-        public async Task<Game> MakeMoveAsync(int playerId, Move move)
+        public async Task<Game> MakeMoveAsync(Move move)
         {
+            int playerId = _authService.GetCurrentPlayer().playerId;
+
+
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
             var jsonPayload = JsonConvert.SerializeObject(move);
@@ -92,8 +97,12 @@ namespace Client.Services
             return game;
         }
 
-        public async Task EndGameAsync(int playerId, int gameId)
+        public async Task EndGameAsync()
         {
+            Player player = _authService.GetCurrentPlayer();
+            int playerId = player.playerId;
+            int gameId = player.games[player.games.Count - 1].gameId;
+
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
             var jsonPayload = JsonConvert.SerializeObject(gameId);
@@ -108,8 +117,10 @@ namespace Client.Services
                 throw new Exception("Error ending the game: " + errorResponse.error);
             }    
         }
-        public async Task<Game> AiMoveAsync(int playerId, int gameId)
+        public async Task<Game> AiMoveAsync(int gameId)
         {
+            int playerId = _authService.GetCurrentPlayer().playerId;
+
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
             var jsonPayload = JsonConvert.SerializeObject(gameId);
