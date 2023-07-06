@@ -38,6 +38,17 @@ namespace GameManager.Models
             }
             throw new ArgumentException("There is no game in progress");
         }
+        public Game MakeAiMoveForPlayerGame(int playerId, int gameId)
+        {
+            Player player = GetPlayer(playerId);
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
+            {
+                player.GetLastGame().AiMove();
+                return player.GetLastGame(); // Return the new game state after the move
+            }
+            throw new ArgumentException("There is no game in progress");
+        }
         public Player GetPlayer(int id)
         {
             var player = _context.Players.FirstOrDefault(p => p.playerId == id);

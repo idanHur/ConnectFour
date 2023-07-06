@@ -89,11 +89,11 @@ namespace Connect4Game
         public void AiMove()
         {
             if ((gameStatus != GameStatus.OnGoing) || currentPlayer != Player.Ai)
-                return;
+                throw new InvalidOperationException("Cant make move!");
             if (board.IsMatrixFull())
             {
                 EndGame(true);
-                return;
+                throw new InvalidOperationException("The game board is full");
             }
             int columns = board.matrix.GetLength(1);
             int winningMove = -1;

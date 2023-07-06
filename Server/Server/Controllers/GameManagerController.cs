@@ -60,7 +60,7 @@ namespace Server.Controllers
 
         [HttpPut("{playerId}/move")]
         [Authorize]
-        public IActionResult Move(int playerId, [FromBody] int playerMove)
+        public IActionResult Move(int playerId, [FromBody] Move playerMove)
         {
             // Get the authenticated user's ID
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -74,10 +74,11 @@ namespace Server.Controllers
             try
             {
                 // Try to apply the move
-                Game gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove);
+                Game gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove.columnNumber);
 
                 if (gameState != null)
                 {
+
                     // If successful, return the game state
                     return Ok(gameState);
                 }
@@ -118,7 +119,40 @@ namespace Server.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
+        [HttpPut("{playerId}/aiMove")]
+        [Authorize]
+        public IActionResult AiMove(int playerId, [FromBody] int gameId)
+        {
+            // Get the authenticated user's ID
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            // Compare the authenticated user's ID with the playerId parameter
+            if (userId != playerId.ToString())
+            {
+                return Forbid(); // Return 403 Forbidden if the user is not authorized to make the move
+            }
+
+            try
+            {
+                // End the last game of this player
+                Game gameState = _gameManager.MakeAiMoveForPlayerGame(playerId, gameId);
+
+                if (gameState != null)
+                {
+                    // If successful, return the game state
+                    return Ok(gameState);
+                }
+                else
+                {
+                    return BadRequest(new { error = "Cannot make this move" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
 
     }
 }
