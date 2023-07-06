@@ -74,9 +74,9 @@ namespace Server.Controllers
             try
             {
                 // Try to apply the move
-                bool gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove);
+                Game gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove);
 
-                if (gameState)
+                if (gameState != null)
                 {
                     // If successful, return the game state
                     return Ok(gameState);
