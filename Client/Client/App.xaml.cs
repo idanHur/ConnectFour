@@ -1,6 +1,8 @@
 ﻿using Client.Services;
+using Client.Utilities.Json;
 using GameLogic.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,6 +10,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+
 
 namespace Client
 {
@@ -35,6 +38,16 @@ namespace Client
             services.AddSingleton<AuthenticationService>();
             services.AddScoped<Player>();
 
+            // Configure JSON serialization settings
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter>
+                {
+                    new MoveConverter(),
+                    new GameConverter(),
+                    new PlayerConverter()
+                }
+            };
         }
     }
 }
