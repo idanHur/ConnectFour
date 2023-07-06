@@ -60,13 +60,13 @@ namespace Client.Services
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
             var response = await _httpClient.PostAsync($"{playerId}/start", null);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Error starting game");
+                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
+                throw new Exception("Error starting game: " + errorResponse.error);
             }
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
             var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
 
             return game;
@@ -80,13 +80,13 @@ namespace Client.Services
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"{playerId}/move", httpContent);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Error making move");
+                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
+                throw new Exception("Error making move: " + errorResponse.error);
             }
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
             var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
 
             return game;
@@ -100,12 +100,33 @@ namespace Client.Services
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"{playerId}/endGame", httpContent);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Error ending the game");
-            }     
+                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
+                throw new Exception("Error ending the game: " + errorResponse.error);
+            }    
         }
+        public async Task<Game> AiMoveAsync(int playerId, int gameId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
+            var jsonPayload = JsonConvert.SerializeObject(gameId);
+            var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"{playerId}/aiMove", httpContent);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
+                throw new Exception("Error making AI move: " + errorResponse.error);
+            }
+
+            var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
+
+            return gameState;
+        }
     }
 }
