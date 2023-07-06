@@ -36,16 +36,22 @@ namespace Client
 
         }
 
-        private void StartGameButton_Click(object sender, RoutedEventArgs e)
+        private async Task StartGameButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (ConnectFourWindow.currentInstance == null)
             {
-                new ConnectFourWindow().Show();
+                try
+                {
+                    await _apiService.StartGameAsync();
+                    // Open the game window
+                    _navigationService.NavigateToGame();
+                }
+                catch(Exception ex)
+                {
+                    ErrorLabel.Content = ex.Message.ToString();
+                }
             }
-            else
-            {
-                ConnectFourWindow.currentInstance.Activate();
-            }
+            
         }
 
     }
