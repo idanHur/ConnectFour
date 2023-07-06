@@ -34,7 +34,8 @@ namespace Client.Views
         {
             string playerId = PlayerIdTextBox.Text;
             string password = PasswordTextBox.Text;
-
+            // Open the main application window
+            _navigationService.NavigateToMain();
             try
             {
                 bool result = await _apiService.LoginAsync(playerId, password);
