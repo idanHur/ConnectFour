@@ -9,6 +9,8 @@ namespace Client.Services
     public interface INavigationService
     {
         void NavigateToMain();
+        void NavigateToGame();
+        void NavigateToLogin();
     }
 
 }

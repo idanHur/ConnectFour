@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Client.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,18 @@ namespace Client.Services
         public NavigationService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+        }
+
+        public void NavigateToGame()
+        {
+            ConnectFourWindow gameWindow = _serviceProvider.GetRequiredService<ConnectFourWindow>();
+            gameWindow.Show();
+        }
+
+        public void NavigateToLogin()
+        {
+            LoginWindow loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
+            loginWindow.Show();
         }
 
         public void NavigateToMain()
