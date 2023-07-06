@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,52 @@ namespace Client.Views
     /// </summary>
     public partial class LoginWindow : Window
     {
-        public LoginWindow()
+        private readonly ApiService _apiService;
+
+        public LoginWindow(ApiService apiService)
         {
             InitializeComponent();
+            _apiService = apiService;
+        }
+
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            string playerId = PlayerIdTextBox.Text;
+            string password = PasswordTextBox.Text;
+
+            try
+            {
+                bool result = await _apiService.LoginAsync(playerId, password);
+                if (result)
+                {
+                    // Open the main application window
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+
+                    // Close the login window after opening the main window
+                    this.Close();
+                }
+                else
+                {
+                    ShowErrorMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage();
+
+            }
+
+
+        }
+        private void ShowErrorMessage()
+        {
+            ErrorLabel.Content = "Login failed. Please check your player ID and password.";
+            // Clear the PlayerIdTextBox
+            PlayerIdTextBox.Text = "";
+
+            // Clear the PasswordTextBox
+            PasswordTextBox.Text = "";
         }
     }
 }

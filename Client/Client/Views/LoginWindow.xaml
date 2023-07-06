@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Views"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        Title="LoginWindow" Height="238" Width="379">
     <Window.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF1C86EE"/>
@@ -38,23 +38,27 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="UserIdLabel" Content="User ID:" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <TextBox x:Name="UserIdTextBox" Grid.Row="1" Grid.Column="2" Width="120" Height="25"/>
+        <Label x:Name="PlayerIdLabel" Content="Player ID:" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBox x:Name="PlayerIdTextBox" Grid.Row="1" Grid.Column="2" Width="120" Height="25"/>
 
-        <Label x:Name="PasswordLabel" Content="Password" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Label x:Name="PasswordLabel" Content="Password:" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <TextBox x:Name="PasswordTextBox" Grid.Row="2" Grid.Column="2" Width="120" Height="25"/>
 
-        <Button x:Name="LoginButton" Content="Login" Style="{StaticResource FlatButtonStyle}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="120" Height="30" HorizontalAlignment="Center"/>
+        <Button x:Name="LoginButton" Content="Login" Style="{StaticResource FlatButtonStyle}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Width="120" Height="30" HorizontalAlignment="Center" Click="LoginButton_Click" VerticalAlignment="Center"/>
+
+        <Label x:Name="ErrorLabel" Content="" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
     </Grid>
 </Window>

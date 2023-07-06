@@ -27,7 +27,7 @@ namespace Client.Services
         }
        
 
-        public async Task<string> LoginAsync(string playerId, string password)
+        public async Task<bool> LoginAsync(string playerId, string password)
         {
             var payload = new { PlayerId = playerId, Password = password };
             var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -52,7 +52,7 @@ namespace Client.Services
             // Save the JWT token
             _authService.SaveJwtToken(jwt);
 
-            return jwt;
+            return true;
         }
 
 
