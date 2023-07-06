@@ -27,17 +27,16 @@ namespace GameManager.Models
             return temp;
         }
 
-        public bool MakeMoveForPlayer(int playerId, int column)
+        public Game MakeMoveForPlayer(int playerId, int column)
         {
             Player player = GetPlayer(playerId);
-            if (player == null)
-                return false;
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
             if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
-                bool moveMade = player.GetLastGame().PlayerMove(column);
-                return moveMade;
+                Move moveMade = player.GetLastGame().PlayerMove(column);
+                return player.GetLastGame(); // Return the new game state after the move
             }
-            return false;
+            throw new ArgumentException("There is no game in progress");
         }
         public Player GetPlayer(int id)
         {

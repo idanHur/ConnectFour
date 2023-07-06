@@ -60,14 +60,14 @@ namespace Connect4Game
             return board.matrix;
         }
 
-        public bool PlayerMove(int column)
+        public Move PlayerMove(int column)
         {
             if ((gameStatus != GameStatus.OnGoing) || (currentPlayer != Player.Human))
-                return false;
-            if(board.IsMatrixFull())
+                throw new InvalidOperationException("Cant make move!");
+            if (board.IsMatrixFull())
             {
                 EndGame(true);
-                return false;
+                throw new InvalidOperationException("The game board is full");
             }
             if (board.IsValidMove(column)) // Check if the move is possible
             {
@@ -76,13 +76,14 @@ namespace Connect4Game
                 {
                     EndGame();
                 }
-                Moves.Add(new Move(column, currentPlayer, Moves.Count+1));
+                Move newMove = new Move(column, currentPlayer, Moves.Count + 1);
+                Moves.Add(newMove);
                 currentPlayer = Player.Ai;
-                return true;
+                return newMove;
             }
             else
             {
-                return false; // The move wasnt made
+                throw new InvalidOperationException("The move isnt valid"); // The move wasnt made
             }
         }
         public void AiMove()
