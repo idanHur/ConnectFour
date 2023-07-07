@@ -35,6 +35,14 @@ namespace Client.Services
             _currentPlayer.playerName = player.playerName;
             _currentPlayer.playerId = player.playerId;
         }
+        public void SetCurrentGameFromServerData(Game game)
+        {
+            Game currentGame = _currentPlayer.games[_currentPlayer.games.Count];
+            currentGame.gameId = game.gameId;
+            currentGame.board = game.board;
+            currentGame.gameStatus = game.gameStatus;
+            currentGame.moves = game.moves;
+        }
 
         public Player GetCurrentPlayer()
         {
