@@ -60,7 +60,7 @@ namespace Server.Controllers
 
         [HttpPut("{playerId}/move")]
         [Authorize]
-        public IActionResult Move(int playerId, [FromBody] Move playerMove)
+        public IActionResult Move(int playerId, [FromBody] int playerMove)
         {
             // Get the authenticated user's ID
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -74,7 +74,7 @@ namespace Server.Controllers
             try
             {
                 // Try to apply the move
-                Game gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove.columnNumber);
+                Game gameState = _gameManager.MakeMoveForPlayer(playerId, playerMove);
 
                 if (gameState != null)
                 {
