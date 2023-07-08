@@ -32,10 +32,9 @@ namespace Client.Views
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            string playerId = PlayerIdTextBox.Text;
+            int playerId = int.Parse(PlayerIdTextBox.Text);
             string password = PasswordTextBox.Text;
-            // Open the main application window
-            _navigationService.NavigateToMain();
+            
             try
             {
                 bool result = await _apiService.LoginAsync(playerId, password);
@@ -54,6 +53,8 @@ namespace Client.Views
             }
             catch (Exception ex)
             {
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 ShowErrorMessage();
 
             }

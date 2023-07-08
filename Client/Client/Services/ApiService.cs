@@ -28,20 +28,21 @@ namespace Client.Services
         }
        
 
-        public async Task<bool> LoginAsync(string playerId, string password)
+        public async Task<bool> LoginAsync(int playerId, string password)
         {
             var payload = new { PlayerId = playerId, Password = password };
             var jsonPayload = JsonConvert.SerializeObject(payload);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/login", httpContent);
+            var response = await _httpClient.PostAsync("api/Auth/login", httpContent);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Error authenticating");
+                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
+                throw new Exception("Error in Login: " + errorResponse);
             }
 
-            var jsonResponse = await response.Content.ReadAsStringAsync();
             var data = JsonConvert.DeserializeAnonymousType(jsonResponse, new { token = "", player = "" });
 
             var jwt = data.token;
