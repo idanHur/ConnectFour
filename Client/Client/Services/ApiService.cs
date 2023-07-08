@@ -74,7 +74,7 @@ namespace Client.Services
             player.games.Add(game);
         }
 
-        public async Task<Game> MakeMoveAsync(Move move)
+        public async Task<Move> MakeMoveAsync(Move move)
         {
             int playerId = _authService.GetCurrentPlayer().playerId;
 
@@ -92,9 +92,14 @@ namespace Client.Services
                 var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
                 throw new Exception("Error making move: " + errorResponse.error);
             }
-            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
 
-            return game;
+            // Update the game state from server data
+            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
+            _authService.SetCurrentGameFromServerData(game); 
+
+            var movesList = game.moves.ToList<Move>();
+
+            return movesList[movesList.Count - 1];
         }
 
         public async Task EndGameAsync()
@@ -116,8 +121,10 @@ namespace Client.Services
                 var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
                 throw new Exception("Error ending the game: " + errorResponse.error);
             }    
+            // TODO: Update the gamestate
         }
-        public async Task<Game> AiMoveAsync(int gameId)
+
+        public async Task<Move> AiMoveAsync(int gameId)
         {
             int playerId = _authService.GetCurrentPlayer().playerId;
 
@@ -135,9 +142,13 @@ namespace Client.Services
                 throw new Exception("Error making AI move: " + errorResponse.error);
             }
 
+            // Update the game state from server data
             var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
+            _authService.SetCurrentGameFromServerData(gameState); // Update the game from server game state
 
-            return gameState;
+            var movesList = gameState.moves.ToList<Move>();
+
+            return movesList[movesList.Count - 1];
         }
     }
 }
