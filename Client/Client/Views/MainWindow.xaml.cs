@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using GameLogic.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,21 @@ namespace Client
     {
         private readonly ApiService _apiService;
         private readonly INavigationService _navigationService;
-        public MainWindow(ApiService apiService, INavigationService navigationService)
+        private readonly AuthenticationService _authService;
+
+        public MainWindow(ApiService apiService, INavigationService navigationService, AuthenticationService authService)
         {
             InitializeComponent();
             _apiService = apiService;
             _navigationService = navigationService;
+            _authService = authService;
+
+            Player player = _authService.GetCurrentPlayer();
+            PlayerCountryLabel.Content += player.country;
+            PlayerIdLabel.Content += player.playerId.ToString();
+            PlayerNameLabel.Content += player.playerName;
+            PlayerPhoneNumberLabel.Content += player.phoneNumber;
+
         }
 
         private void EndGameButton_Click(object sender, RoutedEventArgs e)
