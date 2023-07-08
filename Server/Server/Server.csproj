@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Connect4Game\Connect4Game.csproj" />
     <ProjectReference Include="..\GameManager\GameManager.csproj" />
   </ItemGroup>
 

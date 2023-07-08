@@ -13474,6 +13474,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "Connect4Game >= 1.0.0",
       "GameManager >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
@@ -13518,6 +13519,9 @@
         "netcoreapp2.1": {
           "targetAlias": "netcoreapp2.1",
           "projectReferences": {
+            "C:\\Users\\idan1\\source\\repos\\ConnectFour\\ConnectFour\\Server\\Connect4Game\\Connect4Game.csproj": {
+              "projectPath": "C:\\Users\\idan1\\source\\repos\\ConnectFour\\ConnectFour\\Server\\Connect4Game\\Connect4Game.csproj"
+            },
             "C:\\Users\\idan1\\source\\repos\\ConnectFour\\ConnectFour\\Server\\GameManager\\GameManager.csproj": {
               "projectPath": "C:\\Users\\idan1\\source\\repos\\ConnectFour\\ConnectFour\\Server\\GameManager\\GameManager.csproj"
             }
