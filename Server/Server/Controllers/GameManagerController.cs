@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class GameManagerController : ControllerBase
     {
