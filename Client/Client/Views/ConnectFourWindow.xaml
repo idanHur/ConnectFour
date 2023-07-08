@@ -55,6 +55,7 @@
         </StackPanel>
 
         <Label x:Name="TurnLabel" Grid.Column="0" Grid.Row="2" Content="Your Turn!" VerticalAlignment="Bottom" Margin="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="14" Opacity="0" />
+        <Label x:Name="ErrorLabel" Grid.Column="0" Grid.Row="2" Content="Cant make this move" VerticalAlignment="Bottom" Margin="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="Red" Opacity="0" />
 
         <Viewbox Grid.RowSpan="3" Stretch="Uniform" Margin="109,0,0,0" Grid.ColumnSpan="2">
             <Grid Name="BoardGrid" Width="493" Height="454" Background="#FF2678D4">

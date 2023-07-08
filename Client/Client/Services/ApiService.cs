@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,14 +75,14 @@ namespace Client.Services
             player.games.Add(game);
         }
 
-        public async Task<Move> MakeMoveAsync(Move move)
+        public async Task<Move> MakeMoveAsync(int colMove)
         {
             int playerId = _authService.GetCurrentPlayer().playerId;
 
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
-            var jsonPayload = JsonConvert.SerializeObject(move);
+            var jsonPayload = JsonConvert.SerializeObject(colMove);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"{playerId}/move", httpContent);
@@ -124,9 +125,11 @@ namespace Client.Services
             // TODO: Update the gamestate
         }
 
-        public async Task<Move> AiMoveAsync(int gameId)
+        public async Task<Move> AiMoveAsync()
         {
-            int playerId = _authService.GetCurrentPlayer().playerId;
+            Player player = _authService.GetCurrentPlayer();
+            int playerId = player.playerId;
+            int gameId = player.games[player.games.Count - 1].gameId;
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 

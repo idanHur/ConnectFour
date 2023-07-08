@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using GameLogic.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,23 @@ namespace Client
         {
             var clickedEllipse = (Ellipse)sender;
             int column = Grid.GetColumn(clickedEllipse); // Get the column of the clicked ellipse
-            await FallingAnimation(column, Brushes.Red); // TODO: change logic to fit current player color
+            try
+            {
+                Move lastmove = await _apiService.MakeMoveAsync(column);
+                if (lastmove == null)
+                {
+                    ErrorLabel.Opacity = 1;
+                    return;
+                }
+                await FallingAnimation(lastmove.columnNumber, Brushes.Red); 
+                Move aiMove = await _apiService.AiMoveAsync();
+                await FallingAnimation(aiMove.columnNumber, Brushes.Yellow); 
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLabel.Opacity = 1;
+            }
         }
 
 
