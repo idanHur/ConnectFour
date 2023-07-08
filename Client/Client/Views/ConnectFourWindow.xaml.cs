@@ -108,6 +108,9 @@ namespace Client
             catch (Exception ex)
             {
                 ErrorLabel.Opacity = 1;
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
@@ -161,7 +164,8 @@ namespace Client
             }
             catch (Exception ex)
             {
-                // TODO: add error lable
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -175,9 +179,10 @@ namespace Client
             }
             catch (Exception ex)
             {
-                // TODO: add error lable
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+
         }
     }
 }
