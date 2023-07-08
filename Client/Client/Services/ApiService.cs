@@ -18,7 +18,7 @@ namespace Client.Services
 
         public ApiService(AuthenticationService authService)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("http://your-aspnetcore-api-url/") };
+            _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:44367/") };
             _authService = authService;
         }
 

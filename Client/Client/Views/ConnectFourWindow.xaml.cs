@@ -154,7 +154,7 @@ namespace Client
                 }
             isBoardEnabled = true;
         }
-        private async Task NewGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: enable board if disabled
             try
@@ -169,7 +169,7 @@ namespace Client
             }
         }
 
-        private async Task QuitGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: disable board
             try
@@ -184,5 +184,7 @@ namespace Client
             }
 
         }
+
+        
     }
 }

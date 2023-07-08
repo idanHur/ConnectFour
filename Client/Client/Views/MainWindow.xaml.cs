@@ -36,7 +36,7 @@ namespace Client
 
         }
 
-        private async Task StartGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (ConnectFourWindow.currentInstance == null)
             {
