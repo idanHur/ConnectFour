@@ -31,13 +31,13 @@ namespace Client
         private const int Columns = 7;
         private const int FallingDelay = 650;
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
-
+        private bool isBoardEnabled;
         public ConnectFourWindow(ApiService apiService, INavigationService navigationService)
         {
             InitializeComponent();
             _apiService = apiService;
             _navigationService = navigationService;
-
+            isBoardEnabled = true;
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)
             {
@@ -88,6 +88,8 @@ namespace Client
 
         private async void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if(!isBoardEnabled) // To disable the board 
+                return;
             var clickedEllipse = (Ellipse)sender;
             int column = Grid.GetColumn(clickedEllipse); // Get the column of the clicked ellipse
             try
@@ -140,13 +142,22 @@ namespace Client
                 }
             }
         }
-
+        private void ResetBoard()
+        {
+            for (int i = 0; i < Rows; i++)
+                for (int J = 0; J < Columns; J++)
+                {
+                    gameBoard[i, J].Fill = Brushes.White;                    
+                }
+            isBoardEnabled = true;
+        }
         private async Task NewGameButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             // TODO: enable board if disabled
             try
             {
                 await _apiService.StartGameAsync();
+                ResetBoard();
             }
             catch (Exception ex)
             {
@@ -160,7 +171,9 @@ namespace Client
             try
             {
                 await _apiService.EndGameAsync();
-            }catch (Exception ex)
+                isBoardEnabled = false;
+            }
+            catch (Exception ex)
             {
                 // TODO: add error lable
             }
