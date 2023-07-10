@@ -37,6 +37,7 @@ namespace Connect4Game
             board = new Board(rows, columns);
             gameStatus = GameStatus.OnGoing;
             startTime = DateTime.Now;
+            currentPlayer = Player.Human;
             this.playerId = playerId;
         }
         private Game() { }

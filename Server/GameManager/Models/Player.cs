@@ -49,7 +49,8 @@ namespace GameManager.Models
         public Game GetLastGame()
         {
             var gamesList = games.ToList();
-            var lastGame = gamesList[gamesList.Count - 1];
+            int count = gamesList.Count;
+            var lastGame = gamesList[count];
 
             return lastGame;
         }

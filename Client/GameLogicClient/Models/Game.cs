@@ -5,15 +5,16 @@ namespace GameLogic.Models
 {
     public enum PlayerType
     {
-        Human,
-        Ai
+        Human = 1,
+        Ai = 2
     }
     public enum GameStatus
     {
         Won,
         Lost,
         Draw,
-        OnGoing
+        OnGoing,
+        DNF
     }
     public class Game
     {
