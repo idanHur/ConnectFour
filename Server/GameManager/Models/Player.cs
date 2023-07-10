@@ -32,15 +32,17 @@ namespace GameManager.Models
         // Parameterless constructor
         public Player()
         {
+            games = new List<Game>(); // Initialize the collection
         }
         public Player(string playerName, int playerId)
         {
             this.playerName = playerName;
             this.playerId = playerId;
+            games = new List<Game>(); // Initialize the collection
         }
         public Game NewGame(int rows, int columns)
         {
-            Game newGame = new Game(rows, columns, games.Count + 1, playerId);
+            Game newGame = new Game(rows, columns, playerId);
             games.Add(newGame);
             return newGame;
         }

@@ -24,6 +24,8 @@ namespace GameManager.Models
                 return null;
             Game temp = player.NewGame(row, column);
             _context.SaveChanges();
+            Game gameFromDB = _context.Games.Where(g => g.playerId == playerId).OrderByDescending(g => g.startTime).FirstOrDefault();
+            temp.gameId = gameFromDB.gameId;
             return temp;
         }
 

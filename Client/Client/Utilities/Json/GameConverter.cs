@@ -19,26 +19,33 @@ namespace Client.Utilities.Json
             Game game = new Game();
 
             // Extract the necessary properties from the JSON
-            int gameId = (int)jObject["GameId"];
+            int gameId = (int)jObject["gameId"];
             game.gameId = gameId;
 
             // Deserialize the Board array
-            JArray boardArray = (JArray)jObject["Board"];
-            if (boardArray != null)
+            if (jObject["board"] is JObject boardObject)
             {
-                // Deserialize the board values
-                int[,] board = boardArray.ToObject<int[,]>();
-                game.board = board;
+                // Get the matrix property from the board JObject
+                JArray matrixArray = (JArray)boardObject["matrix"];
+                if (matrixArray != null)
+                {
+                    // Deserialize the matrix values
+                    int[,] matrix = matrixArray.ToObject<int[,]>();
+                    game.board = matrix;
+                }
             }
 
+
             // Deserialize the GameStatus
-            GameStatus gameStatus = jObject["GameStatus"].ToObject<GameStatus>();
+            GameStatus gameStatus = jObject["gameStatus"].ToObject<GameStatus>();
             game.gameStatus = gameStatus;
 
-            // Deserialize the Moves array
-            JArray movesArray = (JArray)jObject["Moves"];
-            if (movesArray != null)
+            // Check if "moves" exists and is an array
+            if (jObject["moves"] != null && jObject["moves"].Type == JTokenType.Array)
             {
+                // Cast to JArray
+                JArray movesArray = (JArray)jObject["moves"];
+
                 // Deserialize each Move object in the array
                 foreach (JToken moveToken in movesArray)
                 {
@@ -55,9 +62,10 @@ namespace Client.Utilities.Json
             Game game = (Game)value;
             JObject jObject = new JObject
         {
-            { "GameId", game.gameId },
-            { "Board", JArray.FromObject(game.board) },
-            { "GameStatus", JToken.FromObject(game.gameStatus) }
+            { "gameId", game.gameId },
+            { "board", JArray.FromObject(game.board) },
+            { "gameStatus", JToken.FromObject(game.gameStatus) },
+            { "moves", JArray.FromObject(game.moves) }
         };
 
             // Serialize the Moves array

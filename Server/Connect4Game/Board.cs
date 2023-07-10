@@ -6,6 +6,7 @@ namespace Connect4Game
 {
     public class Board
     {
+        public int id {  get; set; }
         private const int EmptySlot = 0;
         public int[,] matrix
         {
@@ -21,6 +22,8 @@ namespace Connect4Game
         {
             _matrix = new int[rows, columns]; // Creating a private boolean board
         }
+        // Default constructor (required by EF Core)
+        private Board() { }
 
         public bool IsValidMove(int column)
         {

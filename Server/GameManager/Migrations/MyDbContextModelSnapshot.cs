@@ -19,11 +19,24 @@ namespace GameManager.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Connect4Game.Board", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("id");
+
+                    b.ToTable("Board");
+                });
+
             modelBuilder.Entity("Connect4Game.Game", b =>
                 {
                     b.Property<int>("gameId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("boardid");
 
                     b.Property<int>("currentPlayer");
 
@@ -36,6 +49,8 @@ namespace GameManager.Migrations
                     b.Property<DateTime>("startTime");
 
                     b.HasKey("gameId");
+
+                    b.HasIndex("boardid");
 
                     b.HasIndex("playerId");
 
@@ -86,6 +101,10 @@ namespace GameManager.Migrations
 
             modelBuilder.Entity("Connect4Game.Game", b =>
                 {
+                    b.HasOne("Connect4Game.Board", "board")
+                        .WithMany()
+                        .HasForeignKey("boardid");
+
                     b.HasOne("GameManager.Models.Player")
                         .WithMany("games")
                         .HasForeignKey("playerId")
