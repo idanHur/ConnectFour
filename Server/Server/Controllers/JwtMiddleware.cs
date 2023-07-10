@@ -55,19 +55,30 @@ namespace Server.Controllers
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var playerId = int.Parse(jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
 
-            // Create a new scope to retrieve the DbContext
-            using (var scope = _serviceScopeFactory.CreateScope())
+            var playerIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            if (playerIdClaim != null)
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+                var playerId = int.Parse(playerIdClaim.Value);
 
-                // Get the user from the database based on the playerId extracted from the token
-                var user = await dbContext.Players.FindAsync(playerId);
+                // Create a new scope to retrieve the DbContext
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
 
-                // Attach the user object to the current context for further processing
-                context.Items["User"] = user;
+                    // Get the user from the database based on the playerId extracted from the token
+                    var user = await dbContext.Players.FindAsync(playerId);
+
+                    // Attach the user object to the current context for further processing
+                    context.Items["User"] = user;
+                }
+            }
+            else
+            {
+                // Handle the case when the claim is not found
+                // For example, throw an exception or return an error response
             }
         }
+
     }
 }
