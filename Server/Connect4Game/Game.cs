@@ -55,10 +55,6 @@ namespace Connect4Game
                 gameStatus = GameStatus.Lost;
             gameDuration = DateTime.Now - startTime;
         }
-        public int[,] GetGameBoard()
-        {
-            return board.matrix;
-        }
 
         public Move PlayerMove(int column)
         {
@@ -95,7 +91,7 @@ namespace Connect4Game
                 EndGame(true);
                 throw new InvalidOperationException("The game board is full");
             }
-            int columns = board.matrix.GetLength(1);
+            int columns = board.GetMatrix().GetLength(1);
             int winningMove = -1;
             int blockMove = -1;
 
