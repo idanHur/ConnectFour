@@ -31,6 +31,7 @@ namespace Client
         private const int Columns = 7;
         private const int FallingDelay = 650;
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
+        private bool gameEnded;
         private bool isBoardEnabled;
         public ConnectFourWindow(ApiService apiService, INavigationService navigationService)
         {
@@ -38,6 +39,7 @@ namespace Client
             _apiService = apiService;
             _navigationService = navigationService;
             isBoardEnabled = true;
+            gameEnded = false;
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)
             {
@@ -101,10 +103,13 @@ namespace Client
                     return;
                 }
                 isBoardEnabled = false;
-                await FallingAnimation(lastmove.columnNumber, Brushes.Red); 
-                Move aiMove = await _apiService.AiMoveAsync();
-                await FallingAnimation(aiMove.columnNumber, Brushes.Yellow);
-                isBoardEnabled = true;
+                await FallingAnimation(lastmove.columnNumber, Brushes.Red);
+                if (!gameEnded) // To not make ai move if quit game button is pressed after player move
+                {
+                    Move aiMove = await _apiService.AiMoveAsync();
+                    await FallingAnimation(aiMove.columnNumber, Brushes.Yellow);
+                    isBoardEnabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -162,6 +167,7 @@ namespace Client
             {
                 await _apiService.StartGameAsync();
                 ResetBoard();
+                gameEnded = false;
             }
             catch (Exception ex)
             {
@@ -177,6 +183,7 @@ namespace Client
             {
                 await _apiService.EndGameAsync();
                 isBoardEnabled = false;
+                gameEnded = true
             }
             catch (Exception ex)
             {
