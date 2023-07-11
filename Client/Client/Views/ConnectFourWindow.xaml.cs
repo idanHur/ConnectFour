@@ -100,10 +100,11 @@ namespace Client
                     ErrorLabel.Opacity = 1;
                     return;
                 }
+                isBoardEnabled = false;
                 await FallingAnimation(lastmove.columnNumber, Brushes.Red); 
                 Move aiMove = await _apiService.AiMoveAsync();
-                await FallingAnimation(aiMove.columnNumber, Brushes.Yellow); 
-
+                await FallingAnimation(aiMove.columnNumber, Brushes.Yellow);
+                isBoardEnabled = true;
             }
             catch (Exception ex)
             {
