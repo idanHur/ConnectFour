@@ -38,6 +38,6 @@ function createChip(color) {
 // Create chips at regular intervals
 setInterval(function () {
     createChip('red');
-    createChip('yellow');
+    createChip('gold');
 }, 2000); // Change this value to adjust the frequency of chip creation
 

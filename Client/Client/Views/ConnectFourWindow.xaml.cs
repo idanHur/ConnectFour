@@ -107,7 +107,7 @@ namespace Client
                 if (!gameEnded) // To not make ai move if quit game button is pressed after player move
                 {
                     Move aiMove = await _apiService.AiMoveAsync();
-                    await FallingAnimation(aiMove.columnNumber, Brushes.Yellow);
+                    await FallingAnimation(aiMove.columnNumber, Brushes.Gold);
                     isBoardEnabled = true;
                 }
             }
@@ -183,7 +183,7 @@ namespace Client
             {
                 await _apiService.EndGameAsync();
                 isBoardEnabled = false;
-                gameEnded = true
+                gameEnded = true;
             }
             catch (Exception ex)
             {
