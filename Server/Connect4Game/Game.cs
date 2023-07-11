@@ -118,6 +118,13 @@ namespace Connect4Game
                     }
                     board.UndoMove(col);
                     board.UndoMove(col);
+
+                    board.MakeMove(col, Player.Human);  // Pretend the opponent makes a move in this column and ai is in diffrent unrelated col
+                    if (board.IsWinningMove(col) == Player.Human)
+                    {
+                        blockMove = col;
+                    }
+                    board.UndoMove(col);
                 }
             }
 
