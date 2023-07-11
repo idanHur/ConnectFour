@@ -37,6 +37,7 @@ namespace GameManager.Models
             if (lastGame.gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
                 Move moveMade = lastGame.PlayerMove(column);
+                _context.SaveChanges();
                 return player.GetLastGame(); // Return the new game state after the move
             }
             throw new ArgumentException("There is no game in progress");
@@ -59,6 +60,7 @@ namespace GameManager.Models
             if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
                 player.GetLastGame().AiMove();
+                _context.SaveChanges();
                 return player.GetLastGame(); // Return the new game state after the move
             }
             throw new ArgumentException("There is no game in progress");
