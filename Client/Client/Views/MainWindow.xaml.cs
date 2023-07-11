@@ -30,6 +30,8 @@ namespace Client
         public MainWindow(ApiService apiService, INavigationService navigationService, AuthenticationService authService)
         {
             InitializeComponent();
+            this.Closing += MainWindow_Closing;
+
             _apiService = apiService;
             _navigationService = navigationService;
             _authService = authService;
@@ -41,7 +43,27 @@ namespace Client
             PlayerPhoneNumberLabel.Content += player.phoneNumber;
 
         }
-
+        private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you really want to close?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+            try
+            {
+                await _apiService.EndGameAsync();
+                Application.Current.Shutdown();
+            }
+            catch(Exception ex)
+            {
+                if(ex.Message == "There are no played games")
+                    Application.Current.Shutdown();
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+        }
         private void EndGameButton_Click(object sender, RoutedEventArgs e)
         {
 
