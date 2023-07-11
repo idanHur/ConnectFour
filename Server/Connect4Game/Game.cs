@@ -39,6 +39,7 @@ namespace Connect4Game
             startTime = DateTime.Now;
             currentPlayer = Player.Human;
             this.playerId = playerId;
+            Moves = new List<Move>();
         }
         private Game() { }
 

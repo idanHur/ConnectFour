@@ -37,7 +37,7 @@ namespace Client.Services
         }
         public void SetCurrentGameFromServerData(Game game)
         {
-            Game currentGame = _currentPlayer.games[_currentPlayer.games.Count];
+            Game currentGame = _currentPlayer.games[_currentPlayer.games.Count - 1];
             currentGame.gameId = game.gameId;
             currentGame.board = game.board;
             currentGame.gameStatus = game.gameStatus;

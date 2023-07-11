@@ -65,8 +65,11 @@ namespace GameManager.Models
         }
         public Player GetPlayer(int id)
         {
-            var player = _context.Players.Include(p => p.games)  // Load the Game related to the Player
-                .ThenInclude(g => g.board)  // Load the Board related to the Game
+            var player = _context.Players
+                .Include(p => p.games)
+                    .ThenInclude(g => g.board) // Load the Board related to the Game
+                .Include(p => p.games)
+                    .ThenInclude(g => g.Moves) // Load the Moves related to the Game
                 .FirstOrDefault(p => p.playerId == id);
             return player;
         }

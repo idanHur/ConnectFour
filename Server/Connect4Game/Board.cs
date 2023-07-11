@@ -9,14 +9,35 @@ namespace Connect4Game
         public int id {  get; set; }
         private const int EmptySlot = 0;
 
-        public string matrix; // EF Core dosnt supports int[,]
+        public string matrix { get; set; } // EF Core dosnt supports int[,]
 
         public Board(int rows, int columns)
         {
-            matrix = ""; // Creating a private boolean board
+            InitializeMatrix(rows, columns); // Creating a private boolean board
         }
         // Default constructor (required by EF Core)
         private Board() { }
+        public void InitializeMatrix(int rows, int cols)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    sb.Append("0");
+                    if (j != cols - 1)
+                    {
+                        sb.Append(",");
+                    }
+                }
+                if (i != rows - 1)
+                {
+                    sb.Append(";");
+                }
+            }
+            this.matrix = sb.ToString();
+        }
+
         public int[,] GetMatrix() // New method
         {
             var rows = this.matrix.Split(';');

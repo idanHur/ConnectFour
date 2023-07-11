@@ -6,12 +6,17 @@ namespace GameManager.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.AddColumn<string>(
+                name: "matrix",
+                table: "Board",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "matrix",
+                table: "Board");
         }
     }
 }

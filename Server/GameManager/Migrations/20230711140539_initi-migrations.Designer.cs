@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameManager.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230710145134_initi-migrations")]
+    [Migration("20230711140539_initi-migrations")]
     partial class initimigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,8 @@ namespace GameManager.Migrations
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("matrix");
 
                     b.HasKey("id");
 

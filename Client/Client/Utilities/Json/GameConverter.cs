@@ -23,18 +23,8 @@ namespace Client.Utilities.Json
             game.gameId = gameId;
 
             // Deserialize the Board array
-            if (jObject["board"] is JObject boardObject)
-            {
-                // Get the matrix property from the board JObject
-                JArray matrixArray = (JArray)boardObject["matrix"];
-                if (matrixArray != null)
-                {
-                    // Deserialize the matrix values
-                    int[,] matrix = matrixArray.ToObject<int[,]>();
-                    game.board = matrix;
-                }
-            }
-
+            game.board = (string)jObject["matrix"];
+            
 
             // Deserialize the GameStatus
             GameStatus gameStatus = jObject["gameStatus"].ToObject<GameStatus>();
@@ -63,7 +53,7 @@ namespace Client.Utilities.Json
             JObject jObject = new JObject
         {
             { "gameId", game.gameId },
-            { "board", JArray.FromObject(game.board) },
+            { "board", game.board },
             { "gameStatus", JToken.FromObject(game.gameStatus) },
             { "moves", JArray.FromObject(game.moves) }
         };

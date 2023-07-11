@@ -25,6 +25,8 @@ namespace GameManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("matrix");
+
                     b.HasKey("id");
 
                     b.ToTable("Board");
