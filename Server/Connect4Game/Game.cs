@@ -73,7 +73,7 @@ namespace Connect4Game
                 {
                     EndGame();
                 }
-                Move newMove = new Move(column, currentPlayer, Moves.Count + 1);
+                Move newMove = new Move(column, currentPlayer);
                 Moves.Add(newMove);
                 currentPlayer = Player.Ai;
                 return newMove;
@@ -125,7 +125,7 @@ namespace Connect4Game
             if (winningMove != -1)
             {
                 board.MakeMove(winningMove, Player.Ai);
-                Moves.Add(new Move(winningMove, currentPlayer, Moves.Count + 1));
+                Moves.Add(new Move(winningMove, currentPlayer));
                 EndGame();
                 return;
             }
@@ -134,7 +134,7 @@ namespace Connect4Game
             if (blockMove != -1)
             {
                 board.MakeMove(blockMove, Player.Ai);
-                Moves.Add(new Move(blockMove, currentPlayer, Moves.Count + 1));
+                Moves.Add(new Move(blockMove, currentPlayer));
                 currentPlayer = Player.Human;
                 return;
             }
@@ -147,7 +147,7 @@ namespace Connect4Game
                 column = rnd.Next(columns);
             }
             while (!board.IsValidMove(column));
-            Moves.Add(new Move(column, currentPlayer, Moves.Count + 1));
+            Moves.Add(new Move(column, currentPlayer));
             board.MakeMove(column, Player.Ai);
             currentPlayer = Player.Human;
         }
