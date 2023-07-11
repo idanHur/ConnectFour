@@ -81,6 +81,7 @@ namespace GameManager.Models
             if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
             if (player.IsGameOver()) return; // The last game was already ended 
             player.EndLastGame(gameId);
+            _context.SaveChanges();
         }
 
         public bool IsIdTaken(int id)

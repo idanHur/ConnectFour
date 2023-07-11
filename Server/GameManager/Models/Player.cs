@@ -56,7 +56,7 @@ namespace GameManager.Models
         {
             var gamesList = games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
-            if (lastGame != null) throw new InvalidOperationException($"There are no played games");
+            if (lastGame == null) throw new InvalidOperationException($"There are no played games");
             if (lastGame.gameId != gameId) throw new ArgumentException("Game id doesn't match last game id", nameof(gameId));// Make sure this is the game 
 
             lastGame.EndGame(didntFinish: true);
