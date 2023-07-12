@@ -33,6 +33,8 @@ namespace Client
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
         private bool gameEnded;
         private bool isBoardEnabled;
+        private int yellowCoins;
+        private int redCoins;
         public ConnectFourWindow(ApiService apiService, INavigationService navigationService)
         {
             InitializeComponent();
@@ -40,6 +42,8 @@ namespace Client
             _navigationService = navigationService;
             isBoardEnabled = true;
             gameEnded = false;
+            yellowCoins = 0;
+            redCoins = 0;
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)
             {
@@ -102,11 +106,15 @@ namespace Client
                     ErrorLabel.Opacity = 1;
                     return;
                 }
+                redCoins += 1;
+                RedCoinsLabel.Content = redCoins;
                 isBoardEnabled = false;
                 await FallingAnimation(lastmove.columnNumber, Brushes.Red);
                 if (!gameEnded) // To not make ai move if quit game button is pressed after player move
                 {
                     Move aiMove = await _apiService.AiMoveAsync();
+                    yellowCoins += 1;
+                    YellowCoinsLabel.Content = yellowCoins;
                     await FallingAnimation(aiMove.columnNumber, Brushes.Gold);
                     isBoardEnabled = true;
                 }
@@ -158,6 +166,10 @@ namespace Client
                 {
                     gameBoard[i, J].Fill = Brushes.White;                    
                 }
+            redCoins = 0;
+            yellowCoins = 0;
+            RedCoinsLabel.Content = redCoins;
+            YellowCoinsLabel.Content = yellowCoins;
             isBoardEnabled = true;
         }
         private async void NewGameButton_Click(object sender, RoutedEventArgs e)
