@@ -41,7 +41,7 @@ namespace Client
             // Register services 
             services.AddSingleton<ApiService>();
             services.AddSingleton<AuthenticationService>();
-            services.AddScoped<Player>();
+            services.AddSingleton<Player>();
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Register windows

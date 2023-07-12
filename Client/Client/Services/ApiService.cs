@@ -18,7 +18,7 @@ namespace Client.Services
 
         public ApiService(AuthenticationService authService)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("http://your-aspnetcore-api-url/") };
+            _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5001/") };
             _authService = authService;
         }
 
@@ -28,20 +28,21 @@ namespace Client.Services
         }
        
 
-        public async Task<bool> LoginAsync(string playerId, string password)
+        public async Task<bool> LoginAsync(int playerId, string password)
         {
             var payload = new { PlayerId = playerId, Password = password };
             var jsonPayload = JsonConvert.SerializeObject(payload);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/login", httpContent);
+            var response = await _httpClient.PostAsync("api/Auth/login", httpContent);
+            var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Error authenticating");
+                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
+                throw new Exception("Error in Login: " + errorResponse);
             }
 
-            var jsonResponse = await response.Content.ReadAsStringAsync();
             var data = JsonConvert.DeserializeAnonymousType(jsonResponse, new { token = "", player = "" });
 
             var jwt = data.token;
@@ -62,17 +63,25 @@ namespace Client.Services
             int playerId = player.playerId;
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
+            System.Diagnostics.Debug.WriteLine(_authService.GetJwtToken()); // Add this line to log the response
+            System.Diagnostics.Debug.WriteLine(playerId); // Add this line to log the response
 
-            var response = await _httpClient.PostAsync($"{playerId}/start", null);
-            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var response = await _httpClient.PostAsync($"api/{playerId}/start", null);
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
-                throw new Exception("Error starting game: " + errorResponse.error);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
+                player.games.Add(game);
             }
-            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
-            player.games.Add(game);
+            else
+            {
+                var errorResponse = await response.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine(errorResponse);
+                throw new Exception("Error starting game: HTTP status " + response.StatusCode);
+            }
+
+
         }
 
         public async Task<Move> MakeMoveAsync(int colMove)
@@ -85,7 +94,7 @@ namespace Client.Services
             var jsonPayload = JsonConvert.SerializeObject(colMove);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"{playerId}/move", httpContent);
+            var response = await _httpClient.PutAsync($"api/{playerId}/move", httpContent);
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
@@ -114,7 +123,7 @@ namespace Client.Services
             var jsonPayload = JsonConvert.SerializeObject(gameId);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"{playerId}/endGame", httpContent);
+            var response = await _httpClient.PutAsync($"api/{playerId}/endGame", httpContent);
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
@@ -136,7 +145,7 @@ namespace Client.Services
             var jsonPayload = JsonConvert.SerializeObject(gameId);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"{playerId}/aiMove", httpContent);
+            var response = await _httpClient.PutAsync($"api/{playerId}/aiMove", httpContent);
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)

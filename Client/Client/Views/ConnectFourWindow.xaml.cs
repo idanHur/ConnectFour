@@ -31,13 +31,19 @@ namespace Client
         private const int Columns = 7;
         private const int FallingDelay = 650;
         private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
+        private bool gameEnded;
         private bool isBoardEnabled;
+        private int yellowCoins;
+        private int redCoins;
         public ConnectFourWindow(ApiService apiService, INavigationService navigationService)
         {
             InitializeComponent();
             _apiService = apiService;
             _navigationService = navigationService;
             isBoardEnabled = true;
+            gameEnded = false;
+            yellowCoins = 0;
+            redCoins = 0;
             // Create the grid cells and ellipses dynamically
             for (int i = 0; i < Rows; i++)
             {
@@ -100,10 +106,18 @@ namespace Client
                     ErrorLabel.Opacity = 1;
                     return;
                 }
-                await FallingAnimation(lastmove.columnNumber, Brushes.Red); 
-                Move aiMove = await _apiService.AiMoveAsync();
-                await FallingAnimation(aiMove.columnNumber, Brushes.Yellow); 
-
+                redCoins += 1;
+                RedCoinsLabel.Content = redCoins;
+                isBoardEnabled = false;
+                await FallingAnimation(lastmove.columnNumber, Brushes.Red);
+                if (!gameEnded) // To not make ai move if quit game button is pressed after player move
+                {
+                    Move aiMove = await _apiService.AiMoveAsync();
+                    yellowCoins += 1;
+                    YellowCoinsLabel.Content = yellowCoins;
+                    await FallingAnimation(aiMove.columnNumber, Brushes.Gold);
+                    isBoardEnabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -152,15 +166,20 @@ namespace Client
                 {
                     gameBoard[i, J].Fill = Brushes.White;                    
                 }
+            redCoins = 0;
+            yellowCoins = 0;
+            RedCoinsLabel.Content = redCoins;
+            YellowCoinsLabel.Content = yellowCoins;
             isBoardEnabled = true;
         }
-        private async Task NewGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: enable board if disabled
             try
             {
                 await _apiService.StartGameAsync();
                 ResetBoard();
+                gameEnded = false;
             }
             catch (Exception ex)
             {
@@ -169,13 +188,14 @@ namespace Client
             }
         }
 
-        private async Task QuitGameButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: disable board
             try
             {
                 await _apiService.EndGameAsync();
                 isBoardEnabled = false;
+                gameEnded = true;
             }
             catch (Exception ex)
             {
@@ -184,5 +204,7 @@ namespace Client
             }
 
         }
+
+        
     }
 }
