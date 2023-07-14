@@ -15,7 +15,7 @@ namespace Server.Controllers
             _manager = manager;
         }
 
-        public IActionResult Index()
+        public IActionResult AllPlayers()
         {
             var players = _manager.GetAllPlayers();
             return View(players);
