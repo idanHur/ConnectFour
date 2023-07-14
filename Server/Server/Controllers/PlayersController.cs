@@ -30,14 +30,20 @@ namespace Server.Controllers
             return View(players);  // Use "Index" view to display sorted players
         }
 
-        public IActionResult SortByNameDescending()
+        public IActionResult SortByNameAndGameDateDescending()
         {
             var players = _manager.GetAllPlayers()
-                .OrderByDescending(p => p.playerName.ToLower())
+                .Select(p => new
+                {
+                    Name = p.playerName,
+                    LastGameDate = p.games.OrderByDescending(g => g.startTime).FirstOrDefault()?.startTime
+                })
+                .OrderByDescending(p => p.Name.ToLower())
                 .ToList();
 
             return View(players);  // Use "Index" view to display sorted players
         }
+
 
         public IActionResult AllGames()
         {
