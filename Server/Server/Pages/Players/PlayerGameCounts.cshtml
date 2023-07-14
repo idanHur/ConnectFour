@@ -1,4 +1,24 @@
 ﻿@page
-@model Server.Pages.Players.PlayerGameCountsModel
+@model IEnumerable<dynamic>
+
+<h2>Players Game Count</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Amount of games played</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>@player.playerName</td>
+                <td>@player.GameCount</td>
+            </tr>
+        }
+    </tbody>
+</table>
 @{
 }
