@@ -75,13 +75,13 @@ html, body {
 }
 
 
-    .chip.red {
-        background-color: red;
-    }
+.chip.red {
+    background-color: red;
+}
 
-    .chip.yellow {
-        background-color: yellow;
-    }
+.chip.gold {
+    background-color: gold;
+}
 
 
 @keyframes fall {

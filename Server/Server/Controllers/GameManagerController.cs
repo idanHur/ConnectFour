@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class GameManagerController : ControllerBase
     {
@@ -59,17 +59,9 @@ namespace Server.Controllers
         }
 
         [HttpPut("{playerId}/move")]
-        [Authorize]
         public IActionResult Move(int playerId, [FromBody] int playerMove)
         {
-            // Get the authenticated user's ID
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            // Compare the authenticated user's ID with the playerId parameter
-            if (userId != playerId.ToString())
-            {
-                return Forbid(); // Return 403 Forbidden if the user is not authorized to make the move
-            }
+            
 
             try
             {

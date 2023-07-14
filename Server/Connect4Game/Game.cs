@@ -20,25 +20,26 @@ namespace Connect4Game
     public class Game
     {
 
-        private Board board;
+        public Board board{ get; private set; }
         public GameStatus gameStatus { get; private set; }
         public Player currentPlayer { get; private set; }
 
         public DateTime startTime { get; private set; }
         public TimeSpan gameDuration { get; private set; }
-        public int gameId { get; private set; }
+        public int gameId { get; set; }
         public int playerId { get; private set; }
 
         // EF Core will automatically load the related Move entities when accessing this property.
         public ICollection<Move> Moves { get; set; }
 
-        public Game(int rows, int columns, int gameId, int playerId)
+        public Game(int rows, int columns, int playerId)
         {
-            this.gameId = gameId;
             board = new Board(rows, columns);
             gameStatus = GameStatus.OnGoing;
             startTime = DateTime.Now;
+            currentPlayer = Player.Human;
             this.playerId = playerId;
+            Moves = new List<Move>();
         }
         private Game() { }
 
@@ -54,10 +55,6 @@ namespace Connect4Game
             else
                 gameStatus = GameStatus.Lost;
             gameDuration = DateTime.Now - startTime;
-        }
-        public int[,] GetGameBoard()
-        {
-            return board.matrix;
         }
 
         public Move PlayerMove(int column)
@@ -76,7 +73,7 @@ namespace Connect4Game
                 {
                     EndGame();
                 }
-                Move newMove = new Move(column, currentPlayer, Moves.Count + 1);
+                Move newMove = new Move(column, currentPlayer);
                 Moves.Add(newMove);
                 currentPlayer = Player.Ai;
                 return newMove;
@@ -95,7 +92,7 @@ namespace Connect4Game
                 EndGame(true);
                 throw new InvalidOperationException("The game board is full");
             }
-            int columns = board.matrix.GetLength(1);
+            int columns = board.GetMatrix().GetLength(1);
             int winningMove = -1;
             int blockMove = -1;
 
@@ -121,6 +118,13 @@ namespace Connect4Game
                     }
                     board.UndoMove(col);
                     board.UndoMove(col);
+
+                    board.MakeMove(col, Player.Human);  // Pretend the opponent makes a move in this column and ai is in diffrent unrelated col
+                    if (board.IsWinningMove(col) == Player.Human)
+                    {
+                        blockMove = col;
+                    }
+                    board.UndoMove(col);
                 }
             }
 
@@ -128,7 +132,7 @@ namespace Connect4Game
             if (winningMove != -1)
             {
                 board.MakeMove(winningMove, Player.Ai);
-                Moves.Add(new Move(winningMove, currentPlayer, Moves.Count + 1));
+                Moves.Add(new Move(winningMove, currentPlayer));
                 EndGame();
                 return;
             }
@@ -137,7 +141,7 @@ namespace Connect4Game
             if (blockMove != -1)
             {
                 board.MakeMove(blockMove, Player.Ai);
-                Moves.Add(new Move(blockMove, currentPlayer, Moves.Count + 1));
+                Moves.Add(new Move(blockMove, currentPlayer));
                 currentPlayer = Player.Human;
                 return;
             }
@@ -150,7 +154,7 @@ namespace Connect4Game
                 column = rnd.Next(columns);
             }
             while (!board.IsValidMove(column));
-            Moves.Add(new Move(column, currentPlayer, Moves.Count + 1));
+            Moves.Add(new Move(column, currentPlayer));
             board.MakeMove(column, Player.Ai);
             currentPlayer = Player.Human;
         }

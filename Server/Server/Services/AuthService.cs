@@ -42,7 +42,9 @@ namespace Server.Services
             {
                 Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, user.playerId.ToString()) }), // Include the user's playerId as the NameIdentifier claim
                 Expires = DateTime.UtcNow.AddDays(7), // Set the token expiration time
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature) // Specify the signing credentials using the secret key and the HMACSHA256 signature algorithm
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature), // Specify the signing credentials using the secret key and the HMACSHA256 signature algorithm
+                Audience = _configuration["Jwt:Audience"], // Set the expected audience value for the token
+                Issuer = _configuration["Jwt:Issuer"] // Set the issuer value for the token
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor); // Create the token based on the token descriptor
@@ -50,6 +52,8 @@ namespace Server.Services
 
             return encodedToken; // Return the encoded token
         }
+
+
 
 
     }

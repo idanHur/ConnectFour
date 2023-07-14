@@ -24,6 +24,8 @@ namespace GameManager.Models
                 return null;
             Game temp = player.NewGame(row, column);
             _context.SaveChanges();
+            Game gameFromDB = _context.Games.Where(g => g.playerId == playerId).OrderByDescending(g => g.startTime).FirstOrDefault();
+            temp.gameId = gameFromDB.gameId;
             return temp;
         }
 
@@ -31,12 +33,25 @@ namespace GameManager.Models
         {
             Player player = GetPlayer(playerId);
             if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
-            if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
+            Game lastGame = GetPlayerLastGame(playerId);
+            if (lastGame.gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
-                Move moveMade = player.GetLastGame().PlayerMove(column);
+                Move moveMade = lastGame.PlayerMove(column);
+                _context.SaveChanges();
                 return player.GetLastGame(); // Return the new game state after the move
             }
             throw new ArgumentException("There is no game in progress");
+        }
+        public Game GetPlayerLastGame(int playerId)
+        {
+            var player = GetPlayer(playerId);
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+
+            var lastGame = player.games.OrderByDescending(g => g.startTime).FirstOrDefault();
+
+            if (lastGame == null) throw new InvalidOperationException($"No games found for player, playerId: {playerId}");
+
+            return lastGame;
         }
         public Game MakeAiMoveForPlayerGame(int playerId, int gameId)
         {
@@ -45,13 +60,19 @@ namespace GameManager.Models
             if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
             {
                 player.GetLastGame().AiMove();
+                _context.SaveChanges();
                 return player.GetLastGame(); // Return the new game state after the move
             }
             throw new ArgumentException("There is no game in progress");
         }
         public Player GetPlayer(int id)
         {
-            var player = _context.Players.FirstOrDefault(p => p.playerId == id);
+            var player = _context.Players
+                .Include(p => p.games)
+                    .ThenInclude(g => g.board) // Load the Board related to the Game
+                .Include(p => p.games)
+                    .ThenInclude(g => g.Moves) // Load the Moves related to the Game
+                .FirstOrDefault(p => p.playerId == id);
             return player;
         }
         public void EndGameForPlayer(int playerId, int gameId)
@@ -60,6 +81,7 @@ namespace GameManager.Models
             if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
             if (player.IsGameOver()) return; // The last game was already ended 
             player.EndLastGame(gameId);
+            _context.SaveChanges();
         }
 
         public bool IsIdTaken(int id)

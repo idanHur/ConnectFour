@@ -32,15 +32,17 @@ namespace GameManager.Models
         // Parameterless constructor
         public Player()
         {
+            games = new List<Game>(); // Initialize the collection
         }
         public Player(string playerName, int playerId)
         {
             this.playerName = playerName;
             this.playerId = playerId;
+            games = new List<Game>(); // Initialize the collection
         }
         public Game NewGame(int rows, int columns)
         {
-            Game newGame = new Game(rows, columns, games.Count + 1, playerId);
+            Game newGame = new Game(rows, columns, playerId);
             games.Add(newGame);
             return newGame;
         }
@@ -48,14 +50,13 @@ namespace GameManager.Models
         {
             var gamesList = games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
-
             return lastGame;
         }
         public void EndLastGame(int gameId)
         {
             var gamesList = games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
-            if (lastGame != null) throw new InvalidOperationException($"There are no played games");
+            if (lastGame == null) throw new InvalidOperationException($"There are no played games");
             if (lastGame.gameId != gameId) throw new ArgumentException("Game id doesn't match last game id", nameof(gameId));// Make sure this is the game 
 
             lastGame.EndGame(didntFinish: true);
