@@ -27,7 +27,7 @@ namespace Server.Controllers
                 .OrderBy(p => p.playerName.ToLower())
                 .ToList();
 
-            return View(players);  // Use "Index" view to display sorted players
+            return View(players); 
         }
 
         public IActionResult SortByNameAndGameDateDescending()
@@ -41,7 +41,7 @@ namespace Server.Controllers
                 .OrderByDescending(p => p.Name.ToLower())
                 .ToList();
 
-            return View(players);  // Use "Index" view to display sorted players
+            return View(players);  
         }
 
 

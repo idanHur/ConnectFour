@@ -1,4 +1,27 @@
 ﻿@page
-@model Server.Pages.Players.AllPlayersModel
-@{
+@model IEnumerable<GameManager.Models.Player>
+
+<h2>All Players</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>@player.playerId</td>
+                <td>@player.playerName</td>
+                <td>@player.phoneNumber</td>
+                <td>@player.country</td>
+            </tr>
+        }
+    </tbody>
+</table>@{
 }
