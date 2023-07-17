@@ -75,7 +75,15 @@ namespace Server.Controllers
         public IActionResult PlayersSortedByGameCount()
         {
             var players = _manager.GetAllPlayers()
-                .OrderByDescending(p => p.games.Count)
+                .Select(p => new PlayerSortedByGameCountViewModel
+                {
+                    PlayerId = p.playerId,
+                    PlayerName = p.playerName,
+                    PhoneNumber = p.phoneNumber,
+                    Country = p.country,
+                    GameCount = p.games.Count
+                })
+                .OrderByDescending(p => p.GameCount)
                 .ToList();
 
             return PartialView("_PlayersSortedByGameCount", players);

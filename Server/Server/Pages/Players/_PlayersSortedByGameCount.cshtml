@@ -1,7 +1,8 @@
-﻿@model IEnumerable<GameManager.Models.Player>
+﻿@using Server.ViewModels
+@model IEnumerable<PlayerSortedByGameCountViewModel>
 
 <div class="container mt-3">
-    <h2>Players Sorted by Name</h2>
+    <h2>Players Sorted by Game Count</h2>
 
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -10,16 +11,18 @@
                 <th>Name</th>
                 <th>Phone Number</th>
                 <th>Country</th>
+                <th>Game Count</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var player in Model)
             {
                 <tr>
-                    <td>@player.playerId</td>
-                    <td>@player.playerName</td>
-                    <td>@player.phoneNumber</td>
-                    <td>@player.country</td>
+                    <td>@player.PlayerId</td>
+                    <td>@player.PlayerName</td>
+                    <td>@player.PhoneNumber</td>
+                    <td>@player.Country</td>
+                    <td>@player.GameCount</td>
                 </tr>
             }
         </tbody>
