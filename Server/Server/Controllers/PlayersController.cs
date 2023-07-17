@@ -6,6 +6,7 @@ using System.Linq;
 using Server.Pages.Players;
 using Server.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace Server.Controllers
 {
@@ -135,6 +136,17 @@ namespace Server.Controllers
             return PartialView("_Games", games);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult GetPlayersGroupedByCountry()
+        {
+            var playersGroupedByCountry = _manager.GetAllPlayers()
+                .GroupBy(p => p.country)
+                .Select(g => new PlayersGroupedByCountryViewModel { Country = g.Key, Players = g.ToList() })
+                .Where(g => g.Players.Any())
+                .ToList();
+
+            return PartialView("_PlayersGroupedByCountry", playersGroupedByCountry);
+        }
 
     }
 }
