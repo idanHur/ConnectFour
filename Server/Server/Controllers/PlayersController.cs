@@ -34,10 +34,10 @@ namespace Server.Controllers
             return PartialView("_SortByName", players); 
         }
         [HttpGet("[action]")]
-        public IActionResult SortByNameAndGameDateDescending()
+        public IActionResult PlayersLastGameSorted()
         {
             var players = _manager.GetAllPlayers()
-                .Select(p => new PlayersByNameDescendingViewModel
+                .Select(p => new PlayersLastGameSortedViewModel
                 {
                     Name = p.playerName,
                     LastGameDate = p.games.OrderByDescending(g => g.startTime).FirstOrDefault()?.startTime
@@ -45,7 +45,7 @@ namespace Server.Controllers
                 .OrderByDescending(p => p.Name.ToLower())
                 .ToList();
 
-            return PartialView("_SortByNameAndGameDateDescending", players);
+            return PartialView("_PlayersLastGameSorted", players);
         }
 
         [HttpGet("[action]")]
