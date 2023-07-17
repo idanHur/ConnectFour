@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Server.Pages.Players;
 using Server.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Server.Controllers
 {
@@ -107,6 +108,31 @@ namespace Server.Controllers
 
             ViewData["Header"] = "Games With Unique Players";
             return PartialView("_Games", gamesWithUniquePlayers);
+        }
+        [HttpGet("[action]")]
+        public IActionResult GetPlayerDropdown()
+        {
+            var players = _manager.GetAllPlayers()
+                .OrderBy(p => p.playerName)
+                .Select(p => new SelectListItem
+                {
+                    Value = p.playerId.ToString(),
+                    Text = p.playerName
+                })
+                .Distinct()
+                .ToList();
+
+            return PartialView("_PlayerDropdown", players);
+        }
+        [HttpGet("[action]")]
+        public IActionResult GetPlayerGames(int playerId)
+        {
+            var games = _manager.GetAllPlayers()
+                .SelectMany(p => p.games)
+                .Where(g => g.playerId == playerId)
+                .ToList();
+
+            return PartialView("_Games", games);
         }
 
 
