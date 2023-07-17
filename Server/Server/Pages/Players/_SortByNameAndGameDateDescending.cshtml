@@ -1,0 +1,23 @@
+﻿@model IEnumerable<dynamic>
+
+<div class="container mt-3">
+    <h2>Players Sorted by Name (Descending)</h2>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Last Game Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (dynamic item in Model)
+            {
+                <tr>
+                    <td>@item.PlayerName</td>
+                    <td>@item.LastGameDate?.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

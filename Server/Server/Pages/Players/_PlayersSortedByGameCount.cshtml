@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GameManager.Models.Player>
+
+<div class="container mt-3">
+    <h2>Players Sorted by Name</h2>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>@player.playerId</td>
+                    <td>@player.playerName</td>
+                    <td>@player.phoneNumber</td>
+                    <td>@player.country</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
