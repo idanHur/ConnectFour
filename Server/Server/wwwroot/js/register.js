@@ -5,7 +5,7 @@ function populateCountrySelect(countryData) {
 
     for (var countryCode in countryData) {
         var option = document.createElement('option');
-        option.value = countryCode;
+        option.value = countryData[countryCode];
         option.text = countryData[countryCode];
         selectElement.add(option);
     }
