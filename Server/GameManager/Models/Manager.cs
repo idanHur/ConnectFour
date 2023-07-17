@@ -104,7 +104,13 @@ namespace GameManager.Models
 
         public List<Player> GetAllPlayers()
         {
-            return _context.Players.ToList();
+            return _context.Players
+                .Include(p => p.games)
+                    .ThenInclude(g => g.board)
+                .Include(p => p.games)
+                    .ThenInclude(g => g.Moves)
+                .ToList();
         }
+
     }
 }
