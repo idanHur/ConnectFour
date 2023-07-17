@@ -1,4 +1,5 @@
-﻿@model IEnumerable<dynamic>
+﻿@using Server.ViewModels
+@model IEnumerable<PlayersByNameDescendingViewModel>
 
 <div class="container mt-3">
     <h2>Players Sorted by Name (Descending)</h2>
@@ -11,11 +12,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (dynamic item in Model)
+            @foreach (var player in Model)
             {
                 <tr>
-                    <td>@item.PlayerName</td>
-                    <td>@item.LastGameDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@player.Name</td>
+                    <td>@player.LastGameDate?.ToString("yyyy-MM-dd")</td>
                 </tr>
             }
         </tbody>

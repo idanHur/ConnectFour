@@ -37,7 +37,7 @@ namespace Server.Controllers
         public IActionResult SortByNameAndGameDateDescending()
         {
             var players = _manager.GetAllPlayers()
-                .Select(p => new
+                .Select(p => new PlayersByNameDescendingViewModel
                 {
                     Name = p.playerName,
                     LastGameDate = p.games.OrderByDescending(g => g.startTime).FirstOrDefault()?.startTime
@@ -45,7 +45,7 @@ namespace Server.Controllers
                 .OrderByDescending(p => p.Name.ToLower())
                 .ToList();
 
-            return PartialView("_SortByNameAndGameDateDescending", players);  
+            return PartialView("_SortByNameAndGameDateDescending", players);
         }
 
         [HttpGet("[action]")]
