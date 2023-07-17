@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Server.Pages.Players
 {
-    public class PlayersSortedByGameCountModel : PageModel
+    public class GroupedByGameCountModel : PageModel
     {
         public void OnGet()
         {
