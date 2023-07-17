@@ -1,0 +1,16 @@
+﻿@using Server.ViewModels
+@model IEnumerable<PlayersGroupedByCountryViewModel>
+
+<div class="container mt-3">
+    <h2>Players By Country</h2>
+
+    @foreach (var group in Model)
+    {
+        var viewData = new ViewDataDictionary(ViewData)
+                    {
+                        ["Header"] = group.Country
+                    };
+
+        @await Html.PartialAsync("_AllPlayers", group.Players, viewData)
+}
+</div>

@@ -1,0 +1,39 @@
+﻿@page
+@model Server.Pages.Players.MainViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-3">
+    <h1>Player Data Viewer</h1>
+
+    <div class="form-group">
+        <label for="selectData">Select Data</label>
+        <select class="form-control" id="selectData">
+            <option value="">Select Data</option>
+            <option value="AllPlayers">All Players</option>
+            <option value="PlayersLastGameSorted">Players Sorted By Last Game</option>
+            <option value="AllGames">All Games</option>
+            <option value="GamesWithUniquePlayers">Games with Unique Players</option>
+            <option value="PlayerGameCounts">Player Game Counts</option>
+            <option value="GroupedByGameCount">Players Grouped By Game Count</option>
+            <option value="GetPlayersGroupedByCountry">Players By Country</option>
+            <option value="SelectPlayer">Select Player</option>
+        </select>
+    </div>
+    
+    <!-- Checkbox for sorting by name -->
+    <div class="form-group mt-2" id="sortByNameCheck" style="display: none;">
+        <input type="checkbox" id="sortByName" name="sortByName">
+        <label for="sortByName">Sort By Name</label>
+    </div>
+
+    <div id="dataContainer" class="mt-3">
+        <!-- Partial view will be loaded here dynamically -->
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/playersMainView.js"></script>
+}

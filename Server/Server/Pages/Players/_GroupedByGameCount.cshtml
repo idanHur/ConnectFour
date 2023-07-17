@@ -1,0 +1,16 @@
+﻿@using Server.ViewModels
+@model IEnumerable<GroupedByGameCountViewModel>
+
+<div class="container mt-3">
+    <h2>Players Grouped By Game Count</h2>
+
+    @foreach (var group in Model)
+    {
+        var viewData = new ViewDataDictionary(ViewData)
+                {
+                    ["Header"] = $"Number Of Games Played: {group.GameCount}"
+    };
+
+        @await Html.PartialAsync("_AllPlayers", group.Players, viewData)
+    }
+</div>
