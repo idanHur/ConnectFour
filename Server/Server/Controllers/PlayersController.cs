@@ -22,6 +22,7 @@ namespace Server.Controllers
         public IActionResult AllPlayers()
         {
             var players = _manager.GetAllPlayers();
+            ViewData["Header"] = "All Players";
             return PartialView("_AllPlayers", players);
         }
         [HttpGet("[action]")]
@@ -30,8 +31,8 @@ namespace Server.Controllers
             var players = _manager.GetAllPlayers()
                 .OrderBy(p => p.playerName.ToLower())
                 .ToList();
-
-            return PartialView("_SortByName", players); 
+            ViewData["Header"] = "All Players Sorted Ascending";
+            return PartialView("_AllPlayers", players); 
         }
         [HttpGet("[action]")]
         public IActionResult PlayersLastGameSorted()
@@ -55,7 +56,8 @@ namespace Server.Controllers
                 .SelectMany(p => p.games)
                 .ToList();
 
-            return PartialView("_AllGames", games);
+            ViewData["Header"] = "All Games";
+            return PartialView("_Games", games);
         }
         [HttpGet("[action]")]
         public IActionResult PlayerGameCounts()
@@ -88,5 +90,25 @@ namespace Server.Controllers
 
             return PartialView("_PlayersSortedByGameCount", players);
         }
+
+        [HttpGet("[action]")]
+        public IActionResult GamesWithUniquePlayers()
+        {
+            // Get all games from all players
+            var allGames = _manager.GetAllPlayers()
+                .SelectMany(p => p.games)
+                .ToList();
+
+            // Group games by playerId, and select only the first game from each group
+            var gamesWithUniquePlayers = allGames
+                .GroupBy(g => g.playerId)
+                .Select(group => group.First())
+                .ToList();
+
+            ViewData["Header"] = "Games With Unique Players";
+            return PartialView("_Games", gamesWithUniquePlayers);
+        }
+
+
     }
 }

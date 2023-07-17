@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<GameManager.Models.Player>
 
 <div class="container mt-3">
-    <h2>All Players</h2>
+    <h2 class="mb-4">@ViewData["Header"]</h2>
 
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -21,7 +21,6 @@
                     <td>@player.phoneNumber</td>
                     <td>@player.country</td>
                 </tr>
-            }
             }
         </tbody>
     </table>
