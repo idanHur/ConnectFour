@@ -5,24 +5,32 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <div class="container-fluid mt-5">
-    <form asp-page-handler="CheckPassword" method="post" class="form-background mx-auto w-75">
-        <div class="form-group mb-3">
-            <label asp-for="SelectedPlayerId"><strong>Player</strong></label>
-            <select asp-for="SelectedPlayerId" asp-items="@(new SelectList(Model.Players.Select(p => new { Id = p.playerId, Name = $"{p.playerId}: {p.playerName}"}), "Id", "Name"))" class="form-control"></select>
-            <span asp-validation-for="SelectedPlayerId" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="PlayerPassword"><strong>Password</strong></label>
-            <input asp-for="PlayerPassword" type="password" class="form-control" placeholder="Enter password">
-            <span asp-validation-for="PlayerPassword" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-    </form>
-
-    @if (Model.EditPlayer != null && Model.EditPlayer.playerId == Model.SelectedPlayerId)
-    {
-        <form asp-page-handler="EditPlayer" method="post" class="form-background mx-auto w-75 mt-4">
-            <partial name="Players/_PlayerForm" model="Model.EditPlayer" />
+    <div id="playerSelectionDiv">
+        <!-- Select player and enter password form -->
+        <form asp-page-handler="CheckPassword" method="post" class="form-background mx-auto w-75">
+            <div class="form-group mb-3">
+                <label asp-for="SelectedPlayerId"><strong>Player</strong></label>
+                <select asp-for="SelectedPlayerId" asp-items="@(new SelectList(Model.Players.Select(p => new { Id = p.playerId, Name = $"{p.playerId}: {p.playerName}"}), "Id", "Name"))" class="form-control"></select>
+                <span asp-validation-for="SelectedPlayerId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="PlayerPassword"><strong>Password</strong></label>
+                <input asp-for="PlayerPassword" type="password" class="form-control" placeholder="Enter password">
+                <span asp-validation-for="PlayerPassword" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
         </form>
-    }
+    </div>
+
+    <div id="editPlayerDiv">
+        <!-- Edit player details form -->
+        @if (Model.EditPlayer != null && Model.EditPlayer.playerId == Model.SelectedPlayerId)
+        {
+            <form asp-page-handler="EditPlayer" method="post" class="form-background mx-auto w-75 mt-4">
+                <input type="hidden" asp-for="playerOriginalId" />
+                <partial name="Players/_PlayerForm" model="Model.EditPlayer" />
+            </form>
+        }
+    </div>
+
 </div>

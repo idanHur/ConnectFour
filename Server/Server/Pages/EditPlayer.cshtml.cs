@@ -17,6 +17,8 @@ namespace Server.Pages
         public string PlayerPassword { get; set; }
 
         public List<Player> Players { get; set; }
+        [BindProperty]
+        public int playerOriginalId { get; set; }
 
         private readonly Manager _gameManager;
 
@@ -42,7 +44,9 @@ namespace Server.Pages
             if (player != null && player.password == PlayerPassword)
             {
                 EditPlayer = player;
+                playerOriginalId = player.playerId;
                 ModelState.Clear();
+
                 return Page();
             }
             else
@@ -54,9 +58,9 @@ namespace Server.Pages
 
         public IActionResult OnPost()
         {
-            if (SelectedPlayerId == 0)
+            if ((playerOriginalId != EditPlayer.playerId) && (_gameManager.IsIdTaken(EditPlayer.playerId))) // If the id was changed check if the new id is taken
             {
-                ModelState.AddModelError("SelectedPlayerId", "Please select a player.");
+                ModelState.AddModelError("playerId", "This ID is already taken.");
             }
 
             // Validate ModelState
@@ -66,7 +70,7 @@ namespace Server.Pages
             }
 
             // Update the player details
-            //_gameManager.UpdatePlayer(EditPlayer);
+            _gameManager.UpdatePlayer(playerOriginalId, EditPlayer);
 
             // Redirect to Index page.
             return RedirectToPage("/Index");
