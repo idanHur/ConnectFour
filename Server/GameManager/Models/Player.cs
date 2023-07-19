@@ -46,6 +46,30 @@ namespace GameManager.Models
             games.Add(newGame);
             return newGame;
         }
+        public void ChangeGamesForUpdateUser()
+        {
+            List<Game> tempGames = new List<Game>();
+            foreach (var game in games)
+            {
+                // Create a new Game object and copy properties except gameId
+                Game tempGame = new Game()
+                {
+                    board = game.board,
+                    gameStatus = game.gameStatus,
+                    currentPlayer = game.currentPlayer,
+                    startTime = game.startTime,
+                    gameDuration = game.gameDuration,
+                    playerId = game.playerId,
+                    Moves = game.Moves
+                };
+
+                // Add the new game to the tempGames list
+                tempGames.Add(tempGame);
+            }
+
+            // Replace the games list with tempGames
+            games = tempGames;
+        }
         public Game GetLastGame()
         {
             var gamesList = games.ToList();

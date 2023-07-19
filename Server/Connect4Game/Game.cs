@@ -20,14 +20,14 @@ namespace Connect4Game
     public class Game
     {
 
-        public Board board{ get; private set; }
-        public GameStatus gameStatus { get; private set; }
-        public Player currentPlayer { get; private set; }
+        public Board board{ get; set; }
+        public GameStatus gameStatus { get; set; }
+        public Player currentPlayer { get; set; }
 
-        public DateTime startTime { get; private set; }
-        public TimeSpan gameDuration { get; private set; }
+        public DateTime startTime { get; set; }
+        public TimeSpan gameDuration { get; set; }
         public int gameId { get; set; }
-        public int playerId { get; private set; }
+        public int playerId { get; set; }
 
         // EF Core will automatically load the related Move entities when accessing this property.
         public ICollection<Move> Moves { get; set; }
@@ -41,7 +41,7 @@ namespace Connect4Game
             this.playerId = playerId;
             Moves = new List<Move>();
         }
-        private Game() { }
+        public Game() { }
 
         public void EndGame(bool draw = false, bool didntFinish = false)
         {
