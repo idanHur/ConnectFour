@@ -1,4 +1,41 @@
-﻿@page
+﻿@page "/EditPlayer/{id?}"
 @model Server.Pages.EditPlayerModel
 @{
+    ViewData["Title"] = "Edit Player";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Dropdown to select player -->
+<div class="form-group">
+    <label for="playerSelect">Select Player</label>
+    <select id="playerSelect" class="form-control" onchange="location = '/EditPlayer/' + this.value;">
+        <option selected disabled>Select Player</option>
+        @foreach (var player in Model.Players)
+        {
+            <option value="@player.playerId" selected="@(Model.SelectedPlayerId == player.playerId ? "selected" : null)">Id: @player.playerId, name: @player.playerName</option>
+        }
+    </select>
+</div>
+
+<!-- Player edit form -->
+@if (Model.EditPlayer != null)
+{
+    <div class="container-fluid mt-5">
+        <form asp-page-handler="Edit" method="post" class="form-background mx-auto w-75">
+            <div class="form-group">
+                <label asp-for="EditPlayer.playerName">Player Name</label>
+                <input asp-for="EditPlayer.playerName" class="form-control" placeholder="Enter player name">
+                <span asp-validation-for="EditPlayer.playerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditPlayer.playerId">ID</label>
+                <input asp-for="EditPlayer.playerId" class="form-control" placeholder="Enter ID" readonly>
+                <span asp-validation-for="EditPlayer.playerId" class="text-danger"></span>
+            </div>
+            <!-- Other form fields go here -->
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
 }
