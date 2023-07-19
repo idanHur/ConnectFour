@@ -13,6 +13,9 @@ namespace Server.Pages
         [BindProperty]
         public int SelectedPlayerId { get; set; }
 
+        [BindProperty]
+        public string PlayerPassword { get; set; }
+
         public List<Player> Players { get; set; }
 
         private readonly Manager _gameManager;
@@ -32,7 +35,23 @@ namespace Server.Pages
                 SelectedPlayerId = EditPlayer.playerId;
             }
         }
+        public IActionResult OnPostCheckPassword()
+        {
+            var player = _gameManager.GetPlayer(SelectedPlayerId);
 
-      
+            if (player != null && player.password == PlayerPassword)
+            {
+                EditPlayer = player;
+                ModelState.Clear();
+                return Page();
+            }
+            else
+            {
+                ModelState.AddModelError("PlayerPassword", "Invalid password. Please try again.");
+                return Page();
+            }
+        }
+
+     
     }
 }
