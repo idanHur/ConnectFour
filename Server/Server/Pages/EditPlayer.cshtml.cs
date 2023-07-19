@@ -52,6 +52,24 @@ namespace Server.Pages
             }
         }
 
-     
+        public IActionResult OnPost()
+        {
+            if (SelectedPlayerId == 0)
+            {
+                ModelState.AddModelError("SelectedPlayerId", "Please select a player.");
+            }
+
+            // Validate ModelState
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            // Update the player details
+            //_gameManager.UpdatePlayer(EditPlayer);
+
+            // Redirect to Index page.
+            return RedirectToPage("/Index");
+        }
     }
 }
