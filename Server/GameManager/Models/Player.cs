@@ -76,6 +76,16 @@ namespace GameManager.Models
             var lastGame = gamesList[gamesList.Count - 1];
             return lastGame;
         }
+        public void DeleteGame(int id)
+        {
+            // Find the game in the collection
+            Game gameToRemove = games.FirstOrDefault(g => g.gameId == id);
+            // Check if a game with that Id was found
+            if (gameToRemove == null) throw new InvalidOperationException($"The game wasnt found");    
+            // If found, remove it
+            games.Remove(gameToRemove);
+        }
+
         public void EndLastGame(int gameId)
         {
             var gamesList = games.ToList();
