@@ -76,21 +76,22 @@ namespace Server.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult GroupedByGameCount()
+        public IActionResult PlayersSortedByGameCount()
         {
-            var groupedPlayers = _manager.GetAllPlayers()
-                .GroupBy(p => p.games.Count)
-                .OrderByDescending(g => g.Key)
-                .Select(g => new GroupedByGameCountViewModel
+            var players = _manager.GetAllPlayers()
+                .Select(p => new PlayerSortedByGameCountViewModel
                 {
-                    Players = g.ToList(),
-                    GameCount = g.Key
+                    PlayerId = p.playerId,
+                    PlayerName = p.playerName,
+                    PhoneNumber = p.phoneNumber,
+                    Country = p.country,
+                    GameCount = p.games.Count
                 })
+                .OrderByDescending(p => p.GameCount)
                 .ToList();
 
-            return PartialView("_GroupedByGameCount", groupedPlayers);
+            return PartialView("_PlayersSortedByGameCount", players);
         }
-
 
         [HttpGet("[action]")]
         public IActionResult GamesWithUniquePlayers()
