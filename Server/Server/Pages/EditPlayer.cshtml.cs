@@ -63,9 +63,16 @@ namespace Server.Pages
             // such as the index page.
             return RedirectToPage("/Index");
         }
+        public IActionResult OnPostDeletePlayerGame(int SelectedGameId)
+        {
+            _gameManager.DeleteGameForPlayer(playerOriginalId, SelectedGameId);
 
+            // After the player is deleted, you might want to redirect to another page,
+            // such as the index page.
+            return RedirectToPage("/Index");
+        }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostEditPlayer()
         {
             if ((playerOriginalId != EditPlayer.playerId) && (_gameManager.IsIdTaken(EditPlayer.playerId))) // If the id was changed check if the new id is taken
             {

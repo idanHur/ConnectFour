@@ -46,6 +46,24 @@
         
     </div>
 
+    @if (Model.EditPlayer != null)
+    {
+        <div id="PlayerGamesDiv" class="d-none">
+            <!-- Edit player details form -->
+            <form asp-page-handler="DeletePlayerGame" method="post" class="form-background mx-auto w-75 mt-4">
+                <input type="hidden" asp-for="playerOriginalId" />
+                <div class="form-group mb-3">
+                    <label for="SelectedGameId"><strong>Game</strong></label>
+                    <select name="SelectedGameId" asp-items="@(new SelectList(Model.EditPlayer.games.Select(g => new { Id = g.gameId, Name = $"{g.gameId}: {g.gameStatus}"}), "Id", "Name"))" class="form-control"></select>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Delete Game</button>
+                </div>
+            </form>
+        </div>
+    }
+    
+
 </div>
 
 @section Scripts {

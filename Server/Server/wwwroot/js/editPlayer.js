@@ -7,4 +7,8 @@
     $('#editPlayerButton').on('click', function () {
         $('#editPlayerDiv').removeClass('d-none'); // show edit form
     });
+
+    $('#deleteGameButton').on('click', function () {
+        $('#PlayerGamesDiv').removeClass('d-none'); // hide the action buttons
+    });
 });
