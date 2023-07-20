@@ -55,6 +55,15 @@ namespace Server.Pages
                 return Page();
             }
         }
+        public IActionResult OnPostDeletePlayer()
+        {
+            _gameManager.DeletePlayer(SelectedPlayerId);
+
+            // After the player is deleted, you might want to redirect to another page,
+            // such as the index page.
+            return RedirectToPage("/Index");
+        }
+
 
         public IActionResult OnPost()
         {
