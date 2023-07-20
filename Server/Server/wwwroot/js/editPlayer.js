@@ -6,6 +6,7 @@
 
     $('#editPlayerButton').on('click', function () {
         $('#editPlayerDiv').removeClass('d-none'); // show edit form
+        $('#playerDetailsDiv').addClass('d-none'); // show edit form
     });
 
     $('#deleteGameButton').on('click', function () {
