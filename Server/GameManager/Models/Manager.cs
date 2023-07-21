@@ -101,13 +101,6 @@ namespace GameManager.Models
             }
 
         }
-<<<<<<< HEAD
-
-        public List<Player> GetAllPlayers()
-        {
-            return _context.Players.ToList();
-        }
-=======
         public void UpdatePlayer(int originalId, Player editedPlayer)
         {
             Player player = GetPlayer(originalId);
@@ -156,6 +149,5 @@ namespace GameManager.Models
                 .ToList();
         }
 
->>>>>>> main
     }
 }

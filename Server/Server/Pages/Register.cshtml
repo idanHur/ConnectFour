@@ -14,47 +14,4 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<<<<<<< HEAD
-
-<div class="container-fluid mt-5">
-    <form asp-action="Create" method="post" class="form-background mx-auto w-75">
-        <div class="form-group">
-            <label asp-for="NewPlayer.playerName">Player Name</label>
-            <input asp-for="NewPlayer.playerName" class="form-control" placeholder="Enter player name">
-            <span asp-validation-for="NewPlayer.playerName" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="NewPlayer.playerId">ID</label>
-            <input asp-for="NewPlayer.playerId" class="form-control" placeholder="Enter ID">
-            <span asp-validation-for="NewPlayer.playerId" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="NewPlayer.phoneNumber">Phone Number</label>
-            <input asp-for="NewPlayer.phoneNumber" class="form-control" placeholder="Enter phone number">
-            <span asp-validation-for="NewPlayer.phoneNumber" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="NewPlayer.country"><strong>Country</strong></label>
-            <select asp-for="NewPlayer.country" class="form-control" id="country"></select>
-            <span asp-validation-for="NewPlayer.country" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="NewPlayer.password"><strong>Password</strong></label>
-            <input asp-for="NewPlayer.password" class="form-control" placeholder="Enter password">
-            <span asp-validation-for="NewPlayer.password" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-    </form>
-</div>
-
-
-
-
-<!-- Add scripts that are spacific to this page -->
-@section Scripts {
-    <script src="~/js/register.js"></script>
-
-}
-=======
 <partial name="Players/_PlayerForm" model="Model.NewPlayer" />
->>>>>>> main

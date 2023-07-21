@@ -46,8 +46,6 @@ namespace GameManager.Models
             games.Add(newGame);
             return newGame;
         }
-<<<<<<< HEAD
-=======
         public void ChangeGamesForUpdateUser()
         {
             List<Game> tempGames = new List<Game>();
@@ -72,15 +70,12 @@ namespace GameManager.Models
             // Replace the games list with tempGames
             games = tempGames;
         }
->>>>>>> main
         public Game GetLastGame()
         {
             var gamesList = games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
             return lastGame;
         }
-<<<<<<< HEAD
-=======
         public void DeleteGame(int id)
         {
             // Find the game in the collection
@@ -91,7 +86,6 @@ namespace GameManager.Models
             games.Remove(gameToRemove);
         }
 
->>>>>>> main
         public void EndLastGame(int gameId)
         {
             var gamesList = games.ToList();
