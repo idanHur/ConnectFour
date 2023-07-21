@@ -101,7 +101,44 @@ namespace GameManager.Models
             }
 
         }
+        public void UpdatePlayer(int originalId, Player editedPlayer)
+        {
+            Player player = GetPlayer(originalId);
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {originalId}");
+            if (editedPlayer == null) throw new InvalidOperationException("Must pass player");
 
+            if(originalId != editedPlayer.playerId)
+            {
+                editedPlayer.games = player.games;
+                editedPlayer.ChangeGamesForUpdateUser();
+                DeletePlayer(originalId);
+                AddPlayer(editedPlayer);
+            }
+            else
+            {
+                player.playerName = editedPlayer.playerName;
+                player.phoneNumber = editedPlayer.phoneNumber;
+                player.country = editedPlayer.country;
+                player.password = editedPlayer.password;
+                _context.SaveChanges();
+            }
+        }
+        public void DeletePlayer(int playerId)
+        {
+            Player player = GetPlayer(playerId);
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+
+            _context.Players.Remove(player);
+            _context.SaveChanges();
+        }
+        public void DeleteGameForPlayer(int playerId, int gameId)
+        {
+            Player player = GetPlayer(playerId);
+            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+
+            player.DeleteGame(gameId);
+            _context.SaveChanges();
+        }
         public List<Player> GetAllPlayers()
         {
             return _context.Players

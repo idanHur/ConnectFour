@@ -23,7 +23,7 @@ namespace Server.Pages
         {
             if (_gameManager.IsIdTaken(NewPlayer.playerId))
             {
-                ModelState.AddModelError("NewPlayer.playerId", "This ID is already taken.");
+                ModelState.AddModelError("playerId", "This ID is already taken.");
             }
 
             if (!ModelState.IsValid)
