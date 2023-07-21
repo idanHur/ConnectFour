@@ -22,19 +22,21 @@ namespace Client.Utilities.Json
             int gameId = (int)jObject["gameId"];
             game.gameId = gameId;
 
-            // Deserialize the Board array
-            game.board = (string)jObject["matrix"];
-            
+            // Retrieve the board object
+            var boardObject = (JObject)jObject["board"];
+
+            // Extract the matrix from the board object
+            game.board = (string)boardObject["matrix"];
 
             // Deserialize the GameStatus
             GameStatus gameStatus = jObject["gameStatus"].ToObject<GameStatus>();
             game.gameStatus = gameStatus;
 
-            // Check if "moves" exists and is an array
-            if (jObject["moves"] != null && jObject["moves"].Type == JTokenType.Array)
+            // Check if "Moves" exists and is an array
+            if (jObject["Moves"] != null && jObject["Moves"].Type == JTokenType.Array)
             {
                 // Cast to JArray
-                JArray movesArray = (JArray)jObject["moves"];
+                JArray movesArray = (JArray)jObject["Moves"];
 
                 // Deserialize each Move object in the array
                 foreach (JToken moveToken in movesArray)
@@ -46,6 +48,7 @@ namespace Client.Utilities.Json
 
             return game;
         }
+
 
         public override void WriteJson(JsonWriter writer, Game value, JsonSerializer serializer)
         {

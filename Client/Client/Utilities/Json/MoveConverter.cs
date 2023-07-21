@@ -17,8 +17,8 @@ namespace Client.Utilities.Json
 
             // Extract the necessary properties from the JSON
             int columnNumber = (int)jObject["columnNumber"];
-            PlayerType player = jObject["player"].ToObject<PlayerType>();
-            int id = (int)jObject["id"];
+            PlayerType player = jObject["Player"].ToObject<PlayerType>();
+            int id = (int)jObject["Id"];
 
             // Create a new Move object with the extracted properties
             Move move = new Move(columnNumber, player, id);
