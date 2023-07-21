@@ -10,8 +10,7 @@ namespace GameLogicClient.Migrations
                 name: "Players",
                 columns: table => new
                 {
-                    playerId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    playerId = table.Column<int>(nullable: false),
                     playerName = table.Column<string>(nullable: true),
                     phoneNumber = table.Column<string>(nullable: true),
                     country = table.Column<string>(nullable: true)
@@ -25,8 +24,7 @@ namespace GameLogicClient.Migrations
                 name: "Games",
                 columns: table => new
                 {
-                    gameId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    gameId = table.Column<int>(nullable: false),
                     board = table.Column<string>(nullable: true),
                     gameStatus = table.Column<int>(nullable: false),
                     PlayerId = table.Column<int>(nullable: false)
@@ -46,8 +44,7 @@ namespace GameLogicClient.Migrations
                 name: "Moves",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(nullable: false),
                     columnNumber = table.Column<int>(nullable: false),
                     Player = table.Column<int>(nullable: false),
                     GameId = table.Column<int>(nullable: false)

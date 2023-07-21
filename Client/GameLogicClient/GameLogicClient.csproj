@@ -183,9 +183,9 @@
   <ItemGroup>
     <Compile Include="Data\DesignTimeDbContextFactory.cs" />
     <Compile Include="Data\GameContext.cs" />
-    <Compile Include="Migrations\20230721132408_InitialCreate.cs" />
-    <Compile Include="Migrations\20230721132408_InitialCreate.designer.cs">
-      <DependentUpon>20230721132408_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\20230721143143_InitialCreate.cs" />
+    <Compile Include="Migrations\20230721143143_InitialCreate.designer.cs">
+      <DependentUpon>20230721143143_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\GameContextModelSnapshot.cs" />
     <Compile Include="Models\Game.cs" />

@@ -21,9 +21,7 @@ namespace GameLogicClient.Migrations
             modelBuilder.Entity("GameLogicClient.Models.Game", b =>
                 {
                     b.Property<int>("gameId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
@@ -44,9 +42,7 @@ namespace GameLogicClient.Migrations
             modelBuilder.Entity("GameLogicClient.Models.Move", b =>
                 {
                     b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -67,9 +63,7 @@ namespace GameLogicClient.Migrations
             modelBuilder.Entity("GameLogicClient.Models.Player", b =>
                 {
                     b.Property<int>("playerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("country")
                         .HasColumnType("nvarchar(max)");
