@@ -1,4 +1,4 @@
-﻿using GameLogic.Models;
+﻿using GameLogicClient.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;

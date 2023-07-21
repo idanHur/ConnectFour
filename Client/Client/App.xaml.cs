@@ -1,13 +1,17 @@
 ﻿using Client.Services;
 using Client.Utilities.Json;
 using Client.Views;
-using GameLogic.Models;
+using GameLogicClient.Data;
+using GameLogicClient.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +42,17 @@ namespace Client
 
         private void ConfigureServices(IServiceCollection services)
         {
+            // Build configuration
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            // Setup EF Core with SQL Server
+            services.AddDbContext<GameContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("GameContext")));
+
+
             // Register services 
             services.AddSingleton<ApiService>();
             services.AddSingleton<AuthenticationService>();

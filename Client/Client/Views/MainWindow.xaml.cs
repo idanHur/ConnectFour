@@ -1,5 +1,5 @@
 ﻿using Client.Services;
-using GameLogic.Models;
+using GameLogicClient.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

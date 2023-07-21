@@ -1,5 +1,5 @@
 ﻿using Client.Utilities.Json;
-using GameLogic.Models;
+using GameLogicClient.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,11 +18,8 @@ namespace Client.Services
 
         public ApiService(AuthenticationService authService)
         {
-<<<<<<< HEAD
-            _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5001/") };
-=======
+
             _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:56751/") };
->>>>>>> main
             _authService = authService;
         }
 

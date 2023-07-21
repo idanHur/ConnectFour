@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameLogic.Models
+namespace GameLogicClient.Models
 {
     public enum PlayerType
     {
@@ -22,6 +22,8 @@ namespace GameLogic.Models
         public string board { get; set; } // EF Core dosnt supports int[,]
         public GameStatus gameStatus { get; set; }
         public int gameId { get;  set; }
+        public int PlayerId { get; set; } // Add PlayerId property
+        public Player Player { get; set; } // Add navigation property for Player
 
         public ICollection<Move> moves { get; set; }
 
