@@ -1,0 +1,23 @@
+﻿@using Server.ViewModels
+@model IEnumerable<PlayerGameCountViewModel>
+<div class="container mt-3">
+    <h2>Players Game Count</h2>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Amount of games played</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>@player.PlayerName</td>
+                    <td>@player.GameCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

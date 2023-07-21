@@ -1,0 +1,30 @@
+﻿@using Server.ViewModels
+@model IEnumerable<PlayerSortedByGameCountViewModel>
+
+<div class="container mt-3">
+    <h2>Players Sorted by Game Count</h2>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Country</th>
+                <th>Game Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>@player.PlayerId</td>
+                    <td>@player.PlayerName</td>
+                    <td>@player.PhoneNumber</td>
+                    <td>@player.Country</td>
+                    <td>@player.GameCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

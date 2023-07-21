@@ -46,12 +46,52 @@ namespace GameManager.Models
             games.Add(newGame);
             return newGame;
         }
+<<<<<<< HEAD
+=======
+        public void ChangeGamesForUpdateUser()
+        {
+            List<Game> tempGames = new List<Game>();
+            foreach (var game in games)
+            {
+                // Create a new Game object and copy properties except gameId
+                Game tempGame = new Game()
+                {
+                    board = game.board,
+                    gameStatus = game.gameStatus,
+                    currentPlayer = game.currentPlayer,
+                    startTime = game.startTime,
+                    gameDuration = game.gameDuration,
+                    playerId = game.playerId,
+                    Moves = game.Moves
+                };
+
+                // Add the new game to the tempGames list
+                tempGames.Add(tempGame);
+            }
+
+            // Replace the games list with tempGames
+            games = tempGames;
+        }
+>>>>>>> main
         public Game GetLastGame()
         {
             var gamesList = games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
             return lastGame;
         }
+<<<<<<< HEAD
+=======
+        public void DeleteGame(int id)
+        {
+            // Find the game in the collection
+            Game gameToRemove = games.FirstOrDefault(g => g.gameId == id);
+            // Check if a game with that Id was found
+            if (gameToRemove == null) throw new InvalidOperationException($"The game wasnt found");    
+            // If found, remove it
+            games.Remove(gameToRemove);
+        }
+
+>>>>>>> main
         public void EndLastGame(int gameId)
         {
             var gamesList = games.ToList();

@@ -18,7 +18,11 @@ namespace Client.Services
 
         public ApiService(AuthenticationService authService)
         {
+<<<<<<< HEAD
             _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5001/") };
+=======
+            _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:56751/") };
+>>>>>>> main
             _authService = authService;
         }
 

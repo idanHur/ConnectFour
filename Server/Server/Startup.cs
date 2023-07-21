@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
+=======
+using Microsoft.AspNetCore.Mvc.Razor;
+>>>>>>> main
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +44,14 @@ namespace Server
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+<<<<<<< HEAD
+=======
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationFormats.Add("/Pages/{1}/{0}.cshtml");
+                options.ViewLocationFormats.Add("/Pages/Shared/{0}.cshtml");
+            });
+>>>>>>> main
 
             services.AddScoped<Manager>();
             services.AddScoped<IAuthService, AuthService>();

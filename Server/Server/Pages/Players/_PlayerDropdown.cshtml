@@ -1,0 +1,16 @@
+﻿@model IEnumerable<SelectListItem>
+
+<h2>Select Player</h2>
+
+<select class="form-control" id="playerDropdown">
+    <option value="">Select player</option>
+    @foreach (var player in Model)
+    {
+        <option value="@player.Value">@player.Text</option>
+    }
+</select>
+
+<div id="playerGames"></div>
+
+<script src="~/js/playerDropdown.js"></script>
+

@@ -1,0 +1,24 @@
+﻿@using Server.ViewModels
+@model IEnumerable<PlayersLastGameSortedViewModel>
+
+<div class="container mt-3">
+    <h2>Players Last Game</h2>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Last Game Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>@player.Name</td>
+                    <td>@player.LastGameDate?.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
