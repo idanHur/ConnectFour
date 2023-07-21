@@ -32,7 +32,9 @@ namespace GameManager.Utilities.Json
                 { "PlayerId", player.playerId },
                 { "PlayerName", player.playerName },
                 { "PhoneNumber", player.phoneNumber },
-                { "Country", player.country }
+                { "Country", player.country },
+                { "Games", JArray.FromObject(player.games) }
+
             };
 
             jObject.WriteTo(writer);
