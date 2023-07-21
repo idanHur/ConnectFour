@@ -1,12 +1,18 @@
 # Connect4Game Server
 
-This project is an ASP.NET Core web application server for Connect4Game. It consists of three main components:
+This project is an ASP.NET Core web application server for Connect4Game. It serves as the backbone for game management and player interactions. 
 
-1. **Server**: This is the ASP.NET Core web application that hosts the website for user registration and allows users to see the database queries.
-2. **Game Manager**: This manages the players and is responsible for the connection to the Entity Framework SQL Server database.
-3. **Connect4Game**: This contains the game logic for Connect4Game.
+## Main Components
 
-The server uses a Web API to communicate with the client. Each client is a player with a user interface for the game board. The server handles the logic and the opponent AI.
+1. **Server**: This is the ASP.NET Core web application that provides the following functionalities:
+    - User registration: New players can register via the web interface.
+    - Data presentation: Allows users to view various data retrieved via database queries.
+    - Database management: Provides an interface for deleting and editing player and game data in the database.
+    - Animation: Supports falling game coins animation for enhanced user interaction.
+2. **Game Manager**: Manages the players and facilitates the connection to the Entity Framework SQL Server database.
+3. **Connect4Game**: Contains the core game logic for Connect4Game.
+
+The server communicates with the client through a Web API. Each client is a player with a user interface for the game board. The server handles the game logic and opponent AI.
 
 ## Getting Started
 
@@ -25,7 +31,13 @@ The server uses a Web API to communicate with the client. Each client is a playe
 7. Run `dotnet ef database update` to create your database schema.
 8. Run `dotnet run` to start the server.
 
-### DataBase
-To update the database tables when changing one of the entity class you need to do the following in the terminal when in serve directory
-1. " dotnet ef migrations add **New name for the migrations** --project ../GameManager/GameManager.csproj --startup-project Server.csproj "
-2. " dotnet ef database update --project ../GameManager/GameManager.csproj --startup-project Server.csproj " 
+### Database
+To update the database tables when changing one of the entity classes, perform the following in the terminal when in the server directory:
+1. `dotnet ef migrations add <New name for the migrations> --project ../GameManager/GameManager.csproj --startup-project Server.csproj`
+2. `dotnet ef database update --project ../GameManager/GameManager.csproj --startup-project Server.csproj`
+
+## Code Practices
+
+This project aims to follow good coding standards and practices. One of the key implementations is the use of partial views to avoid code duplication. 
+
+In the context of MVC architecture, views often share code with other views. To DRY (Don't Repeat Yourself) the code, common code was extracted into partial views. These partial views are then used in multiple other views, enhancing maintainability and promoting code reusability.
