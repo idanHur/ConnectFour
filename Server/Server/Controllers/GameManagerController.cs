@@ -101,9 +101,9 @@ namespace Server.Controllers
             try
             {
                 // End the last game of this player
-                _gameManager.EndGameForPlayer(playerId, gameId);
+                Game endedGame = _gameManager.EndGameForPlayer(playerId, gameId);
 
-                return Ok(new { message = "Game ended successfully" });
+                return Ok(new { endedGame });
 
             }
             catch (Exception ex)

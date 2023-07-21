@@ -86,7 +86,7 @@ namespace GameManager.Models
             games.Remove(gameToRemove);
         }
 
-        public void EndLastGame(int gameId)
+        public Game EndLastGame(int gameId)
         {
             var gamesList = games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
@@ -94,12 +94,7 @@ namespace GameManager.Models
             if (lastGame.gameId != gameId) throw new ArgumentException("Game id doesn't match last game id", nameof(gameId));// Make sure this is the game 
 
             lastGame.EndGame(didntFinish: true);
-        }
-        public bool IsGameOver()
-        {
-            var gamesList = games.ToList();
-            var lastGame = gamesList[gamesList.Count - 1];
-            return lastGame.gameStatus != GameStatus.OnGoing;
+            return lastGame;
         }
     }
 }
