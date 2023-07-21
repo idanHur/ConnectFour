@@ -75,13 +75,13 @@ namespace GameManager.Models
                 .FirstOrDefault(p => p.playerId == id);
             return player;
         }
-        public void EndGameForPlayer(int playerId, int gameId)
+        public Game EndGameForPlayer(int playerId, int gameId)
         {
             Player player = GetPlayer(playerId);
             if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
-            if (player.IsGameOver()) return; // The last game was already ended 
-            player.EndLastGame(gameId);
+            Game endedGame = player.EndLastGame(gameId);
             _context.SaveChanges();
+            return endedGame;
         }
 
         public bool IsIdTaken(int id)
