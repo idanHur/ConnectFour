@@ -10,7 +10,7 @@ namespace Client.Services
     public class AuthenticationService
     {
         private string _jwtToken;
-
+        public int currentPlayerId { get; set; }
         public AuthenticationService()
         {
         }
