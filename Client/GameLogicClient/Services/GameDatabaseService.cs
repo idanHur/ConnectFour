@@ -51,11 +51,23 @@ namespace GameLogicClient.Services
 
             // Delete existing games of player in case were deleted on site
             player.games.Clear();
+            _context.SaveChanges();
 
             // Add games from the server
             foreach (var game in updatedPlayerData.games)
             {
-                player.games.Add(game);
+                var existingGame = player.games.FirstOrDefault(g => g.gameId == game.gameId);
+
+                if (existingGame != null)
+                {
+                    // Update existing game if found
+                    UpdateGame(existingGame);
+                }
+                else
+                {
+                    // Add new game if not found
+                    player.games.Add(game);
+                }
             }
             _context.SaveChanges();
         }
@@ -69,22 +81,26 @@ namespace GameLogicClient.Services
                 throw new Exception($"No game found with ID {gameFromServer.gameId}");
             }
 
-            // Update the game's properties. You might need to modify this part depending on your Game model.
+            // Update the game's properties.
             gameInDb.board = gameFromServer.board;
             gameInDb.gameStatus = gameFromServer.gameStatus;
 
-            // Delete existing moves in the game
-            gameInDb.moves.Clear();
-
-            // Add new moves from the server
+            // Process each move from the server.
             foreach (var move in gameFromServer.moves)
             {
-                gameInDb.moves.Add(move);
+                var existingMove = gameInDb.moves.FirstOrDefault(m => m.id == move.id && m.GameId == move.GameId);
+
+                if (existingMove == null)
+                {
+                    // The move doesn't exist in the database yet. Add it.
+                    gameInDb.moves.Add(move);
+                }
             }
 
             // Save changes to the database
             _context.SaveChanges();
         }
+
         public Game GetLastGameOfPlayer(int playerId)
         {
             // Retrieve the player with the games
