@@ -3,6 +3,7 @@ using Client.Utilities.Json;
 using Client.Views;
 using GameLogicClient.Data;
 using GameLogicClient.Models;
+using GameLogicClient.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,7 +57,7 @@ namespace Client
             // Register services 
             services.AddSingleton<ApiService>();
             services.AddSingleton<AuthenticationService>();
-            services.AddSingleton<Player>();
+            services.AddSingleton<GameDatabaseService>();
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Register windows
