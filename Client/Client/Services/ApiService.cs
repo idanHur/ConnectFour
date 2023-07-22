@@ -20,10 +20,7 @@ namespace Client.Services
 
         public ApiService(AuthenticationService authService, GameDatabaseService dbService)
         {
-<<<<<<< HEAD
-=======
 
->>>>>>> Staging
             _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:56751/") };
             _authService = authService;
             _dbService = dbService;

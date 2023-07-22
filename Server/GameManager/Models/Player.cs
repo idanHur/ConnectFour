@@ -49,19 +49,6 @@ namespace GameManager.Models
         public void ChangeGamesForUpdateUser()
         {
             List<Game> tempGames = new List<Game>();
-<<<<<<< HEAD
-            foreach (var game in games)
-            {
-                // Create a new Game object and copy properties except gameId
-                Game tempGame = new Game()
-                {
-                    board = game.board,
-                    gameStatus = game.gameStatus,
-                    currentPlayer = game.currentPlayer,
-                    startTime = game.startTime,
-                    gameDuration = game.gameDuration,
-                    playerId = game.playerId,
-=======
             foreach (var game in Games)
             {
                 // Create a new Game object and copy properties except GameId
@@ -73,7 +60,6 @@ namespace GameManager.Models
                     StartTime = game.StartTime,
                     GameDuration = game.GameDuration,
                     PlayerId = game.PlayerId,
->>>>>>> Staging
                     Moves = game.Moves
                 };
 
@@ -81,13 +67,8 @@ namespace GameManager.Models
                 tempGames.Add(tempGame);
             }
 
-<<<<<<< HEAD
-            // Replace the games list with tempGames
-            games = tempGames;
-=======
             // Replace the Games list with tempGames
             Games = tempGames;
->>>>>>> Staging
         }
         public Game GetLastGame()
         {
@@ -96,19 +77,6 @@ namespace GameManager.Models
             return lastGame;
         }
         public void DeleteGame(int id)
-<<<<<<< HEAD
-        {
-            // Find the game in the collection
-            Game gameToRemove = games.FirstOrDefault(g => g.gameId == id);
-            // Check if a game with that Id was found
-            if (gameToRemove == null) throw new InvalidOperationException($"The game wasnt found");    
-            // If found, remove it
-            games.Remove(gameToRemove);
-        }
-
-        public void EndLastGame(int gameId)
-=======
->>>>>>> Staging
         {
             // Find the game in the collection
             Game gameToRemove = Games.FirstOrDefault(g => g.GameId == id);

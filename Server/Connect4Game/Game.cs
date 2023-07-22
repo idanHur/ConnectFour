@@ -20,16 +20,6 @@ namespace Connect4Game
     public class Game
     {
 
-<<<<<<< HEAD
-        public Board board{ get; set; }
-        public GameStatus gameStatus { get; set; }
-        public Player currentPlayer { get; set; }
-
-        public DateTime startTime { get; set; }
-        public TimeSpan gameDuration { get; set; }
-        public int gameId { get; set; }
-        public int playerId { get; set; }
-=======
         public Board Board{ get; set; }
         public GameStatus Status { get; set; }
         public Player CurrentPlayer { get; set; }
@@ -38,7 +28,6 @@ namespace Connect4Game
         public TimeSpan GameDuration { get; set; }
         public int GameId { get; set; }
         public int PlayerId { get; set; }
->>>>>>> Staging
 
         // EF Core will automatically load the related Move entities when accessing this property.
         public ICollection<Move> Moves { get; set; }

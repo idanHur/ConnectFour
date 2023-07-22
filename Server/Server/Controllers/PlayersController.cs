@@ -31,11 +31,7 @@ namespace Server.Controllers
         public IActionResult SortByName()
         {
             var players = _manager.GetAllPlayers()
-<<<<<<< HEAD
-                .OrderBy(p => p.playerName.ToLower())
-=======
                 .OrderBy(p => p.Name.ToLower())
->>>>>>> Staging
                 .ToList();
             ViewData["Header"] = "All Players Sorted Ascending";
             return PartialView("_AllPlayers", players); 
@@ -46,13 +42,8 @@ namespace Server.Controllers
             var players = _manager.GetAllPlayers()
                 .Select(p => new PlayersLastGameSortedViewModel
                 {
-<<<<<<< HEAD
-                    Name = p.playerName,
-                    LastGameDate = p.games.OrderByDescending(g => g.startTime).FirstOrDefault()?.startTime
-=======
                     Name = p.Name,
                     LastGameDate = p.Games.OrderByDescending(g => g.StartTime).FirstOrDefault()?.StartTime
->>>>>>> Staging
                 })
                 .OrderByDescending(p => p.Name.ToLower())
                 .ToList();
@@ -64,11 +55,7 @@ namespace Server.Controllers
         public IActionResult AllGames()
         {
             var games = _manager.GetAllPlayers()
-<<<<<<< HEAD
-                .SelectMany(p => p.games)
-=======
                 .SelectMany(p => p.Games)
->>>>>>> Staging
                 .ToList();
 
             ViewData["Header"] = "All Games";
@@ -80,13 +67,8 @@ namespace Server.Controllers
             var playerGameCounts = _manager.GetAllPlayers()
                 .Select(p => new PlayerGameCountViewModel
                 {
-<<<<<<< HEAD
-                    PlayerName = p.playerName,
-                    GameCount = p.games.Count
-=======
                     PlayerName = p.Name,
                     GameCount = p.Games.Count
->>>>>>> Staging
                 })
                 .ToList();
 
@@ -99,19 +81,11 @@ namespace Server.Controllers
             var players = _manager.GetAllPlayers()
                 .Select(p => new PlayerSortedByGameCountViewModel
                 {
-<<<<<<< HEAD
-                    PlayerId = p.playerId,
-                    PlayerName = p.playerName,
-                    PhoneNumber = p.phoneNumber,
-                    Country = p.country,
-                    GameCount = p.games.Count
-=======
                     PlayerId = p.PlayerId,
                     PlayerName = p.Name,
                     PhoneNumber = p.PhoneNumber,
                     Country = p.Country,
                     GameCount = p.Games.Count
->>>>>>> Staging
                 })
                 .OrderByDescending(p => p.GameCount)
                 .ToList();
@@ -122,16 +96,6 @@ namespace Server.Controllers
         [HttpGet("[action]")]
         public IActionResult GamesWithUniquePlayers()
         {
-<<<<<<< HEAD
-            // Get all games from all players
-            var allGames = _manager.GetAllPlayers()
-                .SelectMany(p => p.games)
-                .ToList();
-
-            // Group games by playerId, and select only the first game from each group
-            var gamesWithUniquePlayers = allGames
-                .GroupBy(g => g.playerId)
-=======
             // Get all Games from all players
             var allGames = _manager.GetAllPlayers()
                 .SelectMany(p => p.Games)
@@ -140,7 +104,6 @@ namespace Server.Controllers
             // Group Games by PlayerId, and select only the first game from each group
             var gamesWithUniquePlayers = allGames
                 .GroupBy(g => g.PlayerId)
->>>>>>> Staging
                 .Select(group => group.First())
                 .ToList();
 
@@ -151,19 +114,11 @@ namespace Server.Controllers
         public IActionResult GetPlayerDropdown()
         {
             var players = _manager.GetAllPlayers()
-<<<<<<< HEAD
-                .OrderBy(p => p.playerName)
-                .Select(p => new SelectListItem
-                {
-                    Value = p.playerId.ToString(),
-                    Text = p.playerName
-=======
                 .OrderBy(p => p.Name)
                 .Select(p => new SelectListItem
                 {
                     Value = p.PlayerId.ToString(),
                     Text = p.Name
->>>>>>> Staging
                 })
                 .Distinct()
                 .ToList();
@@ -174,13 +129,8 @@ namespace Server.Controllers
         public IActionResult GetPlayerGames(int playerId)
         {
             var games = _manager.GetAllPlayers()
-<<<<<<< HEAD
-                .SelectMany(p => p.games)
-                .Where(g => g.playerId == playerId)
-=======
                 .SelectMany(p => p.Games)
                 .Where(g => g.PlayerId == playerId)
->>>>>>> Staging
                 .ToList();
 
             return PartialView("_Games", games);
@@ -190,11 +140,7 @@ namespace Server.Controllers
         public IActionResult GetPlayersGroupedByCountry()
         {
             var playersGroupedByCountry = _manager.GetAllPlayers()
-<<<<<<< HEAD
-                .GroupBy(p => p.country)
-=======
                 .GroupBy(p => p.Country)
->>>>>>> Staging
                 .Select(g => new PlayersGroupedByCountryViewModel { Country = g.Key, Players = g.ToList() })
                 .Where(g => g.Players.Any())
                 .ToList();

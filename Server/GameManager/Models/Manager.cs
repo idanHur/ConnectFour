@@ -104,49 +104,29 @@ namespace GameManager.Models
         public void UpdatePlayer(int originalId, Player editedPlayer)
         {
             Player player = GetPlayer(originalId);
-<<<<<<< HEAD
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {originalId}");
-            if (editedPlayer == null) throw new InvalidOperationException("Must pass player");
-
-            if(originalId != editedPlayer.playerId)
-            {
-                editedPlayer.games = player.games;
-=======
             if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {originalId}");
             if (editedPlayer == null) throw new InvalidOperationException("Must pass player");
 
             if(originalId != editedPlayer.PlayerId)
             {
                 editedPlayer.Games = player.Games;
->>>>>>> Staging
                 editedPlayer.ChangeGamesForUpdateUser();
                 DeletePlayer(originalId);
                 AddPlayer(editedPlayer);
             }
             else
             {
-<<<<<<< HEAD
-                player.playerName = editedPlayer.playerName;
-                player.phoneNumber = editedPlayer.phoneNumber;
-                player.country = editedPlayer.country;
-                player.password = editedPlayer.password;
-=======
                 player.Name = editedPlayer.Name;
                 player.PhoneNumber = editedPlayer.PhoneNumber;
                 player.Country = editedPlayer.Country;
                 player.Password = editedPlayer.Password;
->>>>>>> Staging
                 _context.SaveChanges();
             }
         }
         public void DeletePlayer(int playerId)
         {
             Player player = GetPlayer(playerId);
-<<<<<<< HEAD
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
-=======
             if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
->>>>>>> Staging
 
             _context.Players.Remove(player);
             _context.SaveChanges();
@@ -154,11 +134,7 @@ namespace GameManager.Models
         public void DeleteGameForPlayer(int playerId, int gameId)
         {
             Player player = GetPlayer(playerId);
-<<<<<<< HEAD
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
-=======
             if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
->>>>>>> Staging
 
             player.DeleteGame(gameId);
             _context.SaveChanges();
@@ -166,15 +142,9 @@ namespace GameManager.Models
         public List<Player> GetAllPlayers()
         {
             return _context.Players
-<<<<<<< HEAD
-                .Include(p => p.games)
-                    .ThenInclude(g => g.board)
-                .Include(p => p.games)
-=======
                 .Include(p => p.Games)
                     .ThenInclude(g => g.Board)
                 .Include(p => p.Games)
->>>>>>> Staging
                     .ThenInclude(g => g.Moves)
                 .ToList();
         }
