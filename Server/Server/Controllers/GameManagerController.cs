@@ -103,7 +103,7 @@ namespace Server.Controllers
                 // End the last game of this player
                 Game endedGame = _gameManager.EndGameForPlayer(playerId, gameId);
 
-                return Ok(new { endedGame });
+                return Ok(endedGame);
 
             }
             catch (Exception ex)

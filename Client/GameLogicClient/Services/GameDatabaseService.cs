@@ -116,7 +116,7 @@ namespace GameLogicClient.Services
             // Process each move from the server.
             foreach (var move in gameFromServer.Moves)
             {
-                var existingMove = gameInDb.Moves.FirstOrDefault(m => m.Id == move.Id && m.GameId == move.GameId);
+                var existingMove = gameInDb.Moves.FirstOrDefault(m => m.Id == move.Id);
 
                 if (existingMove == null)
                 {

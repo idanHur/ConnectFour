@@ -97,10 +97,10 @@ namespace Client.Services
             }
 
             // Update the game state from server data
-            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
-            _dbService.UpdateGame(game);
+            var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
+            _dbService.UpdateGame(gameState);
 
-            var movesList = game.Moves.ToList<Move>();
+            var movesList = gameState.Moves.ToList<Move>();
 
             return movesList[movesList.Count - 1];
         }
@@ -123,8 +123,8 @@ namespace Client.Services
                 var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
                 throw new Exception("Error ending the game: " + errorResponse.error);
             }
-            var gameFromServer = JsonConvert.DeserializeObject<Game>(jsonResponse);
-            _dbService.UpdateGame(gameFromServer);
+            var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
+            _dbService.UpdateGame(gameState);
         }
 
         public async Task<Move> AiMoveAsync()
@@ -148,7 +148,7 @@ namespace Client.Services
 
             // Update the game state from server data
             var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
-            _dbService.UpdateGame(game);
+            _dbService.UpdateGame(gameState);
 
             var movesList = gameState.Moves.ToList<Move>();
 
