@@ -51,7 +51,11 @@ namespace Server
             services.AddScoped<IAuthService, AuthService>();
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                });
 
             services.AddSwaggerGen(c =>
             {
@@ -77,6 +81,7 @@ namespace Server
 
             services.AddDbContext<GameManager.Data.MyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
 
         }
 

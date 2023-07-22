@@ -27,7 +27,7 @@ namespace Server.Services
         public async Task<Player> Login(int playerId, string password)
         {
             var user = await _context.Players
-                .Where(u => u.playerId == playerId && u.password == password) // In real-world application, password should be hashed and salted!
+                .Where(u => u.PlayerId == playerId && u.Password == password) // In real-world application, Password should be hashed and salted!
                 .FirstOrDefaultAsync();
 
             return user;
@@ -40,7 +40,7 @@ namespace Server.Services
             // Define the token descriptor, which contains the claims, expiration, and signing credentials
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, user.playerId.ToString()) }), // Include the user's playerId as the NameIdentifier claim
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, user.PlayerId.ToString()) }), // Include the user's PlayerId as the NameIdentifier claim
                 Expires = DateTime.UtcNow.AddDays(7), // Set the token expiration time
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature), // Specify the signing credentials using the secret key and the HMACSHA256 signature algorithm
                 Audience = _configuration["Jwt:Audience"], // Set the expected audience value for the token

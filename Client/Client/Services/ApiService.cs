@@ -1,5 +1,6 @@
 ﻿using Client.Utilities.Json;
-using GameLogic.Models;
+using GameLogicClient.Models;
+using GameLogicClient.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,18 +16,15 @@ namespace Client.Services
     {
         private readonly HttpClient _httpClient;
         private readonly AuthenticationService _authService;
+        private readonly GameDatabaseService _dbService;
 
-        public ApiService(AuthenticationService authService)
+        public ApiService(AuthenticationService authService, GameDatabaseService dbService)
         {
+
             _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:56751/") };
             _authService = authService;
+            _dbService = dbService;
         }
-
-        public HttpClient GetClient()
-        {
-            return _httpClient;
-        }
-       
 
         public async Task<bool> LoginAsync(int playerId, string password)
         {
@@ -49,8 +47,8 @@ namespace Client.Services
 
             // Deserialize player JSON into Player object
             var player = JsonConvert.DeserializeObject<Player>(data.player, new PlayerConverter());
-            _authService.SetCurrentPlayerFromServerData(player);
-
+            _dbService.AddPlayer(player);
+            _authService.currentPlayerId = playerId;
             // Save the JWT token
             _authService.SaveJwtToken(jwt);
 
@@ -59,12 +57,10 @@ namespace Client.Services
 
         public async Task StartGameAsync()
         {
-            Player player = _authService.GetCurrentPlayer();
-            int playerId = player.playerId;
+            int playerId = _authService.currentPlayerId;
+            Player player = _dbService.GetPlayer(playerId);
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
-            System.Diagnostics.Debug.WriteLine(_authService.GetJwtToken()); // Add this line to log the response
-            System.Diagnostics.Debug.WriteLine(playerId); // Add this line to log the response
 
             var response = await _httpClient.PostAsync($"api/{playerId}/start", null);
 
@@ -72,7 +68,7 @@ namespace Client.Services
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
-                player.games.Add(game);
+                _dbService.AddGameToPlayer(playerId, game);
             }
             else
             {
@@ -80,14 +76,11 @@ namespace Client.Services
                 System.Diagnostics.Debug.WriteLine(errorResponse);
                 throw new Exception("Error starting game: HTTP status " + response.StatusCode);
             }
-
-
         }
 
         public async Task<Move> MakeMoveAsync(int colMove)
         {
-            int playerId = _authService.GetCurrentPlayer().playerId;
-
+            int playerId = _authService.currentPlayerId;
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
@@ -104,23 +97,22 @@ namespace Client.Services
             }
 
             // Update the game state from server data
-            var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
-            _authService.SetCurrentGameFromServerData(game); 
+            var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
+            _dbService.UpdateGame(gameState);
 
-            var movesList = game.moves.ToList<Move>();
+            var movesList = gameState.Moves.ToList<Move>();
 
             return movesList[movesList.Count - 1];
         }
 
         public async Task EndGameAsync()
         {
-            Player player = _authService.GetCurrentPlayer();
-            int playerId = player.playerId;
-            int gameId = player.games[player.games.Count - 1].gameId;
+            int playerId = _authService.currentPlayerId;
+            Game game = _dbService.GetLastGameOfPlayer(playerId);
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
-            var jsonPayload = JsonConvert.SerializeObject(gameId);
+            var jsonPayload = JsonConvert.SerializeObject(game.GameId);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"api/{playerId}/endGame", httpContent);
@@ -130,19 +122,19 @@ namespace Client.Services
             {
                 var errorResponse = JsonConvert.DeserializeAnonymousType(jsonResponse, new { error = "" });
                 throw new Exception("Error ending the game: " + errorResponse.error);
-            }    
-            // TODO: Update the gamestate
+            }
+            var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
+            _dbService.UpdateGame(gameState);
         }
 
         public async Task<Move> AiMoveAsync()
         {
-            Player player = _authService.GetCurrentPlayer();
-            int playerId = player.playerId;
-            int gameId = player.games[player.games.Count - 1].gameId;
+            int playerId = _authService.currentPlayerId;
+            Game game = _dbService.GetLastGameOfPlayer(playerId);
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
-            var jsonPayload = JsonConvert.SerializeObject(gameId);
+            var jsonPayload = JsonConvert.SerializeObject(game.GameId);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"api/{playerId}/aiMove", httpContent);
@@ -156,9 +148,9 @@ namespace Client.Services
 
             // Update the game state from server data
             var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
-            _authService.SetCurrentGameFromServerData(gameState); // Update the game from server game state
+            _dbService.UpdateGame(gameState);
 
-            var movesList = gameState.moves.ToList<Move>();
+            var movesList = gameState.Moves.ToList<Move>();
 
             return movesList[movesList.Count - 1];
         }

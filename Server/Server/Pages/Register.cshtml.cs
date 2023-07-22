@@ -21,9 +21,13 @@ namespace Server.Pages
 
         public IActionResult OnPost()
         {
-            if (_gameManager.IsIdTaken(NewPlayer.playerId))
+            if (_gameManager.IsIdTaken(NewPlayer.PlayerId))
             {
+<<<<<<< HEAD
                 ModelState.AddModelError("playerId", "This ID is already taken.");
+=======
+                ModelState.AddModelError("PlayerId", "This ID is already taken.");
+>>>>>>> Client
             }
 
             if (!ModelState.IsValid)
