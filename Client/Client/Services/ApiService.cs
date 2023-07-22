@@ -100,7 +100,7 @@ namespace Client.Services
             var game = JsonConvert.DeserializeObject<Game>(jsonResponse);
             _dbService.UpdateGame(game);
 
-            var movesList = game.moves.ToList<Move>();
+            var movesList = game.Moves.ToList<Move>();
 
             return movesList[movesList.Count - 1];
         }
@@ -112,7 +112,7 @@ namespace Client.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
-            var jsonPayload = JsonConvert.SerializeObject(game.gameId);
+            var jsonPayload = JsonConvert.SerializeObject(game.GameId);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"api/{playerId}/endGame", httpContent);
@@ -134,7 +134,7 @@ namespace Client.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _authService.GetJwtToken());
 
-            var jsonPayload = JsonConvert.SerializeObject(game.gameId);
+            var jsonPayload = JsonConvert.SerializeObject(game.GameId);
             var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync($"api/{playerId}/aiMove", httpContent);
@@ -150,7 +150,7 @@ namespace Client.Services
             var gameState = JsonConvert.DeserializeObject<Game>(jsonResponse);
             _dbService.UpdateGame(game);
 
-            var movesList = gameState.moves.ToList<Move>();
+            var movesList = gameState.Moves.ToList<Move>();
 
             return movesList[movesList.Count - 1];
         }

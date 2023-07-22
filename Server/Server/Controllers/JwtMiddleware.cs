@@ -66,7 +66,7 @@ namespace Server.Controllers
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
 
-                    // Get the user from the database based on the playerId extracted from the token
+                    // Get the user from the database based on the PlayerId extracted from the token
                     var user = await dbContext.Players.FindAsync(playerId);
 
                     // Attach the user object to the current context for further processing

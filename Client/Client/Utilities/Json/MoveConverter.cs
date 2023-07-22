@@ -16,7 +16,7 @@ namespace Client.Utilities.Json
             JObject jObject = JObject.Load(reader);
 
             // Extract the necessary properties from the JSON
-            int columnNumber = (int)jObject["columnNumber"];
+            int columnNumber = (int)jObject["ColumnNumber"];
             PlayerType player = jObject["Player"].ToObject<PlayerType>();
             int id = (int)jObject["Id"];
 
@@ -31,9 +31,9 @@ namespace Client.Utilities.Json
             Move move = (Move)value;
             JObject jObject = new JObject
         {
-            { "columnNumber", move.columnNumber },
-            { "player", JToken.FromObject(move.Player) },
-            { "id", move.id }
+            { "ColumnNumber", move.ColumnNumber },
+            { "Player", JToken.FromObject(move.Player) },
+            { "Id", move.Id }
         };
 
             jObject.WriteTo(writer);

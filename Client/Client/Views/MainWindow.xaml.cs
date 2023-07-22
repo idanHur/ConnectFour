@@ -40,10 +40,10 @@ namespace Client
             _dbService = dbService;
 
             Player player = _dbService.GetPlayer(_authService.currentPlayerId);
-            PlayerCountryLabel.Content += player.country;
-            PlayerIdLabel.Content += player.playerId.ToString();
-            PlayerNameLabel.Content += player.playerName;
-            PlayerPhoneNumberLabel.Content += player.phoneNumber;
+            PlayerCountryLabel.Content += player.Country;
+            PlayerIdLabel.Content += player.PlayerId.ToString();
+            PlayerNameLabel.Content += player.Name;
+            PlayerPhoneNumberLabel.Content += player.PhoneNumber;
 
         }
         private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -60,7 +60,7 @@ namespace Client
             }
             catch(Exception ex)
             {
-                if(ex.Message == "There are no played games")
+                if(ex.Message == "There are no played Games")
                     Application.Current.Shutdown();
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);

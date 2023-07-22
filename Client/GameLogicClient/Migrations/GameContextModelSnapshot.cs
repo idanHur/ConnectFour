@@ -20,19 +20,19 @@ namespace GameLogicClient.Migrations
 
             modelBuilder.Entity("GameLogicClient.Models.Game", b =>
                 {
-                    b.Property<int>("gameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Board")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("board")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("gameStatus")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("gameId");
+                    b.HasKey("GameId");
 
                     b.HasIndex("PlayerId");
 
@@ -41,7 +41,10 @@ namespace GameLogicClient.Migrations
 
             modelBuilder.Entity("GameLogicClient.Models.Move", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ColumnNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("GameId")
@@ -50,10 +53,7 @@ namespace GameLogicClient.Migrations
                     b.Property<int>("Player")
                         .HasColumnType("int");
 
-                    b.Property<int>("columnNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("GameId");
 
@@ -62,19 +62,19 @@ namespace GameLogicClient.Migrations
 
             modelBuilder.Entity("GameLogicClient.Models.Player", b =>
                 {
-                    b.Property<int>("playerId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("country")
+                    b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("phoneNumber")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("playerName")
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("playerId");
+                    b.HasKey("PlayerId");
 
                     b.ToTable("Players");
                 });
@@ -82,7 +82,7 @@ namespace GameLogicClient.Migrations
             modelBuilder.Entity("GameLogicClient.Models.Game", b =>
                 {
                     b.HasOne("GameLogicClient.Models.Player", "Player")
-                        .WithMany("games")
+                        .WithMany("Games")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -91,7 +91,7 @@ namespace GameLogicClient.Migrations
             modelBuilder.Entity("GameLogicClient.Models.Move", b =>
                 {
                     b.HasOne("GameLogicClient.Models.Game", "Game")
-                        .WithMany("moves")
+                        .WithMany("Moves")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

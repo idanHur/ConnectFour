@@ -30,7 +30,7 @@ namespace Client
         private const int Rows = 6;
         private const int Columns = 7;
         private const int FallingDelay = 650;
-        private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game board
+        private Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game Board
         private bool gameEnded;
         private bool isBoardEnabled;
         private int yellowCoins;
@@ -57,7 +57,7 @@ namespace Client
                     }
 
                     var ellipse = AddGamePiece(i, j, Brushes.White, 1);
-                    gameBoard[i, j] = ellipse;  // Add the ellipse to the game board
+                    gameBoard[i, j] = ellipse;  // Add the ellipse to the game Board
                 }
             }
             // Set the current instance
@@ -94,7 +94,7 @@ namespace Client
 
         private async void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(!isBoardEnabled) // To disable the board 
+            if(!isBoardEnabled) // To disable the Board 
                 return;
             var clickedEllipse = (Ellipse)sender;
             int column = Grid.GetColumn(clickedEllipse); // Get the column of the clicked ellipse
@@ -109,13 +109,13 @@ namespace Client
                 redCoins += 1;
                 RedCoinsLabel.Content = redCoins;
                 isBoardEnabled = false;
-                await FallingAnimation(lastmove.columnNumber, Brushes.Red);
+                await FallingAnimation(lastmove.ColumnNumber, Brushes.Red);
                 if (!gameEnded) // To not make ai move if quit game button is pressed after player move
                 {
                     Move aiMove = await _apiService.AiMoveAsync();
                     yellowCoins += 1;
                     YellowCoinsLabel.Content = yellowCoins;
-                    await FallingAnimation(aiMove.columnNumber, Brushes.Gold);
+                    await FallingAnimation(aiMove.ColumnNumber, Brushes.Gold);
                     isBoardEnabled = true;
                 }
             }
@@ -174,7 +174,7 @@ namespace Client
         }
         private async void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: enable board if disabled
+            // TODO: enable Board if disabled
             try
             {
                 await _apiService.StartGameAsync();
@@ -190,7 +190,7 @@ namespace Client
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: disable board
+            // TODO: disable Board
             try
             {
                 await _apiService.EndGameAsync();

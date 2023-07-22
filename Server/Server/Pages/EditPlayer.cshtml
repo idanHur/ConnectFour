@@ -10,7 +10,7 @@
         <form id="passwordCheckForm" asp-page-handler="CheckPassword" method="post">
             <div class="form-group mb-3">
                 <label asp-for="SelectedPlayerId"><strong>Player</strong></label>
-                <select asp-for="SelectedPlayerId" asp-items="@(new SelectList(Model.Players.Select(p => new { Id = p.playerId, Name = $"{p.playerId}: {p.playerName}"}), "Id", "Name"))" class="form-control"></select>
+                <select asp-for="SelectedPlayerId" asp-items="@(new SelectList(Model.Players.Select(p => new { Id = p.PlayerId, Name = $"{p.PlayerId}: {p.Name}"}), "Id", "Name"))" class="form-control"></select>
                 <span asp-validation-for="SelectedPlayerId" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
@@ -24,12 +24,12 @@
         </form>
     </div>
 
-    @if (Model.EditPlayer != null && Model.EditPlayer.playerId == Model.SelectedPlayerId)
+    @if (Model.EditPlayer != null && Model.EditPlayer.PlayerId == Model.SelectedPlayerId)
     {
         <div class="mt-3" id="playerDetailsDiv">
             <label><strong>Selected Player</strong></label><br>
-            <label><strong>ID:</strong> @Model.EditPlayer.playerId </label><br>
-            <label><strong>Name:</strong> @Model.EditPlayer.playerName</label>
+            <label><strong>ID:</strong> @Model.EditPlayer.PlayerId </label><br>
+            <label><strong>Name:</strong> @Model.EditPlayer.Name</label>
         </div>
         <div class="container-fluid mt-3 d-flex justify-content-between gap-3" id="playerActionsContainer">
                 <form asp-page-handler="DeletePlayer" method="post">
@@ -56,7 +56,7 @@
                 <input type="hidden" asp-for="playerOriginalId" /> 
                 <div class="form-group mb-3">
                     <label for="SelectedGameId"><strong>Game</strong></label>
-                    <select name="SelectedGameId" asp-items="@(new SelectList(Model.EditPlayer.games.Select(g => new { Id = g.gameId, Name = $"{g.gameId}: {g.gameStatus}"}), "Id", "Name"))" class="form-control"></select>
+                    <select name="SelectedGameId" asp-items="@(new SelectList(Model.EditPlayer.Games.Select(g => new { Id = g.GameId, Name = $"{g.GameId}: {g.Status}"}), "Id", "Name"))" class="form-control"></select>
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary btn-lg">Delete Game</button>

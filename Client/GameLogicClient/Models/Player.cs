@@ -8,15 +8,15 @@ namespace GameLogicClient.Models
 {
     public class Player
     {
-        public int playerId { get; set; }
-        public string playerName { get; set; }
-        public string phoneNumber { get; set; }
-        public string country { get; set; }
+        public int PlayerId { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Country { get; set; }
 
-        public List<Game> games { get; set; }
+        public List<Game> Games { get; set; }
 
         public Player() { 
-            games = new List<Game>();
+            Games = new List<Game>();
         }
     }
 }

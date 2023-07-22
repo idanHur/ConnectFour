@@ -21,15 +21,15 @@ namespace GameLogicClient.Services
         public Player GetPlayer(int playerId)
         {
             return _context.Players
-                    .Include(p => p.games)
-                        .ThenInclude(g => g.moves)
-                    .FirstOrDefault(p => p.playerId == playerId);
+                    .Include(p => p.Games)
+                        .ThenInclude(g => g.Moves)
+                    .FirstOrDefault(p => p.PlayerId == playerId);
         }
 
         public void AddPlayer(Player player)
         {
-            // Check if a player with the same id already exists
-            if (!_context.Players.Any(p => p.playerId == player.playerId))
+            // Check if a player with the same Id already exists
+            if (!_context.Players.Any(p => p.PlayerId == player.PlayerId))
             {
                 _context.Players.Add(player);
                 _context.SaveChanges();
@@ -42,25 +42,25 @@ namespace GameLogicClient.Services
 
         public void UpdatePlayer(Player updatedPlayerData)
         {
-            var player = GetPlayer(updatedPlayerData.playerId);
+            var player = GetPlayer(updatedPlayerData.PlayerId);
 
             if (player == null)
             {
-                throw new Exception($"No player found with ID {updatedPlayerData.playerId}");
+                throw new Exception($"No player found with ID {updatedPlayerData.PlayerId}");
             }
 
-            player.playerName = updatedPlayerData.playerName;
-            player.country = updatedPlayerData.country;
-            player.phoneNumber = updatedPlayerData.phoneNumber;
+            player.Name = updatedPlayerData.Name;
+            player.Country = updatedPlayerData.Country;
+            player.PhoneNumber = updatedPlayerData.PhoneNumber;
 
-            List<int> playerGameIds = GetPlayerGameIds(player.playerId);
+            List<int> playerGameIds = GetPlayerGameIds(player.PlayerId);
 
-            // Add games from the server
-            foreach (var game in updatedPlayerData.games)
+            // Add Games from the server
+            foreach (var game in updatedPlayerData.Games)
             {
-                var existingGame = player.games.FirstOrDefault(g => g.gameId == game.gameId);
+                var existingGame = player.Games.FirstOrDefault(g => g.GameId == game.GameId);
 
-                playerGameIds.Remove(game.gameId); // Remove the game id from the gameIds list to state that this game still exist in the server
+                playerGameIds.Remove(game.GameId); // Remove the game Id from the gameIds list to state that this game still exist in the server
 
                 if (existingGame != null)
                 {
@@ -70,17 +70,17 @@ namespace GameLogicClient.Services
                 else
                 {
                     // Add new game if not found
-                    player.games.Add(game);
+                    player.Games.Add(game);
                 }
             }
-            DeleteGames(playerGameIds); // Delete all the games that were deleted on the server
+            DeleteGames(playerGameIds); // Delete all the Games that were deleted on the server
             _context.SaveChanges();
         }
         private void DeleteGames(List<int> gameIds)
         {
             foreach (int id in gameIds)
             {
-                var game = _context.Games.FirstOrDefault(g => g.gameId == id);
+                var game = _context.Games.FirstOrDefault(g => g.GameId == id);
 
                 if (game != null)
                 {
@@ -93,7 +93,7 @@ namespace GameLogicClient.Services
         {
             var gameIds = _context.Games
                                   .Where(g => g.PlayerId == playerId)
-                                  .Select(g => g.gameId)
+                                  .Select(g => g.GameId)
                                   .ToList();
 
             return gameIds;
@@ -102,26 +102,26 @@ namespace GameLogicClient.Services
         public void UpdateGame(Game gameFromServer)
         {
             // Retrieve the game
-            var gameInDb = _context.Games.Include(g => g.moves).FirstOrDefault(g => g.gameId == gameFromServer.gameId);
+            var gameInDb = _context.Games.Include(g => g.Moves).FirstOrDefault(g => g.GameId == gameFromServer.GameId);
 
             if (gameInDb == null)
             {
-                throw new Exception($"No game found with ID {gameFromServer.gameId}");
+                throw new Exception($"No game found with ID {gameFromServer.GameId}");
             }
 
             // Update the game's properties.
-            gameInDb.board = gameFromServer.board;
-            gameInDb.gameStatus = gameFromServer.gameStatus;
+            gameInDb.Board = gameFromServer.Board;
+            gameInDb.Status = gameFromServer.Status;
 
             // Process each move from the server.
-            foreach (var move in gameFromServer.moves)
+            foreach (var move in gameFromServer.Moves)
             {
-                var existingMove = gameInDb.moves.FirstOrDefault(m => m.id == move.id && m.GameId == move.GameId);
+                var existingMove = gameInDb.Moves.FirstOrDefault(m => m.Id == move.Id && m.GameId == move.GameId);
 
                 if (existingMove == null)
                 {
                     // The move doesn't exist in the database yet. Add it.
-                    gameInDb.moves.Add(move);
+                    gameInDb.Moves.Add(move);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace GameLogicClient.Services
 
         public Game GetLastGameOfPlayer(int playerId)
         {
-            // Retrieve the player with the games
+            // Retrieve the player with the Games
             var player = GetPlayer(playerId);
 
             if (player == null)
@@ -140,11 +140,11 @@ namespace GameLogicClient.Services
             }
 
             // Retrieve the player's last game
-            var lastGame = player.games.OrderByDescending(g => g.gameId).FirstOrDefault();
+            var lastGame = player.Games.OrderByDescending(g => g.GameId).FirstOrDefault();
 
             if (lastGame == null)
             {
-                throw new Exception($"Player with ID {playerId} has no games.");
+                throw new Exception($"Player with ID {playerId} has no Games.");
             }
 
             // Return the last game
@@ -162,7 +162,7 @@ namespace GameLogicClient.Services
             }
 
             // Add the game to the player
-            player.games.Add(newGame);
+            player.Games.Add(newGame);
 
             // Save changes to the database
             _context.SaveChanges();

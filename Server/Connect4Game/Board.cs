@@ -6,14 +6,14 @@ namespace Connect4Game
 {
     public class Board
     {
-        public int id {  get; set; }
+        public int Id {  get; set; }
         private const int EmptySlot = 0;
 
-        public string matrix { get; set; } // EF Core dosnt supports int[,]
+        public string Matrix { get; set; } // EF Core dosnt supports int[,]
 
         public Board(int rows, int columns)
         {
-            InitializeMatrix(rows, columns); // Creating a private boolean board
+            InitializeMatrix(rows, columns); // Creating a private boolean Board
         }
         // Default constructor (required by EF Core)
         private Board() { }
@@ -35,12 +35,12 @@ namespace Connect4Game
                     sb.Append(";");
                 }
             }
-            this.matrix = sb.ToString();
+            this.Matrix = sb.ToString();
         }
 
         public int[,] GetMatrix() // New method
         {
-            var rows = this.matrix.Split(';');
+            var rows = this.Matrix.Split(';');
             var matrix = new int[rows.Length, rows[0].Split(',').Length];
 
             for (int i = 0; i < rows.Length; i++)
@@ -76,7 +76,7 @@ namespace Connect4Game
                     sb.Append(";");
                 }
             }
-            this.matrix = sb.ToString();
+            this.Matrix = sb.ToString();
         }
         public bool IsValidMove(int column)
         {
@@ -136,7 +136,7 @@ namespace Connect4Game
         public Player? IsWinningMove(int column)
         {
             int[,] matrix = GetMatrix();
-            // Get the board size
+            // Get the Board size
             int numRows = matrix.GetLength(0);
             int numColumns = matrix.GetLength(1);
 

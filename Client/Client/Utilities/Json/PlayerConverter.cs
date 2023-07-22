@@ -18,13 +18,13 @@ namespace Client.Utilities.Json
 
             if (jObject["Games"] != null)
             {
-                player.games = jObject["Games"].ToObject<List<Game>>();
+                player.Games = jObject["Games"].ToObject<List<Game>>();
             }
 
-            player.playerName = (string)jObject["PlayerName"];
-            player.playerId = (int)jObject["PlayerId"];
-            player.phoneNumber = (string)jObject["PhoneNumber"];
-            player.country = (string)jObject["Country"];
+            player.Name = (string)jObject["Name"];
+            player.PlayerId = (int)jObject["PlayerId"];
+            player.PhoneNumber = (string)jObject["PhoneNumber"];
+            player.Country = (string)jObject["Country"];
 
             return player;
         }
@@ -35,11 +35,11 @@ namespace Client.Utilities.Json
             var player = (Player)value;
             var jObject = new JObject
             {
-                { "PlayerId", player.playerId },
-                { "PlayerName", player.playerName },
-                { "PhoneNumber", player.phoneNumber },
-                { "Country", player.country },
-                { "Games", JArray.FromObject(player.games) }
+                { "PlayerId", player.PlayerId },
+                { "Name", player.Name },
+                { "PhoneNumber", player.PhoneNumber },
+                { "Country", player.Country },
+                { "Games", JArray.FromObject(player.Games) }
             };
 
             jObject.WriteTo(writer);

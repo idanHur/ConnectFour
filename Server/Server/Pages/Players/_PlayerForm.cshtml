@@ -3,29 +3,29 @@
 <div class="container-fluid mt-5">
     <form asp-action="Create" method="post" class="form-background mx-auto w-75">
         <div class="form-group">
-            <label asp-for="playerName">Player Name</label>
-            <input asp-for="playerName" class="form-control" placeholder="Enter player name">
-            <span asp-validation-for="playerName" class="text-danger"></span>
+            <label asp-for="Name">Player Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Enter player name">
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label asp-for="playerId">ID</label>
-            <input asp-for="playerId" class="form-control" placeholder="Enter ID">
-            <span asp-validation-for="playerId" class="text-danger"></span>
+            <label asp-for="PlayerId">ID</label>
+            <input asp-for="PlayerId" class="form-control" placeholder="Enter ID">
+            <span asp-validation-for="PlayerId" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label asp-for="phoneNumber">Phone Number</label>
-            <input asp-for="phoneNumber" class="form-control" placeholder="Enter phone number">
-            <span asp-validation-for="phoneNumber" class="text-danger"></span>
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label asp-for="country"><strong>Country</strong></label>
-            <select asp-for="country" class="form-control" id="country"></select>
-            <span asp-validation-for="country" class="text-danger"></span>
+            <label asp-for="Country"><strong>Country</strong></label>
+            <select asp-for="Country" class="form-control" id="country"></select>
+            <span asp-validation-for="Country" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
-            <label asp-for="password"><strong>Password</strong></label>
-            <input asp-for="password" class="form-control" placeholder="Enter password">
-            <span asp-validation-for="password" class="text-danger"></span>
+            <label asp-for="Password"><strong>Password</strong></label>
+            <input asp-for="Password" class="form-control" placeholder="Enter password">
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
     </form>

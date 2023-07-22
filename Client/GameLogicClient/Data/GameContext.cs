@@ -18,29 +18,29 @@ namespace GameLogicClient.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>()
-                .HasKey(p => p.playerId); // Set playerId as primary key
+                .HasKey(p => p.PlayerId); // Set PlayerId as primary key
             modelBuilder.Entity<Player>()
-                .Property(p => p.playerId)
+                .Property(p => p.PlayerId)
                 .ValueGeneratedNever(); // Disable auto incrementation
 
             modelBuilder.Entity<Game>()
-                .HasKey(g => g.gameId); // Set gameId as primary key
+                .HasKey(g => g.GameId); // Set GameId as primary key
             modelBuilder.Entity<Game>()
-                .Property(g => g.gameId)
+                .Property(g => g.GameId)
                 .ValueGeneratedNever(); // Disable auto incrementation
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.Player)
-                .WithMany(p => p.games)
+                .WithMany(p => p.Games)
                 .HasForeignKey(g => g.PlayerId); // Set PlayerId as foreign key
 
             modelBuilder.Entity<Move>()
-                .HasKey(m => m.id); // Set id as primary key
+                .HasKey(m => m.Id); // Set Id as primary key
             modelBuilder.Entity<Move>()
-                .Property(m => m.id)
+                .Property(m => m.Id)
                 .ValueGeneratedNever(); // Disable auto incrementation
             modelBuilder.Entity<Move>()
                 .HasOne(m => m.Game)
-                .WithMany(g => g.moves)
+                .WithMany(g => g.Moves)
                 .HasForeignKey(m => m.GameId) // Set GameId as foreign key
                 .OnDelete(DeleteBehavior.Cascade);
         }

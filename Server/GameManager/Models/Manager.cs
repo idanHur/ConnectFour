@@ -24,17 +24,17 @@ namespace GameManager.Models
                 return null;
             Game temp = player.NewGame(row, column);
             _context.SaveChanges();
-            Game gameFromDB = _context.Games.Where(g => g.playerId == playerId).OrderByDescending(g => g.startTime).FirstOrDefault();
-            temp.gameId = gameFromDB.gameId;
+            Game gameFromDB = _context.Games.Where(g => g.PlayerId == playerId).OrderByDescending(g => g.StartTime).FirstOrDefault();
+            temp.GameId = gameFromDB.GameId;
             return temp;
         }
 
         public Game MakeMoveForPlayer(int playerId, int column)
         {
             Player player = GetPlayer(playerId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
             Game lastGame = GetPlayerLastGame(playerId);
-            if (lastGame.gameStatus == GameStatus.OnGoing) // If a game is curently played
+            if (lastGame.Status == GameStatus.OnGoing) // If a game is curently played
             {
                 Move moveMade = lastGame.PlayerMove(column);
                 _context.SaveChanges();
@@ -45,19 +45,19 @@ namespace GameManager.Models
         public Game GetPlayerLastGame(int playerId)
         {
             var player = GetPlayer(playerId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
 
-            var lastGame = player.games.OrderByDescending(g => g.startTime).FirstOrDefault();
+            var lastGame = player.Games.OrderByDescending(g => g.StartTime).FirstOrDefault();
 
-            if (lastGame == null) throw new InvalidOperationException($"No games found for player, playerId: {playerId}");
+            if (lastGame == null) throw new InvalidOperationException($"No Games found for player, PlayerId: {playerId}");
 
             return lastGame;
         }
         public Game MakeAiMoveForPlayerGame(int playerId, int gameId)
         {
             Player player = GetPlayer(playerId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
-            if (player.GetLastGame().gameStatus == GameStatus.OnGoing) // If a game is curently played
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
+            if (player.GetLastGame().Status == GameStatus.OnGoing) // If a game is curently played
             {
                 player.GetLastGame().AiMove();
                 _context.SaveChanges();
@@ -68,17 +68,17 @@ namespace GameManager.Models
         public Player GetPlayer(int id)
         {
             var player = _context.Players
-                .Include(p => p.games)
-                    .ThenInclude(g => g.board) // Load the Board related to the Game
-                .Include(p => p.games)
+                .Include(p => p.Games)
+                    .ThenInclude(g => g.Board) // Load the Board related to the Game
+                .Include(p => p.Games)
                     .ThenInclude(g => g.Moves) // Load the Moves related to the Game
-                .FirstOrDefault(p => p.playerId == id);
+                .FirstOrDefault(p => p.PlayerId == id);
             return player;
         }
         public Game EndGameForPlayer(int playerId, int gameId)
         {
             Player player = GetPlayer(playerId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
             Game endedGame = player.EndLastGame(gameId);
             _context.SaveChanges();
             return endedGame;
@@ -86,7 +86,7 @@ namespace GameManager.Models
 
         public bool IsIdTaken(int id)
         {
-            return _context.Players.Any(player => player.playerId == id);
+            return _context.Players.Any(player => player.PlayerId == id);
         }
 
         public void AddPlayer(Player player)
@@ -104,29 +104,29 @@ namespace GameManager.Models
         public void UpdatePlayer(int originalId, Player editedPlayer)
         {
             Player player = GetPlayer(originalId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {originalId}");
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {originalId}");
             if (editedPlayer == null) throw new InvalidOperationException("Must pass player");
 
-            if(originalId != editedPlayer.playerId)
+            if(originalId != editedPlayer.PlayerId)
             {
-                editedPlayer.games = player.games;
+                editedPlayer.Games = player.Games;
                 editedPlayer.ChangeGamesForUpdateUser();
                 DeletePlayer(originalId);
                 AddPlayer(editedPlayer);
             }
             else
             {
-                player.playerName = editedPlayer.playerName;
-                player.phoneNumber = editedPlayer.phoneNumber;
-                player.country = editedPlayer.country;
-                player.password = editedPlayer.password;
+                player.Name = editedPlayer.Name;
+                player.PhoneNumber = editedPlayer.PhoneNumber;
+                player.Country = editedPlayer.Country;
+                player.Password = editedPlayer.Password;
                 _context.SaveChanges();
             }
         }
         public void DeletePlayer(int playerId)
         {
             Player player = GetPlayer(playerId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
 
             _context.Players.Remove(player);
             _context.SaveChanges();
@@ -134,7 +134,7 @@ namespace GameManager.Models
         public void DeleteGameForPlayer(int playerId, int gameId)
         {
             Player player = GetPlayer(playerId);
-            if (player == null) throw new InvalidOperationException($"Player not found, playerId: {playerId}");
+            if (player == null) throw new InvalidOperationException($"Player not found, PlayerId: {playerId}");
 
             player.DeleteGame(gameId);
             _context.SaveChanges();
@@ -142,9 +142,9 @@ namespace GameManager.Models
         public List<Player> GetAllPlayers()
         {
             return _context.Players
-                .Include(p => p.games)
-                    .ThenInclude(g => g.board)
-                .Include(p => p.games)
+                .Include(p => p.Games)
+                    .ThenInclude(g => g.Board)
+                .Include(p => p.Games)
                     .ThenInclude(g => g.Moves)
                 .ToList();
         }
