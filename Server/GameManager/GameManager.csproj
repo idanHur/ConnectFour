@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Connect4Game\Connect4Game.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

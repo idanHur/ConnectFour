@@ -14,12 +14,12 @@ namespace GameManager.Utilities.Json
             JObject jObject = JObject.Load(reader);
 
             var player = new Player(); //(int)jObject["Id"]
-            player.games = (ICollection<Connect4Game.Game>)jObject["Games"];
-            player.playerName = (string)jObject["PlayerName"];
-            player.playerId = (int)jObject["PlayerId"];
-            player.phoneNumber = (string)jObject["PhoneNumber"];
-            player.country = (string)jObject["Country"];
-            player.password = (string)jObject["Password"];
+            player.Games = (ICollection<Connect4Game.Game>)jObject["Games"];
+            player.Name = (string)jObject["Name"];
+            player.PlayerId = (int)jObject["PlayerId"];
+            player.PhoneNumber = (string)jObject["PhoneNumber"];
+            player.Country = (string)jObject["Country"];
+            player.Password = (string)jObject["Password"];
 
             return player;
         }
@@ -29,10 +29,11 @@ namespace GameManager.Utilities.Json
             Player player = (Player)value;
             JObject jObject = new JObject
             {
-                { "PlayerId", player.playerId },
-                { "PlayerName", player.playerName },
-                { "PhoneNumber", player.phoneNumber },
-                { "Country", player.country }
+                { "PlayerId", player.PlayerId },
+                { "Name", player.Name },
+                { "PhoneNumber", player.PhoneNumber },
+                { "Country", player.Country },
+                { "Games", JArray.FromObject(player.Games) }
             };
 
             jObject.WriteTo(writer);

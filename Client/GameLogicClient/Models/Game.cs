@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameLogic.Models
+namespace GameLogicClient.Models
 {
     public enum PlayerType
     {
@@ -19,28 +19,30 @@ namespace GameLogic.Models
     }
     public class Game
     {
-        public string board { get; set; } // EF Core dosnt supports int[,]
-        public GameStatus gameStatus { get; set; }
-        public int gameId { get;  set; }
+        public string Board { get; set; } // EF Core dosnt supports int[,]
+        public GameStatus Status { get; set; }
+        public int GameId { get;  set; }
+        public int PlayerId { get; set; } // Add PlayerId property
+        public Player Player { get; set; } // Add navigation property for Player
 
-        public ICollection<Move> moves { get; set; }
+        public ICollection<Move> Moves { get; set; }
 
         public Game(int rows, int columns, int gameId)
         {
-            this.gameId = gameId;
-            board = "";
-            gameStatus = GameStatus.OnGoing;
-            moves = new List<Move>();
+            this.GameId = gameId;
+            Board = "";
+            Status = GameStatus.OnGoing;
+            Moves = new List<Move>();
         }
         public Game()
         {
-            moves = new List<Move>();
+            Moves = new List<Move>();
         }
         
 
         public int[,] GetMatrix() // New method
         {
-            var rows = this.board.Split(';');
+            var rows = this.Board.Split(';');
             var matrix = new int[rows.Length, rows[0].Split(',').Length];
 
             for (int i = 0; i < rows.Length; i++)
@@ -76,27 +78,27 @@ namespace GameLogic.Models
                     sb.Append(";");
                 }
             }
-            this.board = sb.ToString();
+            this.Board = sb.ToString();
         }
 
         public void UpdateGameState(string board, GameStatus gameStatus, int lastMoveCol, PlayerType whichPlayer)
         {
-            this.board = board;
-            this.gameStatus = gameStatus;
-            Move newMove = new Move(lastMoveCol, whichPlayer, moves.Count + 1);
+            this.Board = board;
+            this.Status = gameStatus;
+            Move newMove = new Move(lastMoveCol, whichPlayer, Moves.Count + 1);
         }
 
         public bool IsEligibleMove(int column, PlayerType player)
         {
             int[,] board = GetMatrix();
             // Check if the column is valid
-            if (column < 0 || column >= board.GetLength(1)) // use board size
+            if (column < 0 || column >= board.GetLength(1)) // use Board size
             {
-                throw new ArgumentOutOfRangeException("Column must be within the board size");
+                throw new ArgumentOutOfRangeException("Column must be within the Board size");
             }
 
             // Find the lowest empty row in the specified column
-            for (int row = board.GetLength(0) - 1; row >= 0; row--) // use board size
+            for (int row = board.GetLength(0) - 1; row >= 0; row--) // use Board size
             {
                 if (board[row, column] == 0) // If the cell is empty
                 {

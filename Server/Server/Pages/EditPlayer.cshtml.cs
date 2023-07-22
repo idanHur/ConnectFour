@@ -32,26 +32,43 @@ namespace Server.Pages
         {
             if (id.HasValue)
             {
+<<<<<<< HEAD
                 // Get player details based on the id
                 EditPlayer = _gameManager.GetPlayer(id.Value);
                 SelectedPlayerId = EditPlayer.playerId;
+=======
+                // Get player details based on the Id
+                EditPlayer = _gameManager.GetPlayer(id.Value);
+                SelectedPlayerId = EditPlayer.PlayerId;
+>>>>>>> Staging
             }
         }
         public IActionResult OnPostCheckPassword()
         {
             var player = _gameManager.GetPlayer(SelectedPlayerId);
 
+<<<<<<< HEAD
             if (player != null && player.password == PlayerPassword)
             {
                 EditPlayer = player;
                 playerOriginalId = player.playerId;
+=======
+            if (player != null && player.Password == PlayerPassword)
+            {
+                EditPlayer = player;
+                playerOriginalId = player.PlayerId;
+>>>>>>> Staging
                 ModelState.Clear();
 
                 return Page();
             }
             else
             {
+<<<<<<< HEAD
                 ModelState.AddModelError("PlayerPassword", "Invalid password. Please try again.");
+=======
+                ModelState.AddModelError("PlayerPassword", "Invalid Password. Please try again.");
+>>>>>>> Staging
                 return Page();
             }
         }
@@ -74,9 +91,15 @@ namespace Server.Pages
 
         public IActionResult OnPostEditPlayer()
         {
+<<<<<<< HEAD
             if ((playerOriginalId != EditPlayer.playerId) && (_gameManager.IsIdTaken(EditPlayer.playerId))) // If the id was changed check if the new id is taken
             {
                 ModelState.AddModelError("playerId", "This ID is already taken.");
+=======
+            if ((playerOriginalId != EditPlayer.PlayerId) && (_gameManager.IsIdTaken(EditPlayer.PlayerId))) // If the Id was changed check if the new Id is taken
+            {
+                ModelState.AddModelError("PlayerId", "This ID is already taken.");
+>>>>>>> Staging
             }
 
             // Validate ModelState

@@ -23,14 +23,14 @@ namespace Server.Controllers
             _gameManager = gameManager;
         }
 
-        [HttpPost("{playerId}/start")]
+        [HttpPost("{PlayerId}/start")]
         [Authorize]
         public IActionResult StartGame(int playerId)
         {
             // Get the authenticated user's ID
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // Compare the authenticated user's ID with the playerId parameter
+            // Compare the authenticated user's ID with the PlayerId parameter
             if (userId != playerId.ToString())
             {
                 return Forbid(); // Return 403 Forbidden if the user is not authorized to start the game
@@ -58,7 +58,7 @@ namespace Server.Controllers
             }
         }
 
-        [HttpPut("{playerId}/move")]
+        [HttpPut("{PlayerId}/move")]
         public IActionResult Move(int playerId, [FromBody] int playerMove)
         {
             
@@ -85,14 +85,14 @@ namespace Server.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-        [HttpPut("{playerId}/endGame")]
+        [HttpPut("{PlayerId}/endGame")]
         [Authorize]
         public IActionResult EndGame(int playerId, [FromBody] int gameId)
         {
             // Get the authenticated user's ID
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // Compare the authenticated user's ID with the playerId parameter
+            // Compare the authenticated user's ID with the PlayerId parameter
             if (userId != playerId.ToString())
             {
                 return Forbid(); // Return 403 Forbidden if the user is not authorized to make the move
@@ -101,9 +101,9 @@ namespace Server.Controllers
             try
             {
                 // End the last game of this player
-                _gameManager.EndGameForPlayer(playerId, gameId);
+                Game endedGame = _gameManager.EndGameForPlayer(playerId, gameId);
 
-                return Ok(new { message = "Game ended successfully" });
+                return Ok(endedGame);
 
             }
             catch (Exception ex)
@@ -111,14 +111,14 @@ namespace Server.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-        [HttpPut("{playerId}/aiMove")]
+        [HttpPut("{PlayerId}/aiMove")]
         [Authorize]
         public IActionResult AiMove(int playerId, [FromBody] int gameId)
         {
             // Get the authenticated user's ID
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // Compare the authenticated user's ID with the playerId parameter
+            // Compare the authenticated user's ID with the PlayerId parameter
             if (userId != playerId.ToString())
             {
                 return Forbid(); // Return 403 Forbidden if the user is not authorized to make the move

@@ -1,4 +1,4 @@
-﻿using GameLogic.Models;
+﻿using GameLogicClient.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -16,9 +16,9 @@ namespace Client.Utilities.Json
             JObject jObject = JObject.Load(reader);
 
             // Extract the necessary properties from the JSON
-            int columnNumber = (int)jObject["columnNumber"];
-            PlayerType player = jObject["player"].ToObject<PlayerType>();
-            int id = (int)jObject["id"];
+            int columnNumber = (int)jObject["ColumnNumber"];
+            PlayerType player = jObject["Player"].ToObject<PlayerType>();
+            int id = (int)jObject["Id"];
 
             // Create a new Move object with the extracted properties
             Move move = new Move(columnNumber, player, id);
@@ -31,9 +31,9 @@ namespace Client.Utilities.Json
             Move move = (Move)value;
             JObject jObject = new JObject
         {
-            { "columnNumber", move.columnNumber },
-            { "player", JToken.FromObject(move.Player) },
-            { "id", move.id }
+            { "ColumnNumber", move.ColumnNumber },
+            { "Player", JToken.FromObject(move.Player) },
+            { "Id", move.Id }
         };
 
             jObject.WriteTo(writer);

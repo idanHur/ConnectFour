@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameManager.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230711140539_initi-migrations")]
+    [Migration("20230722175200_initi-migrations")]
     partial class initimigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,40 +23,40 @@ namespace GameManager.Migrations
 
             modelBuilder.Entity("Connect4Game.Board", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("matrix");
+                    b.Property<string>("Matrix");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Board");
                 });
 
             modelBuilder.Entity("Connect4Game.Game", b =>
                 {
-                    b.Property<int>("gameId")
+                    b.Property<int>("GameId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("boardid");
+                    b.Property<int?>("BoardId");
 
-                    b.Property<int>("currentPlayer");
+                    b.Property<int>("CurrentPlayer");
 
-                    b.Property<TimeSpan>("gameDuration");
+                    b.Property<TimeSpan>("GameDuration");
 
-                    b.Property<int>("gameStatus");
+                    b.Property<int>("PlayerId");
 
-                    b.Property<int>("playerId");
+                    b.Property<DateTime>("StartTime");
 
-                    b.Property<DateTime>("startTime");
+                    b.Property<int>("Status");
 
-                    b.HasKey("gameId");
+                    b.HasKey("GameId");
 
-                    b.HasIndex("boardid");
+                    b.HasIndex("BoardId");
 
-                    b.HasIndex("playerId");
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Games");
                 });
@@ -67,51 +67,51 @@ namespace GameManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ColumnNumber");
+
+                    b.Property<int?>("GameId");
+
                     b.Property<int>("Player");
-
-                    b.Property<int>("columnNumber");
-
-                    b.Property<int?>("gameId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("gameId");
+                    b.HasIndex("GameId");
 
                     b.ToTable("Move");
                 });
 
             modelBuilder.Entity("GameManager.Models.Player", b =>
                 {
-                    b.Property<int>("playerId")
+                    b.Property<int>("PlayerId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("country")
+                    b.Property<string>("Country")
                         .IsRequired();
 
-                    b.Property<string>("password")
+                    b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("phoneNumber")
+                    b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<string>("playerName")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired();
 
-                    b.HasKey("playerId");
+                    b.HasKey("PlayerId");
 
                     b.ToTable("Players");
                 });
 
             modelBuilder.Entity("Connect4Game.Game", b =>
                 {
-                    b.HasOne("Connect4Game.Board", "board")
+                    b.HasOne("Connect4Game.Board", "Board")
                         .WithMany()
-                        .HasForeignKey("boardid");
+                        .HasForeignKey("BoardId");
 
                     b.HasOne("GameManager.Models.Player")
-                        .WithMany("games")
-                        .HasForeignKey("playerId")
+                        .WithMany("Games")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -119,7 +119,7 @@ namespace GameManager.Migrations
                 {
                     b.HasOne("Connect4Game.Game")
                         .WithMany("Moves")
-                        .HasForeignKey("gameId");
+                        .HasForeignKey("GameId");
                 });
 #pragma warning restore 612, 618
         }

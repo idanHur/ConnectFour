@@ -11,44 +11,45 @@ namespace GameManager.Models
     {
         [Required(ErrorMessage = "Player ID is required.")]
         [Range(1, 1000, ErrorMessage = "Player ID must be between 1 and 1000.")]
-        public int playerId { get; set; }
+        public int PlayerId { get; set; }
 
         [Required(ErrorMessage = "Private Name is required.")]
         [MinLength(2, ErrorMessage = "Private Name should be at least 2 characters long.")]
-        public string playerName { get; set; }
+        public string Name { get; set; }
         [Required(ErrorMessage = "Phone Number is required.")]
         [RegularExpression(@"^\d{9,10}$", ErrorMessage = "Phone Number should be between 9 and 10 digits.")]
-        public string phoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Country is required.")]
-        public string country { get; set; }
+        public string Country { get; set; }
         [Required(ErrorMessage = "Password is required.")]
         [MinLength(4, ErrorMessage = "Password should be at least 4 characters long.")]
-        public string password { get; set; }
+        public string Password { get; set; }
 
         // EF Core will automatically load the related Game entities when accessing this property.
-        public ICollection<Game> games { get; set; }
+        public ICollection<Game> Games { get; set; }
 
 
         // Parameterless constructor
         public Player()
         {
-            games = new List<Game>(); // Initialize the collection
+            Games = new List<Game>(); // Initialize the collection
         }
         public Player(string playerName, int playerId)
         {
-            this.playerName = playerName;
-            this.playerId = playerId;
-            games = new List<Game>(); // Initialize the collection
+            this.Name = playerName;
+            this.PlayerId = playerId;
+            Games = new List<Game>(); // Initialize the collection
         }
         public Game NewGame(int rows, int columns)
         {
-            Game newGame = new Game(rows, columns, playerId);
-            games.Add(newGame);
+            Game newGame = new Game(rows, columns, PlayerId);
+            Games.Add(newGame);
             return newGame;
         }
         public void ChangeGamesForUpdateUser()
         {
             List<Game> tempGames = new List<Game>();
+<<<<<<< HEAD
             foreach (var game in games)
             {
                 // Create a new Game object and copy properties except gameId
@@ -60,6 +61,19 @@ namespace GameManager.Models
                     startTime = game.startTime,
                     gameDuration = game.gameDuration,
                     playerId = game.playerId,
+=======
+            foreach (var game in Games)
+            {
+                // Create a new Game object and copy properties except GameId
+                Game tempGame = new Game()
+                {
+                    Board = game.Board,
+                    Status = game.Status,
+                    CurrentPlayer = game.CurrentPlayer,
+                    StartTime = game.StartTime,
+                    GameDuration = game.GameDuration,
+                    PlayerId = game.PlayerId,
+>>>>>>> Staging
                     Moves = game.Moves
                 };
 
@@ -67,16 +81,22 @@ namespace GameManager.Models
                 tempGames.Add(tempGame);
             }
 
+<<<<<<< HEAD
             // Replace the games list with tempGames
             games = tempGames;
+=======
+            // Replace the Games list with tempGames
+            Games = tempGames;
+>>>>>>> Staging
         }
         public Game GetLastGame()
         {
-            var gamesList = games.ToList();
+            var gamesList = Games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
             return lastGame;
         }
         public void DeleteGame(int id)
+<<<<<<< HEAD
         {
             // Find the game in the collection
             Game gameToRemove = games.FirstOrDefault(g => g.gameId == id);
@@ -87,19 +107,26 @@ namespace GameManager.Models
         }
 
         public void EndLastGame(int gameId)
+=======
+>>>>>>> Staging
         {
-            var gamesList = games.ToList();
+            // Find the game in the collection
+            Game gameToRemove = Games.FirstOrDefault(g => g.GameId == id);
+            // Check if a game with that Id was found
+            if (gameToRemove == null) throw new InvalidOperationException($"The game wasnt found");    
+            // If found, remove it
+            Games.Remove(gameToRemove);
+        }
+
+        public Game EndLastGame(int gameId)
+        {
+            var gamesList = Games.ToList();
             var lastGame = gamesList[gamesList.Count - 1];
-            if (lastGame == null) throw new InvalidOperationException($"There are no played games");
-            if (lastGame.gameId != gameId) throw new ArgumentException("Game id doesn't match last game id", nameof(gameId));// Make sure this is the game 
+            if (lastGame == null) throw new InvalidOperationException($"There are no played Games");
+            if (lastGame.GameId != gameId) throw new ArgumentException("Game Id doesn't match last game Id", nameof(gameId));// Make sure this is the game 
 
             lastGame.EndGame(didntFinish: true);
-        }
-        public bool IsGameOver()
-        {
-            var gamesList = games.ToList();
-            var lastGame = gamesList[gamesList.Count - 1];
-            return lastGame.gameStatus != GameStatus.OnGoing;
+            return lastGame;
         }
     }
 }
