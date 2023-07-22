@@ -53,10 +53,14 @@ namespace GameLogicClient.Services
             player.country = updatedPlayerData.country;
             player.phoneNumber = updatedPlayerData.phoneNumber;
 
+            List<int> playerGameIds = GetPlayerGameIds(player.playerId);
+
             // Add games from the server
             foreach (var game in updatedPlayerData.games)
             {
                 var existingGame = player.games.FirstOrDefault(g => g.gameId == game.gameId);
+
+                playerGameIds.Remove(game.gameId); // Remove the game id from the gameIds list to state that this game still exist in the server
 
                 if (existingGame != null)
                 {
@@ -69,8 +73,32 @@ namespace GameLogicClient.Services
                     player.games.Add(game);
                 }
             }
+            DeleteGames(playerGameIds); // Delete all the games that were deleted on the server
             _context.SaveChanges();
         }
+        private void DeleteGames(List<int> gameIds)
+        {
+            foreach (int id in gameIds)
+            {
+                var game = _context.Games.FirstOrDefault(g => g.gameId == id);
+
+                if (game != null)
+                {
+                    _context.Games.Remove(game);
+                    _context.SaveChanges();
+                }
+            }   
+        }
+        public List<int> GetPlayerGameIds(int playerId)
+        {
+            var gameIds = _context.Games
+                                  .Where(g => g.PlayerId == playerId)
+                                  .Select(g => g.gameId)
+                                  .ToList();
+
+            return gameIds;
+        }
+
         public void UpdateGame(Game gameFromServer)
         {
             // Retrieve the game

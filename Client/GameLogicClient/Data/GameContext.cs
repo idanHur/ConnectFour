@@ -41,7 +41,8 @@ namespace GameLogicClient.Data
             modelBuilder.Entity<Move>()
                 .HasOne(m => m.Game)
                 .WithMany(g => g.moves)
-                .HasForeignKey(m => m.GameId); // Set GameId as foreign key
+                .HasForeignKey(m => m.GameId) // Set GameId as foreign key
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
 
