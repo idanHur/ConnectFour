@@ -20,8 +20,12 @@ namespace GameLogicClient.Services
 
         public Player GetPlayer(int playerId)
         {
-            return _context.Players.FirstOrDefault(p => p.playerId == playerId);
+            return _context.Players
+                    .Include(p => p.games)
+                        .ThenInclude(g => g.moves)
+                    .FirstOrDefault(p => p.playerId == playerId);
         }
+
         public void AddPlayer(Player player)
         {
             // Check if a player with the same id already exists
@@ -38,7 +42,7 @@ namespace GameLogicClient.Services
 
         public void UpdatePlayer(Player updatedPlayerData)
         {
-            var player = _context.Players.Find(updatedPlayerData.playerId);
+            var player = GetPlayer(updatedPlayerData.playerId);
 
             if (player == null)
             {
@@ -48,10 +52,6 @@ namespace GameLogicClient.Services
             player.playerName = updatedPlayerData.playerName;
             player.country = updatedPlayerData.country;
             player.phoneNumber = updatedPlayerData.phoneNumber;
-
-            // Delete existing games of player in case were deleted on site
-            player.games.Clear();
-            _context.SaveChanges();
 
             // Add games from the server
             foreach (var game in updatedPlayerData.games)
@@ -104,7 +104,7 @@ namespace GameLogicClient.Services
         public Game GetLastGameOfPlayer(int playerId)
         {
             // Retrieve the player with the games
-            var player = _context.Players.Include(p => p.games).FirstOrDefault(p => p.playerId == playerId);
+            var player = GetPlayer(playerId);
 
             if (player == null)
             {
@@ -126,7 +126,7 @@ namespace GameLogicClient.Services
         public void AddGameToPlayer(int playerId, Game newGame)
         {
             // Retrieve the player
-            var player = _context.Players.Include(p => p.games).FirstOrDefault(p => p.playerId == playerId);
+            var player = GetPlayer(playerId);
 
             if (player == null)
             {

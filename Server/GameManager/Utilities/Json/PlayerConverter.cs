@@ -34,7 +34,6 @@ namespace GameManager.Utilities.Json
                 { "PhoneNumber", player.phoneNumber },
                 { "Country", player.country },
                 { "Games", JArray.FromObject(player.games) }
-
             };
 
             jObject.WriteTo(writer);
