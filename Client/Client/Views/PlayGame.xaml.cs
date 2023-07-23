@@ -57,8 +57,7 @@ namespace Client.Views
 
             // Set the current instance
             currentInstance = this;
-            // Handle the Closed event
-            this.Closed += (s, e) => { currentInstance = null; };
+
         }
         private async void PlayGame_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -66,6 +65,8 @@ namespace Client.Views
             {
                 if(!gameEnded)
                     await _apiService.EndGameAsync();
+                currentInstance = null;
+                gameEnded = true;
                 this.Close();
             }
             catch (Exception ex)
