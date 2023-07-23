@@ -12,7 +12,6 @@ namespace Client.Services
         void NavigateToGame();
         void NavigateToLogin();
         void NavigateToReplayGames();
-
     }
 
 }

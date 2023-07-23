@@ -19,7 +19,7 @@ namespace Client.Services
 
         public void NavigateToGame()
         {
-            ConnectFourWindow gameWindow = _serviceProvider.GetRequiredService<ConnectFourWindow>();
+            PlayGame gameWindow = _serviceProvider.GetRequiredService<PlayGame>();
             gameWindow.Show();
         }
 

@@ -41,7 +41,7 @@ namespace Client.Views
                 if (result)
                 {
                     // Open the main application window
-                    _navigationService.NavigateToReplayGames();
+                    _navigationService.NavigateToMain();
 
                     // Close the login window after opening the main window
                     this.Close();

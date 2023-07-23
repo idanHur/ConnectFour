@@ -43,7 +43,6 @@ namespace Client.Views
         public const int Columns = 7;
         public const int FallingDelay = 650;
         public Ellipse[,] gameBoard = new Ellipse[Rows, Columns];  // 2D array to store the game Board
-        public bool gameEnded;
         public bool isBoardEnabled;
         public int yellowCoins;
         public int redCoins;
@@ -57,7 +56,6 @@ namespace Client.Views
             InitializeComponent();
             _navigationService = navigationService;
             isBoardEnabled = true;
-            gameEnded = false;
             yellowCoins = 0;
             redCoins = 0;
             // Create the grid cells and ellipses dynamically
