@@ -57,7 +57,7 @@ namespace Client.Views
 
             ComboBox comboBox = (ComboBox)sender; // The ComboBox that triggered the event
             string selectedValue = comboBox.SelectedItem.ToString(); // The selected game id
-            selectedGame = _dbService.GetGame(_authService.currentPlayerId); // Get the selected game
+            selectedGame = _dbService.GetGame(int.Parse(selectedValue)); // Get the selected game
             await ReplayGame(_cancellationTokenSource.Token); // Start the replay of the game
 
             // Re-enable the ComboBox after the animation has finished
