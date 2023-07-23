@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\idan1\source\repos\ConnectFour\ConnectFour\Client\Client\App.xaml
-5439322092
+6-1284553032
 
-18-653967748
+191346827504
 167-512994319
-Views\ConnectFourWindow.xaml;Views\GameBoard.xaml;Views\LoginWindow.xaml;Views\MainWindow.xaml;Views\ReplayGames.xaml;
+Views\ConnectFourWindow.xaml;Views\GameBoard.xaml;Views\LoginWindow.xaml;Views\MainWindow.xaml;Views\PlayGame.xaml;Views\ReplayGames.xaml;
 
-False
+True
 
