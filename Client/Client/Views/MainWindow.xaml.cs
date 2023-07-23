@@ -99,5 +99,9 @@ namespace Client
             
         }
 
+        private void ReplayGamesButton_Click(object sender, RoutedEventArgs e)
+        {
+            _navigationService.NavigateToReplayGames();
+        }
     }
 }
