@@ -96,7 +96,7 @@ namespace Client.Views
             BoardGrid.Children.Add(gamePiece);
             return gamePiece;
         }
-        private async Task FallingAnimation(int col, Brush colorOfPlayer)
+        public async Task FallingAnimation(int col, Brush colorOfPlayer)
         {
             for (int i = 0; i < Rows; i++)
             {
@@ -126,7 +126,7 @@ namespace Client.Views
                 }
             }
         }
-        private void ResetBoard()
+        public void ResetBoard()
         {
             for (int i = 0; i < Rows; i++)
                 for (int J = 0; J < Columns; J++)

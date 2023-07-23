@@ -25,7 +25,10 @@ namespace GameLogicClient.Services
                         .ThenInclude(g => g.Moves)
                     .FirstOrDefault(p => p.PlayerId == playerId);
         }
-
+        public Game GetGame(int gameId)
+        {
+            return _context.Games.Include(g => g.Moves).FirstOrDefault(g => g.GameId == gameId);
+        }
         public void AddPlayer(Player player)
         {
             // Check if a player with the same Id already exists

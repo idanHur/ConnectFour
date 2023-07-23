@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Client.Services;
+using GameLogicClient.Models;
 using GameLogicClient.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -37,7 +38,8 @@ namespace Client.Views
         {
             ComboBox comboBox = (ComboBox)sender;
             string selectedValue = comboBox.SelectedItem.ToString();
-
+            _gameBoard.ResetBoard();
+            Game selectedGame = _dbService.GetGame(_authService.currentPlayerId);
             // Do something with the selected value...
         }
 

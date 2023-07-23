@@ -48,9 +48,10 @@
 
 
         <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Center">
-            <Button x:Name="QuitGameButton" Content="Quit Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontFamily="Arial" Width="120" Height="23" />
-            <ComboBox x:Name="gamesComboBox" Width="120" Height="23"  Margin="0,0,0,10" ItemsSource="{Binding MyGames}"></ComboBox>
             <Button x:Name="NewGameButton" Content="New Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontWeight="Medium" FontFamily="Arial" Width="120" Height="23" />
+            <Button x:Name="QuitGameButton" Content="Quit Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontFamily="Arial" Width="120" Height="23" />
+            <Button x:Name="StopGameButton" Content="Stop Replay" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontWeight="Medium" FontFamily="Arial" Width="120" Height="23" />
+            <ComboBox x:Name="gamesComboBox" Width="120" Height="23"  Margin="0,0,0,10" ItemsSource="{Binding MyGames}"></ComboBox>
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10" HorizontalAlignment="Center">
