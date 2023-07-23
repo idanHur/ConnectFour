@@ -26,6 +26,8 @@ namespace Client.Views
         private readonly GameBoard _gameBoard;
         private readonly ApiService _apiService;
         public bool gameEnded;
+        public static PlayGame currentInstance;
+
         public PlayGame(ApiService apiService, GameBoard gameBoard)
         {
             InitializeComponent();
@@ -51,6 +53,11 @@ namespace Client.Views
                     _gameBoard.gameBoard[i, j].MouseDown += Ellipse_MouseLeftButtonDown;
                 }
             }
+
+            // Set the current instance
+            currentInstance = this;
+            // Handle the Closed event
+            this.Closed += (s, e) => { currentInstance = null; };
         }
         private async void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -69,6 +76,7 @@ namespace Client.Views
                 _gameBoard.redCoins += 1;
                 _gameBoard.RedCoinsLabel.Content = _gameBoard.redCoins;
                 _gameBoard.isBoardEnabled = false;
+                _gameBoard.TurnLabel.Opacity = 0;
                 await _gameBoard.FallingAnimation(lastmove.ColumnNumber, Brushes.Red);
                 if (!gameEnded) // To not make ai move if quit game button is pressed after player move
                 {
@@ -77,17 +85,15 @@ namespace Client.Views
                     _gameBoard.YellowCoinsLabel.Content = _gameBoard.yellowCoins;
                     await _gameBoard.FallingAnimation(aiMove.ColumnNumber, Brushes.Gold);
                     _gameBoard.isBoardEnabled = true;
+                    _gameBoard.TurnLabel.Opacity = 1;
                 }
             }
             catch (Exception ex)
             {
                 if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
                 {
-                    // Open the login application window
-                    _gameBoard._navigationService.NavigateToLogin();
-
-                    // Close the game board window after opening the login window
-                    this.Close();
+                    // Close all windows and open the login application window
+                    CloseAllWindowsExceptAndOpenLogin();
                 }
                 _gameBoard.ErrorLabel.Opacity = 1;
                 // Show a message box with the error message
@@ -108,11 +114,8 @@ namespace Client.Views
             {
                 if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
                 {
-                    // Open the login application window
-                    _gameBoard._navigationService.NavigateToLogin();
-
-                    // Close the game board window after opening the login window
-                    this.Close();
+                    // Close all windows and open the login application window
+                    CloseAllWindowsExceptAndOpenLogin();
                 }
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -132,16 +135,27 @@ namespace Client.Views
             {
                 if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
                 {
-                    // Open the login application window
-                    _gameBoard._navigationService.NavigateToLogin();
-
-                    // Close the game board window after opening the login window
-                    this.Close();
+                    // Close all windows and open the login application window
+                    CloseAllWindowsExceptAndOpenLogin();
                 }
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
+        }
+        public void CloseAllWindowsExceptAndOpenLogin()
+        {
+            _gameBoard._navigationService.NavigateToLogin();
+            for (int intCounter = Application.Current.Windows.Count - 1; intCounter >= 0; intCounter--)
+            {
+                Window win = Application.Current.Windows[intCounter];
+                if (win is MainWindow mainWindow)
+                {
+                    // Unsubscribe from the Closing event to prevent executing its closing logic
+                    mainWindow.UnsubscribeClosingEvent();
+                }
+                if (!(win is LoginWindow))
+                    win.Close();
+            }
         }
     }
 }

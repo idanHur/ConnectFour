@@ -24,6 +24,7 @@ namespace Client.Views
         private readonly AuthenticationService _authService; 
         private Game selectedGame; // The selected game for replay
         private CancellationTokenSource _cancellationTokenSource; // A CancellationTokenSource which can be used to cancel the game replay
+        public static ReplayGames currentInstance;
 
         public ReplayGames(AuthenticationService authService, GameBoard gameBoard, GameDatabaseService dbService) // Injected via DI
         {
@@ -44,6 +45,11 @@ namespace Client.Views
             // Adding event handlers
             _gameBoard.gamesComboBox.SelectionChanged += gamesComboBox_SelectionChanged; // Add an event handler for ComboBox SelectionChanged event
             _gameBoard.StopGameButton.Click += StopReplayGameButton_Click; // Add an event handler for StopGameButton Click event
+
+            // Set the current instance
+            currentInstance = this;
+            // Handle the Closed event
+            this.Closed += (s, e) => { currentInstance = null; };
         }
 
         // Event handler for ComboBox SelectionChanged event

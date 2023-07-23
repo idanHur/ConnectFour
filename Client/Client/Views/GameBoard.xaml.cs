@@ -25,7 +25,6 @@ namespace Client.Views
     public partial class GameBoard : UserControl, INotifyPropertyChanged
     {
         public readonly INavigationService _navigationService;
-        public static GameBoard currentInstance;
         private ObservableCollection<string> _myGames;
         public ObservableCollection<string> MyGames
         {
@@ -47,10 +46,7 @@ namespace Client.Views
         public int yellowCoins;
         public int redCoins;
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
+        
         public GameBoard(INavigationService navigationService)
         {
             InitializeComponent();
@@ -74,20 +70,10 @@ namespace Client.Views
                     gameBoard[i, j] = ellipse;  // Add the ellipse to the game Board
                 }
             }
-            // Set the current instance
-            currentInstance = this;
-            // Subscribe to the Loaded event
-            this.Loaded += (s, e) =>
-            {
-                // Get the parent Window of the UserControl
-                var window = Window.GetWindow(this);
-                // If the Window is not null, subscribe to its Closed event
-                if (window != null)
-                {
-                    window.Closed += (s1, e1) => { currentInstance = null; };
-                }
-            };
-
+        }
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         private Ellipse AddGamePiece(int row, int col, Brush color, double opacity)
         {

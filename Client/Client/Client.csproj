@@ -203,10 +203,6 @@
     <Compile Include="Views\ReplayGames.xaml.cs">
       <DependentUpon>ReplayGames.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ConnectFourWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\GameBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -231,9 +227,6 @@
     <Compile Include="Utilities\Json\GameConverter.cs" />
     <Compile Include="Utilities\Json\MoveConverter.cs" />
     <Compile Include="Utilities\Json\PlayerConverter.cs" />
-    <Compile Include="Views\ConnectFourWindow.xaml.cs">
-      <DependentUpon>ConnectFourWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\GameBoard.xaml.cs">
       <DependentUpon>GameBoard.xaml</DependentUpon>
     </Compile>
