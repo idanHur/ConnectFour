@@ -1,8 +1,12 @@
-﻿<Window x:Class="Client.ConnectFourWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Connect Four" Height="577" Width="839">
-    <Window.Resources>
+﻿<UserControl x:Class="Client.Views.GameBoard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Client.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="577" d:DesignWidth="839">
+    <UserControl.Resources>
         <Style x:Key="CustomButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -17,7 +21,7 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5">
+                                CornerRadius="3">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
@@ -30,7 +34,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-    </Window.Resources>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -42,9 +46,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+
         <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" Margin="10" HorizontalAlignment="Center">
-            <Button x:Name="QuitGameButton" Content="Quit Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontFamily="Arial" Click="QuitGameButton_Click" />
-            <Button x:Name="NewGameButton" Content="New Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontWeight="Medium" FontFamily="Arial" Click="NewGameButton_Click" />
+            <Button x:Name="QuitGameButton" Content="Quit Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontFamily="Arial" Width="120" Height="23" />
+            <ComboBox x:Name="gamesComboBox" Width="120" Height="23"  Margin="0,0,0,10" ItemsSource="{Binding MyGames}"></ComboBox>
+            <Button x:Name="NewGameButton" Content="New Game" Margin="0,0,0,10" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Center" FontWeight="Medium" FontFamily="Arial" Width="120" Height="23" />
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10" HorizontalAlignment="Center">
@@ -54,6 +60,7 @@
             <Label x:Name="RedCoinsLabel" Content="0" Height="56" Width="89" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Calibri" FontSize="36" FontWeight="Bold" />
         </StackPanel>
 
+
         <Label x:Name="TurnLabel" Grid.Column="0" Grid.Row="2" Content="Your Turn!" VerticalAlignment="Bottom" Margin="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="14" Opacity="0" />
         <Label x:Name="ErrorLabel" Grid.Column="0" Grid.Row="2" Content="Cant make this move" VerticalAlignment="Bottom" Margin="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="14" Foreground="Red" Opacity="0" />
 
@@ -62,4 +69,4 @@
             </Grid>
         </Viewbox>
     </Grid>
-</Window>
+</UserControl>

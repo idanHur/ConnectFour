@@ -64,6 +64,8 @@ namespace Client
             services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();
             services.AddTransient<ConnectFourWindow>();
+            services.AddTransient<GameBoard>();
+            services.AddTransient<ReplayGames>();
 
             // Configure JSON serialization settings
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings

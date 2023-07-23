@@ -28,7 +28,11 @@ namespace Client.Services
             LoginWindow loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
             loginWindow.Show();
         }
-
+        public void NavigateToReplayGames()
+        {
+            ReplayGames replayWindow = _serviceProvider.GetRequiredService<ReplayGames>();
+            replayWindow.Show();
+        }
         public void NavigateToMain()
         {
             MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();

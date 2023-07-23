@@ -41,7 +41,7 @@ namespace Client.Views
                 if (result)
                 {
                     // Open the main application window
-                    _navigationService.NavigateToMain();
+                    _navigationService.NavigateToReplayGames();
 
                     // Close the login window after opening the main window
                     this.Close();
@@ -58,8 +58,6 @@ namespace Client.Views
                 ShowErrorMessage();
 
             }
-
-
         }
         private void ShowErrorMessage()
         {
