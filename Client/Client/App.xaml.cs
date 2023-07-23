@@ -63,7 +63,7 @@ namespace Client
             // Register windows
             services.AddTransient<MainWindow>();
             services.AddTransient<LoginWindow>();
-            services.AddTransient<ConnectFourWindow>();
+            services.AddTransient<PlayGame>();
             services.AddTransient<GameBoard>();
             services.AddTransient<ReplayGames>();
 
