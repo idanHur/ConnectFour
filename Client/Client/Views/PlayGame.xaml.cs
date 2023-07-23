@@ -35,6 +35,7 @@ namespace Client.Views
             _gameBoard.DataContext = _gameBoard;
             _apiService = apiService;
             gameEnded = false;
+            this.Closing += PlayGame_Closing;
 
             gameBoardFrame.Content = _gameBoard; // Setting GameBoard instance to the Frame
             _gameBoard.StopGameButton.Visibility = Visibility.Collapsed; // Hide the NewGameButton
@@ -58,6 +59,20 @@ namespace Client.Views
             currentInstance = this;
             // Handle the Closed event
             this.Closed += (s, e) => { currentInstance = null; };
+        }
+        private async void PlayGame_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                if(!gameEnded)
+                    await _apiService.EndGameAsync();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private async void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
