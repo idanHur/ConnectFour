@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Client.Services;
+using Client.Utilities.Errors;
+using GameLogicClient.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Client.Views
@@ -19,9 +23,125 @@ namespace Client.Views
     /// </summary>
     public partial class PlayGame : Window
     {
-        public PlayGame()
+        private readonly GameBoard _gameBoard;
+        private readonly ApiService _apiService;
+        public bool gameEnded;
+        public PlayGame(ApiService apiService, GameBoard gameBoard)
         {
             InitializeComponent();
+            _gameBoard = gameBoard;
+            _gameBoard.DataContext = _gameBoard;
+            _apiService = apiService;
+            gameEnded = false;
+
+            gameBoardFrame.Content = _gameBoard; // Setting GameBoard instance to the Frame
+            _gameBoard.StopGameButton.Visibility = Visibility.Collapsed; // Hide the NewGameButton
+            _gameBoard.gamesComboBox.Visibility = Visibility.Collapsed; // Hide the QuitGameButton
+
+
+            // Adding event handlers
+            _gameBoard.NewGameButton.Click += NewGameButton_Click; // Add an event handler for ComboBox SelectionChanged event
+            _gameBoard.QuitGameButton.Click += QuitGameButton_Click; // Add an event handler for StopGameButton Click event
+
+            // Adding event handlers to all ellipses
+            for (int i = 0; i < GameBoard.Rows; i++)
+            {
+                for (int j = 0; j < GameBoard.Columns; j++)
+                {
+                    _gameBoard.gameBoard[i, j].MouseDown += Ellipse_MouseLeftButtonDown;
+                }
+            }
+        }
+        private async void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!_gameBoard.isBoardEnabled) // To disable the Board 
+                return;
+            var clickedEllipse = (Ellipse)sender;
+            int column = Grid.GetColumn(clickedEllipse); // Get the column of the clicked ellipse
+            try
+            {
+                Move lastmove = await _apiService.MakeMoveAsync(column);
+                if (lastmove == null)
+                {
+                    _gameBoard.ErrorLabel.Opacity = 1;
+                    return;
+                }
+                _gameBoard.redCoins += 1;
+                _gameBoard.RedCoinsLabel.Content = _gameBoard.redCoins;
+                _gameBoard.isBoardEnabled = false;
+                await _gameBoard.FallingAnimation(lastmove.ColumnNumber, Brushes.Red);
+                if (!gameEnded) // To not make ai move if quit game button is pressed after player move
+                {
+                    Move aiMove = await _apiService.AiMoveAsync();
+                    _gameBoard.yellowCoins += 1;
+                    _gameBoard.YellowCoinsLabel.Content = _gameBoard.yellowCoins;
+                    await _gameBoard.FallingAnimation(aiMove.ColumnNumber, Brushes.Gold);
+                    _gameBoard.isBoardEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                {
+                    // Open the login application window
+                    _gameBoard._navigationService.NavigateToLogin();
+
+                    // Close the game board window after opening the login window
+                    this.Close();
+                }
+                _gameBoard.ErrorLabel.Opacity = 1;
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+        private async void NewGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: enable Board if disabled
+            try
+            {
+                await _apiService.StartGameAsync();
+                _gameBoard.ResetBoard();
+                gameEnded = false;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                {
+                    // Open the login application window
+                    _gameBoard._navigationService.NavigateToLogin();
+
+                    // Close the game board window after opening the login window
+                    this.Close();
+                }
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: disable Board
+            try
+            {
+                await _apiService.EndGameAsync();
+                _gameBoard.isBoardEnabled = false;
+                gameEnded = true;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                {
+                    // Open the login application window
+                    _gameBoard._navigationService.NavigateToLogin();
+
+                    // Close the game board window after opening the login window
+                    this.Close();
+                }
+                // Show a message box with the error message
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
     }
 }
