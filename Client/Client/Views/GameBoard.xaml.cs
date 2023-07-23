@@ -3,6 +3,7 @@ using GameLogicClient.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,11 +22,23 @@ namespace Client.Views
     /// <summary>
     /// Interaction logic for GameBoard.xaml
     /// </summary>
-    public partial class GameBoard : UserControl
+    public partial class GameBoard : UserControl, INotifyPropertyChanged
     {
         public readonly INavigationService _navigationService;
         public static GameBoard currentInstance;
-        public ObservableCollection<string> MyGames { get; set; }
+        private ObservableCollection<string> _myGames;
+        public ObservableCollection<string> MyGames
+        {
+            get { return _myGames; }
+            set
+            {
+                if (_myGames != value)
+                {
+                    _myGames = value;
+                    OnPropertyChanged(nameof(MyGames));
+                }
+            }
+        }
         public const int Rows = 6;
         public const int Columns = 7;
         public const int FallingDelay = 650;
@@ -34,7 +47,11 @@ namespace Client.Views
         public bool isBoardEnabled;
         public int yellowCoins;
         public int redCoins;
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
         public GameBoard(INavigationService navigationService)
         {
             InitializeComponent();

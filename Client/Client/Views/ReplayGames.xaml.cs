@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Client.Services;
 using GameLogicClient.Models;
 using GameLogicClient.Services;
@@ -19,13 +21,14 @@ namespace Client.Views
         private readonly GameBoard _gameBoard;
         private readonly GameDatabaseService _dbService;
         private readonly AuthenticationService _authService;
-
+        private Game selectedGame;
         public ReplayGames(AuthenticationService authService, GameBoard gameBoard, GameDatabaseService dbService) // GameBoard is injected via DI
         {
             InitializeComponent();
             _dbService = dbService;
             _gameBoard = gameBoard;
             _authService = authService;
+            _gameBoard.DataContext = _gameBoard;
 
             gameBoardFrame.Content = _gameBoard; // Setting GameBoard instance to the Frame
             _gameBoard.NewGameButton.Visibility = Visibility.Collapsed;
@@ -34,13 +37,29 @@ namespace Client.Views
             _gameBoard.MyGames = new ObservableCollection<string>(myGames);
             _gameBoard.gamesComboBox.SelectionChanged += gamesComboBox_SelectionChanged;
         }
-        private void gamesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void gamesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
             string selectedValue = comboBox.SelectedItem.ToString();
+            selectedGame = _dbService.GetGame(_authService.currentPlayerId);
+            await ReplayGame();
+        }
+        private async Task ReplayGame()
+        {
             _gameBoard.ResetBoard();
-            Game selectedGame = _dbService.GetGame(_authService.currentPlayerId);
-            // Do something with the selected value...
+            foreach (Move move in selectedGame.Moves)
+            {
+                if(move.Player == PlayerType.Human)
+                {
+                    await _gameBoard.FallingAnimation(move.ColumnNumber, Brushes.Red);
+                }
+                else
+                {
+                    await _gameBoard.FallingAnimation(move.ColumnNumber, Brushes.Gold);
+
+                }
+            }
+
         }
 
     }
