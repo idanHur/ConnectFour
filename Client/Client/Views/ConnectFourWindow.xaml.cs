@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using Client.Utilities.Errors;
 using GameLogicClient.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -121,6 +122,14 @@ namespace Client
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                {
+                    // Open the login application window
+                    _navigationService.NavigateToLogin();
+
+                    // Close the game board window after opening the login window
+                    this.Close();
+                }
                 ErrorLabel.Opacity = 1;
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -183,6 +192,14 @@ namespace Client
             }
             catch (Exception ex)
             {
+                if(ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                {
+                    // Open the login application window
+                    _navigationService.NavigateToLogin();
+
+                    // Close the game board window after opening the login window
+                    this.Close();
+                }
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -199,6 +216,14 @@ namespace Client
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                {
+                    // Open the login application window
+                    _navigationService.NavigateToLogin();
+
+                    // Close the game board window after opening the login window
+                    this.Close();
+                }
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using Client.Utilities.Errors;
 using GameLogicClient.Models;
 using GameLogicClient.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,7 +61,7 @@ namespace Client
             }
             catch(Exception ex)
             {
-                if(ex.Message == "There are no played Games")
+                if(ex.Message == ErrorCodes.GamesNotFound)
                     Application.Current.Shutdown();
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -84,6 +85,14 @@ namespace Client
                 }
                 catch(Exception ex)
                 {
+                    if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                    {
+                        // Open the login application window
+                        _navigationService.NavigateToLogin();
+
+                        // Close the game board window after opening the login window
+                        this.Close();
+                    }
                     ErrorLabel.Content = ex.Message.ToString();
                 }
             }

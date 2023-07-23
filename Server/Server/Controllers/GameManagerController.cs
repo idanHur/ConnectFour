@@ -51,6 +51,12 @@ namespace Server.Controllers
                     return BadRequest(new { error = "Did not start a new game" });
                 }
             }
+            catch (InvalidOperationException ex)
+            {
+
+                // Return a user-friendly error message
+                return NotFound(new { error = ex.Message });
+            }
             catch (Exception ex)
             {
                 // If there was an error starting the game, return a server error
@@ -79,6 +85,12 @@ namespace Server.Controllers
                     return BadRequest(new { error = "Cannot make this move" });
                 }
             }
+            catch (InvalidOperationException ex)
+            {
+
+                // Return a user-friendly error message
+                return NotFound(new { error = ex.Message });
+            }
             catch (Exception ex)
             {
                 // If the move was invalid, return a bad request
@@ -105,6 +117,12 @@ namespace Server.Controllers
 
                 return Ok(endedGame);
 
+            }
+            catch (InvalidOperationException ex)
+            {
+
+                // Return a user-friendly error message
+                return NotFound(new { error = ex.Message });
             }
             catch (Exception ex)
             {
@@ -139,6 +157,12 @@ namespace Server.Controllers
                     return BadRequest(new { error = "Cannot make this move" });
                 }
 
+            }
+            catch (InvalidOperationException ex)
+            {
+
+                // Return a user-friendly error message
+                return NotFound(new { error = ex.Message });
             }
             catch (Exception ex)
             {
