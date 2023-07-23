@@ -68,11 +68,6 @@ namespace Client
             }
             
         }
-        private void EndGameButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (ConnectFourWindow.currentInstance == null)
@@ -102,6 +97,11 @@ namespace Client
         private void ReplayGamesButton_Click(object sender, RoutedEventArgs e)
         {
             _navigationService.NavigateToReplayGames();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
