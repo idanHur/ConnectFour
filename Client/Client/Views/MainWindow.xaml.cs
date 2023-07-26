@@ -1,4 +1,6 @@
 ﻿using Client.Services;
+using Client.Utilities.Errors;
+using Client.Views;
 using GameLogicClient.Models;
 using GameLogicClient.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,21 +62,18 @@ namespace Client
             }
             catch(Exception ex)
             {
-                if(ex.Message == "There are no played Games")
+                if ((ex.Message.Contains(ErrorCodes.GamesNotFound)) || (ex.Message.Contains(ErrorCodes.DBGamesNotFound)))
+                {
                     Application.Current.Shutdown();
+                    return;
+                }
                 // Show a message box with the error message
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            
+            }           
         }
-        private void EndGameButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ConnectFourWindow.currentInstance == null)
+            if (PlayGame.currentInstance == null)
             {
                 try
                 {
@@ -84,11 +83,46 @@ namespace Client
                 }
                 catch(Exception ex)
                 {
+                    if (ex.Message.Contains(ErrorCodes.PlayerNotFound))
+                    {
+                        // Close all windows and open the login application window
+                        CloseAllWindowsExceptAndOpenLogin();
+                    }
                     ErrorLabel.Content = ex.Message.ToString();
                 }
             }
             
         }
+        public void CloseAllWindowsExceptAndOpenLogin()
+        {
+            _navigationService.NavigateToLogin();
+            for (int intCounter = Application.Current.Windows.Count - 1; intCounter >= 0; intCounter--)
+            {
+                Window win = Application.Current.Windows[intCounter];
+                if (win is MainWindow mainWindow)
+                {
+                    // Unsubscribe from the Closing event to prevent executing its closing logic
+                    mainWindow.UnsubscribeClosingEvent();
+                }
+                if (!(win is LoginWindow))
+                    win.Close();
+            }
+        }
+        public void UnsubscribeClosingEvent()
+        {
+            this.Closing -= MainWindow_Closing;
+        }
+        private void ReplayGamesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ReplayGames.currentInstance == null)
+            {
+                _navigationService.NavigateToReplayGames();
+            }
+        }
 
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

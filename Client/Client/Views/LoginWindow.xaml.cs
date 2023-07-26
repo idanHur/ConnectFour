@@ -33,7 +33,7 @@ namespace Client.Views
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             int playerId = int.Parse(PlayerIdTextBox.Text);
-            string password = PasswordTextBox.Text;
+            string password = passwordBox.Password;
             
             try
             {
@@ -58,8 +58,6 @@ namespace Client.Views
                 ShowErrorMessage();
 
             }
-
-
         }
         private void ShowErrorMessage()
         {
@@ -68,7 +66,35 @@ namespace Client.Views
             PlayerIdTextBox.Text = "";
 
             // Clear the PasswordTextBox
-            PasswordTextBox.Text = "";
+            textBox.Text = "";
+            passwordBox.Password = "";
+
         }
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            // When password changes, update the text in the textbox.
+            textBox.Text = passwordBox.Password;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // When the text in the textbox changes, update the password in the PasswordBox.
+            passwordBox.Password = textBox.Text;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            // When the checkbox is checked, show the textbox and hide the PasswordBox.
+            passwordBox.Visibility = Visibility.Collapsed;
+            textBox.Visibility = Visibility.Visible;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // When the checkbox is unchecked, show the PasswordBox and hide the textbox.
+            passwordBox.Visibility = Visibility.Visible;
+            textBox.Visibility = Visibility.Collapsed;
+        }
+
     }
 }

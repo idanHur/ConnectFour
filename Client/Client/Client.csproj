@@ -197,7 +197,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\ConnectFourWindow.xaml">
+    <Compile Include="Views\PlayGame.xaml.cs">
+      <DependentUpon>PlayGame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReplayGames.xaml.cs">
+      <DependentUpon>ReplayGames.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\GameBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -217,11 +223,12 @@
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Utilities\Errors\ErrorCodes.cs" />
     <Compile Include="Utilities\Json\GameConverter.cs" />
     <Compile Include="Utilities\Json\MoveConverter.cs" />
     <Compile Include="Utilities\Json\PlayerConverter.cs" />
-    <Compile Include="Views\ConnectFourWindow.xaml.cs">
-      <DependentUpon>ConnectFourWindow.xaml</DependentUpon>
+    <Compile Include="Views\GameBoard.xaml.cs">
+      <DependentUpon>GameBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -230,6 +237,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PlayGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReplayGames.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
