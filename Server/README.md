@@ -14,6 +14,13 @@ This project is an ASP.NET Core web application server for Connect4Game. It serv
 
 The server communicates with the client through a Web API. Each client is a player with a user interface for the game board. The server handles the game logic and opponent AI.
 
+## JWT Authentication
+To ensure that only registered clients can interact with the server, JWT (JSON Web Token) authentication has been implemented using the `System.IdentityModel.Tokens.Jwt` namespace. Here's how it works:
+
+- **Upon successful login**, the server generates a JWT for the client.
+- **Clients must include this JWT** in the header of their requests to access protected resources on the server.
+- The server **validates the JWT** with each request to ensure it's from a legitimate, registered client.
+
 ## Getting Started
 
 ### Prerequisites
