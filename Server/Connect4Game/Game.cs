@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Connect4Game
 {
@@ -9,6 +8,7 @@ namespace Connect4Game
         Human = 1,
         Ai = 2
     }
+
     public enum GameStatus
     {
         Won,
@@ -17,146 +17,146 @@ namespace Connect4Game
         OnGoing,
         DNF
     }
+
     public class Game
     {
-
-        public Board Board{ get; set; }
-        public GameStatus Status { get; set; }
-        public Player CurrentPlayer { get; set; }
-
-        public DateTime StartTime { get; set; }
+        public Board Board { get; set; }
+        public GameStatus Status { get; set; } = GameStatus.OnGoing;
+        public Player CurrentPlayer { get; set; } = Player.Human;
+        public DateTime StartTime { get; set; } = DateTime.Now;
         public TimeSpan GameDuration { get; set; }
         public int GameId { get; set; }
         public int PlayerId { get; set; }
-
-        // EF Core will automatically load the related Move entities when accessing this property.
-        public ICollection<Move> Moves { get; set; }
+        public ICollection<Move> Moves { get; set; } = new List<Move>();
 
         public Game(int rows, int columns, int playerId)
         {
             Board = new Board(rows, columns);
-            Status = GameStatus.OnGoing;
-            StartTime = DateTime.Now;
-            CurrentPlayer = Player.Human;
             this.PlayerId = playerId;
-            Moves = new List<Move>();
         }
+
         public Game() { }
 
-        public void EndGame(bool draw = false, bool didntFinish = false)
+        public void EndGame(GameStatus status)
         {
             if (Status != GameStatus.OnGoing) return;
-            if(draw)
-                Status = GameStatus.Draw;
-            else if(didntFinish)
-                Status = GameStatus.DNF;
-            else if(CurrentPlayer == Player.Human)
-                Status = GameStatus.Won;
-            else
-                Status = GameStatus.Lost;
+
+            Status = status;
             GameDuration = DateTime.Now - StartTime;
         }
 
         public Move PlayerMove(int column)
         {
-            if ((Status != GameStatus.OnGoing) || (CurrentPlayer != Player.Human))
-                throw new InvalidOperationException("Cant make move!");
+            ValidateCanMakeMove();
+
             if (Board.IsMatrixFull())
             {
-                EndGame(true);
+                EndGame(GameStatus.Draw);
                 throw new InvalidOperationException("The game Board is full");
             }
-            if (Board.IsValidMove(column)) // Check if the move is possible
-            {
-                Board.MakeMove(column, Player.Human);
-                if (Board.IsWinningMove(column) != null) // Check if the game ended
-                {
-                    EndGame();
-                }
-                Move newMove = new Move(column, CurrentPlayer);
-                Moves.Add(newMove);
-                CurrentPlayer = Player.Ai;
-                return newMove;
-            }
-            else
-            {
-                throw new InvalidOperationException("The move isnt valid"); // The move wasnt made
-            }
+
+            return MakeMove(column, Player.Human);
         }
+
         public void AiMove()
         {
-            if ((Status != GameStatus.OnGoing) || CurrentPlayer != Player.Ai)
-                throw new InvalidOperationException("Cant make move!");
+            ValidateCanMakeMove();
+
             if (Board.IsMatrixFull())
             {
-                EndGame(true);
+                EndGame(GameStatus.Draw);
                 throw new InvalidOperationException("The game Board is full");
             }
-            int columns = Board.GetMatrix().GetLength(1);
+
+            int? move = FindWinningMove() ?? FindBlockingMove();
+
+            if (!move.HasValue)
+            {
+                move = MakeRandomMove();
+            }
+
+            MakeMove(move.Value, Player.Ai);
+        }
+
+        private Move MakeMove(int column, Player player)
+        {
+            if (!Board.IsValidMove(column))
+                throw new InvalidOperationException("The move isn't valid");
+
+            Board.MakeMove(column, player);
+            
+            if (Board.IsWinningMove(column) != null)
+            {
+                EndGame(player == Player.Human ? GameStatus.Won : GameStatus.Lost);
+            }
+
+            var move = new Move(column, player);
+            Moves.Add(move);
+            ToggleCurrentPlayer();
+            return move;
+        }
+
+        private void ToggleCurrentPlayer()
+        {
+            CurrentPlayer = CurrentPlayer == Player.Human ? Player.Ai : Player.Human;
+        }
+
+        private void ValidateCanMakeMove()
+        {
+            if (Status != GameStatus.OnGoing || (CurrentPlayer == Player.Human && Board.IsMatrixFull()))
+            {
+                throw new InvalidOperationException("Can't make move!");
+            }
+        }
+
+        private int? FindWinningMove()
+        {
             int winningMove = -1;
-            int blockMove = -1;
-
-            // Check for a winning move or a move to block the opponent's win
-            for (int col = 0; col < columns; col++)
+            for (int col = 0; col < Board.GetMatrix().GetLength(1); col++)
             {
-                if (Board.IsValidMove(col))
+                // Check if making a move in this column would result in a win
+                Board.MakeMove(col, Player.Ai);
+                if (Board.IsWinningMove(col) == Player.Ai)
                 {
-                    // Check if making a move in this column would result in a win
-                    Board.MakeMove(col, Player.Ai);
-                    if (Board.IsWinningMove(col) == Player.Ai)
-                    {
-                        winningMove = col;
-                    }
-                    Board.UndoMove(col);
-
-                    // Check if the opponent could win in the next turn by making a move in this column
-                    Board.MakeMove(col, Player.Ai);
-                    Board.MakeMove(col, Player.Human);  // Pretend the opponent also makes a move in the same column
-                    if (Board.IsWinningMove(col) == Player.Human)
-                    {
-                        blockMove = col;
-                    }
-                    Board.UndoMove(col);
-                    Board.UndoMove(col);
-
-                    Board.MakeMove(col, Player.Human);  // Pretend the opponent makes a move in this column and ai is in diffrent unrelated col
-                    if (Board.IsWinningMove(col) == Player.Human)
-                    {
-                        blockMove = col;
-                    }
-                    Board.UndoMove(col);
+                    winningMove = col;
                 }
+                Board.UndoMove(col);
             }
 
-            // If there's a winning move available, take it
-            if (winningMove != -1)
+            return winningMove == -1 ? null : (int?)winningMove;
+        }
+
+        private int? FindBlockingMove()
+        {
+            int blockMove = -1;
+            for (int col = 0; col < Board.GetMatrix().GetLength(1); col++)
             {
-                Board.MakeMove(winningMove, Player.Ai);
-                Moves.Add(new Move(winningMove, CurrentPlayer));
-                EndGame();
-                return;
+                // Check if the opponent could win in the next turn by making a move in this column
+                Board.MakeMove(col, Player.Ai);
+                Board.MakeMove(col, Player.Human);  // Pretend the opponent also makes a move in the same column
+                if (Board.IsWinningMove(col) == Player.Human)
+                {
+                    blockMove = col;
+                }
+                Board.UndoMove(col);
+                Board.UndoMove(col);
             }
+            return blockMove == -1 ? null : (int?)blockMove;
+        }
 
-            // If the opponent has a winning move available next turn, block it
-            if (blockMove != -1)
-            {
-                Board.MakeMove(blockMove, Player.Ai);
-                Moves.Add(new Move(blockMove, CurrentPlayer));
-                CurrentPlayer = Player.Human;
-                return;
-            }
-
-            // If neither of those apply, make a random move
+        private int MakeRandomMove()
+        {
             Random rnd = new Random();
+            int columns = Board.GetMatrix().GetLength(1);
             int column;
+            
             do
             {
                 column = rnd.Next(columns);
             }
             while (!Board.IsValidMove(column));
-            Moves.Add(new Move(column, CurrentPlayer));
-            Board.MakeMove(column, Player.Ai);
-            CurrentPlayer = Player.Human;
+
+            return column;
         }
     }
 }

@@ -93,7 +93,7 @@ namespace GameManager.Models
             if (lastGame == null) throw new InvalidOperationException($"There are no played Games");
             if (lastGame.GameId != gameId) throw new ArgumentException("Game Id doesn't match last game Id", nameof(gameId));// Make sure this is the game 
 
-            lastGame.EndGame(didntFinish: true);
+            lastGame.EndGame(GameStatus.DNF);
             return lastGame;
         }
     }
