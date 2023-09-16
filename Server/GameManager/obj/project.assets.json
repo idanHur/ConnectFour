@@ -1861,7 +1861,8 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Castle.Core": "5.1.1",
-          "Microsoft.EntityFrameworkCore": "2.1.1"
+          "Microsoft.EntityFrameworkCore": "2.1.1",
+          "Microsoft.EntityFrameworkCore.SqlServer": "2.1.1"
         },
         "compile": {
           "bin/placeholder/Connect4Game.dll": {}
