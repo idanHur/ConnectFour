@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GameManager.Migrations
 {
-    public partial class InitalMigrations : Migration
+    public partial class initimigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
