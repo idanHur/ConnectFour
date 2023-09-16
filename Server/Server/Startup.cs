@@ -107,18 +107,24 @@ namespace Server
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            
+
             // Add authentication middleware
             app.UseAuthentication();
             // Add JwtMiddleware
             app.UseMiddleware<JwtMiddleware>();
 
+            // Apply migrations
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>(); // Replace with your actual DbContext type
+                dbContext.Database.Migrate(); // Apply pending migrations
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseMvc();
-
         }
+
     }
 }
