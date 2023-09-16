@@ -3,13 +3,13 @@
 This project is an ASP.NET Core web application server for Connect4Game. It serves as the backbone for game management and player interactions. 
 
 
-[Main Components](#main-components) |
-[JWT Authentication](#jwt-authentication) |
-[Database](#database) |
-[Getting Started without Docker](#getting-started-without-docker) |
-[Running with Docker](#running-with-docker) |
-[Running with Visual Studio](#running-with-visual-studio) |
-[Code Practices](#code-practices)
+- [Main Components](#main-components)
+- [JWT Authentication](#jwt-authentication)
+- [Database](#database)
+- [Getting Started without Docker](#getting-started-without-docker)
+- [Running with Docker](#running-with-docker)
+- [Running with Visual Studio](#running-with-visual-studio)
+- [Code Practices](#code-practices)
 
 
 ## Main Components
