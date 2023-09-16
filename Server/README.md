@@ -2,6 +2,16 @@
 
 This project is an ASP.NET Core web application server for Connect4Game. It serves as the backbone for game management and player interactions. 
 
+
+[Main Components](#main-components) |
+[JWT Authentication](#jwt-authentication) |
+[Database](#database) |
+[Getting Started without Docker](#getting-started-without-docker) |
+[Running with Docker](#running-with-docker) |
+[Running with Visual Studio](#running-with-visual-studio) |
+[Code Practices](#code-practices)
+
+
 ## Main Components
 
 1. **Server**: This is the ASP.NET Core web application that provides the following functionalities:
@@ -102,7 +112,7 @@ To stop and remove the Docker container when you're done:
 
 If you prefer to develop and run the application with Visual Studio, follow these steps:
 
-1.  Open the solution file (ConnectFour.sln) in Visual Studio.
+1.  Open the solution file (Server.sln) in Visual Studio.
 
 2.  Set the startup project to the Server project.
 
