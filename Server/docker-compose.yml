@@ -9,6 +9,8 @@ services:
       dockerfile: Server/Dockerfile
     environment:
       ConnectionStrings__DefaultConnection: "Server=connect4_server_db,1433;Database=Connect4GameDB;User Id=sa;Password=YourStrong!1Password;MultipleActiveResultSets=True;"
+    ports:
+      - "8080:80"
 
   db:
     container_name: connect4_server_db

@@ -21,7 +21,20 @@ To ensure that only registered clients can interact with the server, JWT (JSON W
 - **Clients must include this JWT** in the header of their requests to access protected resources on the server.
 - The server **validates the JWT** with each request to ensure it's from a legitimate, registered client.
 
-## Getting Started
+## Database
+
+To maintain the integrity of your database schema, it's essential to create new migrations whenever you make changes to your Entity Framework classes. Whether you're running the application without Docker or with Docker, follow these steps to update your database schema:
+
+1. Make changes to your Entity Framework classes.
+
+2. Open a terminal in the server directory.
+
+3. Run the following commands:
+   ```bash
+   dotnet ef migrations add <New name for the migrations> --project ../GameManager/GameManager.csproj --startup-project Server.csproj
+   ```
+
+## Getting Started without Docker
 
 ### Prerequisites
 - .NET Core 3.1 or higher
@@ -42,6 +55,57 @@ To ensure that only registered clients can interact with the server, JWT (JSON W
 To update the database tables when changing one of the entity classes, perform the following in the terminal when in the server directory:
 1. `dotnet ef migrations add <New name for the migrations> --project ../GameManager/GameManager.csproj --startup-project Server.csproj`
 2. `dotnet ef database update --project ../GameManager/GameManager.csproj --startup-project Server.csproj`
+
+## Running with Docker
+
+This application can be easily run using Docker. Docker allows you to create and run applications within containers, ensuring that your application runs consistently across different environments.
+
+### Prerequisites
+
+- Docker Desktop (Install from [Docker's official website](https://www.docker.com/products/docker-desktop))
+
+### Building and Running the Docker Container
+
+1. Clone the repository to your local machine if you haven't already.
+
+2. Open a terminal and navigate to the project directory.
+
+3. Build the Docker image using the provided Dockerfile:
+
+   ```bash
+   docker build -t connect4game-server .
+    ```
+Replace connect4game-server with your preferred image name.
+
+4.  Run the Docker container:
+   ```bash
+    docker run -d -p 8080:80 --name connect4-server connect4game-server
+    ```
+    This command will start the Docker container named `connect4-server` and map port 8080 on your host to port 80 in the container.
+
+5.  Your Connect4Game Server is now running within a Docker container. You can access it in your web browser at http://localhost:8080.
+
+### Stopping and Removing the Docker Container
+
+To stop and remove the Docker container when you're done:
+```bash
+    docker stop connect4-server
+    docker rm connect4-server
+
+```
+
+## Running with Visual Studio
+
+If you prefer to develop and run the application with Visual Studio, follow these steps:
+
+1.  Open the solution file (ConnectFour.sln) in Visual Studio.
+
+2.  Set the startup project to the Server project.
+
+3.  Configure your database connection string in the appsettings.json file of the Server project.
+
+4.  Build and run the application using Visual Studio. The application should launch in your default web browser.
+
 
 ## Code Practices
 
