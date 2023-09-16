@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameManager.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230915213759_InitalMigrations")]
-    partial class InitalMigrations
+    [Migration("20230722175200_initi-migrations")]
+    partial class initimigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
