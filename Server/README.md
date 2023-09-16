@@ -53,8 +53,12 @@ To maintain the integrity of your database schema, it's essential to create new 
 
 ### Database
 To update the database tables when changing one of the entity classes, perform the following in the terminal when in the server directory:
-1. `dotnet ef migrations add <New name for the migrations> --project ../GameManager/GameManager.csproj --startup-project Server.csproj`
-2. `dotnet ef database update --project ../GameManager/GameManager.csproj --startup-project Server.csproj`
+1.  ```bash 
+        dotnet ef migrations add <New name for the migrations> --project ../GameManager/GameManager.csproj --startup-project Server.csproj
+    ```
+2.  ```bash
+        dotnet ef database update --project ../GameManager/GameManager.csproj --startup-project Server.csproj
+    ```
 
 ## Running with Docker
 
@@ -78,8 +82,8 @@ This application can be easily run using Docker. Docker allows you to create and
 Replace connect4game-server with your preferred image name.
 
 4.  Run the Docker container:
-   ```bash
-    docker run -d -p 8080:80 --name connect4-server connect4game-server
+    ```bash
+        docker run -d -p 8080:80 --name connect4-server connect4game-server
     ```
     This command will start the Docker container named `connect4-server` and map port 8080 on your host to port 80 in the container.
 
