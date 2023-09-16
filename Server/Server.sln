@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connect4Game", "Connect4Gam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameManager", "GameManager\GameManager.csproj", "{54067D6C-0F44-4108-8FB8-B8232FED89AA}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B75501A4-48A5-4DB3-A9A7-D78BE078A758}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54067D6C-0F44-4108-8FB8-B8232FED89AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75501A4-48A5-4DB3-A9A7-D78BE078A758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75501A4-48A5-4DB3-A9A7-D78BE078A758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75501A4-48A5-4DB3-A9A7-D78BE078A758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75501A4-48A5-4DB3-A9A7-D78BE078A758}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

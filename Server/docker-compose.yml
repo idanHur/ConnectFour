@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  server:
+    container_name: connect4_server
+    image: ${DOCKER_REGISTRY-}server
+    build:
+      context: .
+      dockerfile: Server/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=connect4_server_db,1433;Database=Connect4GameDB;User Id=sa;Password=YourStrong!1Password;MultipleActiveResultSets=True;"
+
+  db:
+    container_name: connect4_server_db
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      SA_PASSWORD: "YourStrong!1Password"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
