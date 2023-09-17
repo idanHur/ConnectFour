@@ -183,7 +183,7 @@ This application is also configured to run on Kubernetes, an open-source contain
 ### Cleanup:
 
 To remove the deployed resources from Kubernetes:
-
+    
     ```bash
         kubectl delete -f server-deployment.yaml
         kubectl delete -f db-deployment.yaml
