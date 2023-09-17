@@ -146,6 +146,7 @@ This application is also configured to run on Kubernetes, an open-source contain
     ```
 
 2.  **Update Kubernetes Configuration:**
+
     Open your server-deployment.yaml file. Look for the image field under spec.containers. Update the image reference to the one you just pushed to DockerHub.
 
     ```bash
@@ -157,6 +158,7 @@ This application is also configured to run on Kubernetes, an open-source contain
     Save the changes. You can then apply these changes to your Kubernetes cluster.
 
 3.  **Deploying to Kubernetes:**
+
     Use kubectl to deploy your services and deployments:
     ```bash
         kubectl apply -f server-deployment.yaml
@@ -171,6 +173,7 @@ This application is also configured to run on Kubernetes, an open-source contain
         kubectl get svc
     ```
 4.  **Accessing the Application:**
+
     If your server service is of type NodePort (as is common with Minikube), you can access it using the Minikube IP and the allocated NodePort:
     ```bash
         minikube ip
@@ -178,6 +181,7 @@ This application is also configured to run on Kubernetes, an open-source contain
     Combine this IP with the NodePort from the service (e.g., 30080) to access the application, like http://[MINIKUBE_IP]:30080.
 
 ### Cleanup:
+
 To remove the deployed resources from Kubernetes:
     ```bash
         kubectl delete -f server-deployment.yaml
