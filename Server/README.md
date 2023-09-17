@@ -181,12 +181,11 @@ This application is also configured to run on Kubernetes, an open-source contain
     Combine this IP with the NodePort from the service (e.g., 30080) to access the application, like http://[MINIKUBE_IP]:30080.
 
 ### Cleanup:
-To remove the deployed resources from Kubernetes:
-    
-    ```bash
-        kubectl delete -f server-deployment.yaml
-        kubectl delete -f db-deployment.yaml
-    ```
+To remove the deployed resources from Kubernetes: 
+```bash
+    kubectl delete -f server-deployment.yaml
+    kubectl delete -f db-deployment.yaml
+```
 
 
 ## Code Practices
