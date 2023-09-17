@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connect4-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connect4-server
+  template:
+    metadata:
+      labels:
+        app: connect4-server
+    spec:
+      containers:
+      - name: connect4-server
+        image: idan12/connect4game-server:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=connect4-db-service,1433;Database=Connect4GameDB;User Id=sa;Password=YourStrong!1Password;MultipleActiveResultSets=True;"
