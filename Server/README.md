@@ -9,6 +9,7 @@ This project is an ASP.NET Core web application server for Connect4Game. It serv
 - [Getting Started without Docker](#getting-started-without-docker)
 - [Running with Docker](#running-with-docker)
 - [Running with Visual Studio](#running-with-visual-studio)
+- [Running with Kubernetes](#running-with-kubernetes)
 - [Code Practices](#code-practices)
 
 
@@ -119,6 +120,69 @@ If you prefer to develop and run the application with Visual Studio, follow thes
 3.  Configure your database connection string in the appsettings.json file of the Server project.
 
 4.  Build and run the application using Visual Studio. The application should launch in your default web browser.
+
+## Running with Kubernetes
+
+This application is also configured to run on Kubernetes, an open-source container orchestration platform. This method is ideal for scaling and deploying the application across a cluster of machines.
+
+### Prerequisites
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/) or a Kubernetes cluster setup
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) - Kubernetes command-line tool
+
+### Deployment Steps:
+
+1. **Building the Docker Image:**
+   
+   Before deploying to Kubernetes, ensure you have the Docker image built and available in a container registry (like DockerHub).
+
+    ```bash
+        docker build -t [YOUR_DOCKERHUB_USERNAME]/connect4game-server:vX.Y.Z .
+    ```
+    Replace [YOUR_DOCKERHUB_USERNAME] with your DockerHub username, and vX.Y.Z with the version tag you want to give your Docker image.
+
+    Push the image to DockerHub:
+    ```bash
+        docker push [YOUR_DOCKERHUB_USERNAME]/connect4game-server:vX.Y.Z
+    ```
+
+2.  **Update Kubernetes Configuration:**
+    Open your server-deployment.yaml file. Look for the image field under spec.containers. Update the image reference to the one you just pushed to DockerHub.
+
+    ```bash
+        spec:
+            containers:
+            - name: connect4game-server
+                image: [YOUR_DOCKERHUB_USERNAME]/connect4game-server:vX.Y.Z
+    ```
+    Save the changes. You can then apply these changes to your Kubernetes cluster.
+
+3.  **Deploying to Kubernetes:**
+    Use kubectl to deploy your services and deployments:
+    ```bash
+        kubectl apply -f server-deployment.yaml
+        kubectl apply -f server-service.yaml
+        kubectl apply -f db-deployment.yaml
+        kubectl apply -f db-service.yaml
+    ```
+
+    Monitor your pods and services:
+    ```bash
+        kubectl get pods
+        kubectl get svc
+    ```
+4.  **Accessing the Application:**
+    If your server service is of type NodePort (as is common with Minikube), you can access it using the Minikube IP and the allocated NodePort:
+    ```bash
+        minikube ip
+    ```
+    Combine this IP with the NodePort from the service (e.g., 30080) to access the application, like http://[MINIKUBE_IP]:30080.
+
+### Cleanup:
+To remove the deployed resources from Kubernetes:
+    ```bash
+        kubectl delete -f server-deployment.yaml
+        kubectl delete -f db-deployment.yaml
+    ```
 
 
 ## Code Practices
