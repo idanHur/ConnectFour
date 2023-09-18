@@ -50,7 +50,7 @@ The client provides a user interface for the game and connects to the server usi
 
 ## Setting Up the Server
 
-For detailed setup instructions, refer to the [server readme](server/README.md).
+For detailed setup instructions, refer to the [server readme](Server/README.md).
 
 **Note:** Depending on how you run the server, you may need to update the server's address in the client configuration.
 
