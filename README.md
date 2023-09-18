@@ -2,6 +2,15 @@
 
 This project is a complete implementation of the Connect4Game with a WPF client and an ASP.NET Core server. The game is split into two main components, the client and the server, each encapsulating its own specific functionality and responsibilities.
 
+## Table of Contents
+- [Main Components](#main-components)
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+- [Setting Up the Server](#setting-up-the-server)
+- [Setting Up the Client](#setting-up-the-client)
+- [Updating the Database](#updating-the-database)
+- [Code Practices](#code-practices)
+  
 ## Main Components
 
 ### Server (ASP.NET Core Web Application)
@@ -14,6 +23,9 @@ The server is the backbone for game management, game logic, player interactions,
 - **Animation**: Supports falling game coins animation for enhanced user interaction.
 - **Game Logic**: Enforces the rules of the Connect4 game, validating player moves, and managing game progress.
 - **AI Player**: Implements an artificial intelligence algorithm that plays against the player, making decisions based on the current state of the game.
+- **JWT Authentication**: Implemented using the System.IdentityModel.Tokens.Jwt namespace to ensure registered clients.
+- **Running with Docker**: The server can be containerized and run with Docker.
+- **Running with Kubernetes**: Deployment configurations for Kubernetes are available for scaling and deploying the application across a cluster of machines.
 
 ### Client (WPF Application)
 
@@ -24,6 +36,8 @@ The client provides a user interface for the game and connects to the server usi
 - .NET Core 3.1 or higher
 - SQL Server
 - (Optional) SQL Server Management Studio
+- Docker Desktop (If you want to run the server using Docker)
+- Minikube or a Kubernetes cluster setup, kubectl (If you want to run the server with Kubernetes)
 
 ## Setup
 
@@ -34,13 +48,14 @@ The client provides a user interface for the game and connects to the server usi
 5. Run `dotnet restore` to restore the necessary NuGet packages.
 6. Update the connection string in your `appsettings.json` file with your SQL Server details.
 
-### Setting Up the Server
+## Setting Up the Server
 
-1. Navigate to the server project directory.
-2. Run `dotnet ef database update` to create your database schema.
-3. Run `dotnet run` to start the server.
+For detailed setup instructions, refer to the [server readme](server/README.md).
 
-### Setting Up the Client
+**Note:** Depending on how you run the server, you may need to update the server's address in the client configuration.
+
+
+## Setting Up the Client
 
 1. Navigate to the client project directory.
 2. Run the WPF application.
